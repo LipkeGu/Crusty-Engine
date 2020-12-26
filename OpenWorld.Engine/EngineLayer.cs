@@ -1,0 +1,120 @@
+﻿using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL4;
+using OpenTK.Input;
+using System;
+
+namespace OpenWorld.Engine
+{
+	
+	public class EngineLayer : GameWindow
+	{
+		public static OpenWorldEngine Engine { get; set; }
+
+		private Vector2 lastPost = new Vector2(400.0f);
+		bool firstMouse = true;
+
+		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
+			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
+		{
+			Engine = new OpenWorldEngine();
+		}
+
+		public override void Dispose()
+		{
+			Engine.Dispose();
+			base.Dispose();
+		}
+
+		protected override void OnKeyDown(KeyboardKeyEventArgs e)
+		{
+			if (e.Key == Key.Escape)
+				Exit();
+			else
+				Engine.OnKeyDown(e.Key);
+
+			base.OnKeyDown(e);
+		}
+
+		protected override void OnKeyUp(KeyboardKeyEventArgs e)
+		{
+			base.OnKeyUp(e);
+		}
+
+		protected override void OnLoad(EventArgs e)
+		{
+			GL.ClearColor(color: Color4.CornflowerBlue);
+			Engine.Initialize(Width, Height);
+
+			base.OnLoad(e);
+		}
+
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			base.OnMouseDown(e);
+		}
+
+		protected override void OnMouseLeave(EventArgs e)
+		{
+			base.OnMouseLeave(e);
+		}
+
+		protected override void OnMouseMove(MouseMoveEventArgs e)
+		{
+			if (firstMouse)
+			{
+				lastPost = new Vector2(e.Mouse.X, e.Mouse.Y);
+				firstMouse = false;
+			}
+			else
+			{
+				var deltaX = e.Mouse.X - lastPost.X;
+				var deltaY = e.Mouse.Y - lastPost.Y;
+
+				lastPost = new Vector2(e.Mouse.X, e.Mouse.Y);
+				Engine.OnMouseMove(deltaX * 0.05f, deltaY * 0.05f);
+			}
+
+			base.OnMouseMove(e);
+		}
+
+		protected override void OnMouseUp(MouseButtonEventArgs e)
+		{
+			base.OnMouseUp(e);
+		}
+
+		protected override void OnMouseWheel(MouseWheelEventArgs e)
+		{
+			base.OnMouseWheel(e);
+		}
+
+		protected override void OnRenderFrame(FrameEventArgs e)
+		{
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+			Engine.Render();
+
+			SwapBuffers();
+			base.OnRenderFrame(e);
+		}
+
+		protected override void OnResize(EventArgs e)
+		{
+			Engine.OnResize(Width, Height);
+			base.OnResize(e);
+		}
+
+		protected override void OnUnload(EventArgs e)
+		{
+			Engine.Unload();
+
+			base.OnUnload(e);
+		}
+
+		protected override void OnUpdateFrame(FrameEventArgs e)
+		{
+			Engine.Update(e.Time);
+			base.OnUpdateFrame(e);
+		}
+	}
+}
