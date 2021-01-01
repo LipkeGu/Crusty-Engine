@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenTK.Graphics.OpenGL4;
-using OpenWorld.Engine.Common;
 
 namespace OpenWorld.Engine.Video
 {
@@ -14,19 +10,18 @@ namespace OpenWorld.Engine.Video
 		public int Id { get; private set; } = 0;
 
 		private TextureTarget textureTarget;
-		private float anistrophSteps = 4.0f;
+
 		public Texture(List<string> filenames)
 		{
 			Id = GL.GenTexture();
 			textureTarget = TextureTarget.TextureCubeMap;
-			for (int i = 0; i < filenames.Count; i++)
-			{
+
+			for (var i = 0; i < filenames.Count; i++)
 				if (!System.IO.File.Exists(filenames[i]))
 				{
 					Console.WriteLine("[E] Could not find Texture: {0}", filenames[i]);
 					return;
 				}
-			}
 
 			CreateCube(filenames);
 		}
@@ -52,10 +47,10 @@ namespace OpenWorld.Engine.Video
 		private void CreateCube(List<string> filenames)
 		{
 			Bind();
-			for (int i = 0; i < filenames.Count; i++)
-			{
+
+			for (var i = 0; i < filenames.Count; i++)
 				Create(filenames[i], TextureTarget.TextureCubeMap, i);
-			}
+			
 			UnBind();
 		}
 
@@ -74,10 +69,8 @@ namespace OpenWorld.Engine.Video
 
 		private void __setTextureFormat(int index, ref BitmapData data)
 		{
-
 			GL.TextureParameter(Id, TextureParameterName.TextureMinFilter, (int)All.Nearest);
 			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, (int)All.Nearest);
-
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 			
@@ -96,7 +89,6 @@ namespace OpenWorld.Engine.Video
 					GLPixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat.Bgra;
 					break;
 			}
-
 
 			switch (textureTarget)
 			{
@@ -127,7 +119,6 @@ namespace OpenWorld.Engine.Video
 					GL.Enable(EnableCap.Texture2D);
 					break;
 			}
-
 
 			GL.ActiveTexture(TextureUnit.Texture0 + slot);
 			GL.BindTexture(textureTarget, Id);

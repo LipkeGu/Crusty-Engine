@@ -6,12 +6,13 @@ using System;
 
 namespace OpenWorld.Engine
 {
-	
-	public class EngineLayer : GameWindow
+		public class EngineLayer : GameWindow
 	{
 		public static OpenWorldEngine Engine { get; set; }
 
 		private Vector2 lastPost = new Vector2(400.0f);
+		private double deltaTime = 0;
+
 		bool firstMouse = true;
 
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
@@ -23,6 +24,7 @@ namespace OpenWorld.Engine
 		public override void Dispose()
 		{
 			Engine.Dispose();
+
 			base.Dispose();
 		}
 
@@ -31,7 +33,7 @@ namespace OpenWorld.Engine
 			if (e.Key == Key.Escape)
 				Exit();
 			else
-				Engine.OnKeyDown(e.Key);
+				Engine.OnKeyDown(e.Key, (float)deltaTime);
 
 			base.OnKeyDown(e);
 		}
@@ -72,7 +74,7 @@ namespace OpenWorld.Engine
 				var deltaY = e.Mouse.Y - lastPost.Y;
 
 				lastPost = new Vector2(e.Mouse.X, e.Mouse.Y);
-				Engine.OnMouseMove(deltaX * 0.05f, deltaY * 0.05f);
+				Engine.OnMouseMove(deltaX, deltaY, deltaTime);
 			}
 
 			base.OnMouseMove(e);
@@ -90,17 +92,18 @@ namespace OpenWorld.Engine
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
+			deltaTime = e.Time;
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
-			Engine.Render();
-
+			Engine.Render(deltaTime);
 			SwapBuffers();
+
 			base.OnRenderFrame(e);
 		}
 
 		protected override void OnResize(EventArgs e)
 		{
 			Engine.OnResize(Width, Height);
+
 			base.OnResize(e);
 		}
 
@@ -114,6 +117,7 @@ namespace OpenWorld.Engine
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			Engine.Update(e.Time);
+
 			base.OnUpdateFrame(e);
 		}
 	}

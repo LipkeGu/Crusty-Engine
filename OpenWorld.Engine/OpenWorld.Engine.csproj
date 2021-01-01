@@ -52,11 +52,14 @@
     <Compile Include="Common\Functions.cs" />
     <Compile Include="Common\GameTime.cs" />
     <Compile Include="EngineLayer.cs" />
+    <Compile Include="Generators\PerlinNoise.cs" />
+    <Compile Include="Models\Models.cs" />
     <Compile Include="Models\SkyBox.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\OBJLoader.cs" />
     <Compile Include="Models\Terrain.cs" />
     <Compile Include="OpenWorld.Engine.cs" />
+    <Compile Include="Parsers\INIFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Traits\AltersScreen.cs" />
     <Compile Include="Traits\MoveAble.cs" />

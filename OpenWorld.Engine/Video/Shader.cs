@@ -220,18 +220,21 @@ namespace OpenWorld.Engine.Video
 		void LinkShader()
 		{
 			shaderProgram = GL.CreateProgram();
+
 			foreach (var shader in shaders.Values)
 				GL.AttachShader(shaderProgram, shader);
 
-			
 			GL.LinkProgram(shaderProgram);
+			GL.GetProgram(shaderProgram, GetProgramParameterName.LinkStatus, out var code);
+			
+			if (code != (int)All.True)
+			{
+				var error = GL.GetProgramInfoLog(shaderProgram);
+				throw new Exception($"Error occurred whilst linking ShaderProgram ({shaderProgram}): {error}");
+			}
+
 			GL.ValidateProgram(shaderProgram);
 			BindAttributes();
-
-			GL.GetProgram(shaderProgram, GetProgramParameterName.LinkStatus, out var code);
-
-			if (code != (int)All.True)
-				throw new Exception($"Error occurred whilst linking ShaderProgram ({shaderProgram})");
 		}
 
 		public void Use()
@@ -259,9 +262,6 @@ namespace OpenWorld.Engine.Video
 			uniformLocations.Clear();
 		}
 
-		public void Dispose()
-		{
-			Cleanup();
-		}
+		public void Dispose() => Cleanup();
 	}
 }

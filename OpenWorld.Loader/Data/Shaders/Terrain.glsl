@@ -7,7 +7,6 @@ uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
 uniform vec3 Scale;
 
-
 out vec2 texCoord;
 
 void main() {
@@ -25,5 +24,6 @@ uniform float AmbientStrength;
 uniform vec3 LightColor;
 
 void main() {
-	frag_colour = (texture(uTexture, texCoord) + vec4(LightColor, 1.0f)) * AmbientStrength;
+	vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f);
+	frag_colour = vec4(texture(uTexture, texCoord).xyz, 1.0f) * lColor;
 }

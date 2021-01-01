@@ -1,5 +1,4 @@
 ﻿using OpenTK;
-using OpenWorld.Engine.Common;
 using System.Collections.Generic;
 
 namespace OpenWorld.Engine.Models
@@ -61,9 +60,7 @@ namespace OpenWorld.Engine.Models
 			Vertices.Add(new Vector3(-size, size, -size));
 
 			VertexArray.Upload(Vertices, Indices);
-			texture = new Video.Texture(textures);
+			Texture = new Video.Texture(textures);
 		}
 	}
-
-
 }

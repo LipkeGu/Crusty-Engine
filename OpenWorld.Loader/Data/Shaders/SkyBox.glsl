@@ -23,6 +23,5 @@ uniform float AmbientStrength;
 uniform vec3 LightColor;
 
 void main() {
-
 	frag_colour = (vec4(texture(uTexture, pTexCoord).xyz, 1.0f) + vec4(LightColor, 1.0f)) * AmbientStrength;
 }

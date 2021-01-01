@@ -10,6 +10,7 @@ namespace OpenWorld.Engine.Video
 	public class VertexArray : IDisposable
 	{
 		private int attributeCount = 0;
+		public bool Instanced = false;
 
 		public List<Buffer> VertexBuffers;
 		public IndexBuffer IndexBuffer;
@@ -49,9 +50,7 @@ namespace OpenWorld.Engine.Video
 			vbo.Upload(data);
 
 			if (VertexBuffers.Count == 0)
-			{
 				VerticeCount = vbo.Elements;
-			}
 
 			VertexBuffers.Add(vbo);
 
@@ -61,21 +60,22 @@ namespace OpenWorld.Engine.Video
 			GL.VertexAttribPointer(attributeCount, elements, VertexAttribPointerType.Float, false, elements * sizeof(float), 0);
 			GL.EnableVertexAttribArray(attributeCount);
 
+			if (Instanced)
+				GL.VertexAttribDivisor(attributeCount, 1);
+
 			attributeCount++;
 
 			UnBind();
 		}
 
-		public void Upload(List<Vector3> data, List<int> indices)
+		public void Upload(List<Vector3> data, List<int> indices, bool instanced = false)
 		{
 			var vbo = new VertexBuffer();
 			vbo.Create();
 			vbo.Upload(data);
 
 			if (VertexBuffers.Count == 0)
-			{
 				VerticeCount = vbo.Elements;
-			}
 
 			VertexBuffers.Add(vbo);
 
@@ -92,6 +92,8 @@ namespace OpenWorld.Engine.Video
 			var elements = Marshal.SizeOf(data[0]) / sizeof(float);
 			GL.VertexAttribPointer(attributeCount, elements, VertexAttribPointerType.Float, false, elements * sizeof(float), 0);
 			GL.EnableVertexAttribArray(attributeCount);
+			if (Instanced)
+				GL.VertexAttribDivisor(attributeCount, 1);
 
 			attributeCount++;
 
@@ -142,7 +144,6 @@ namespace OpenWorld.Engine.Video
 			shader.Set_Vec3("Scale", ref scale);
 			shader.Set_Vec1("AmbientStrength", ref worldTime.AmbientStrength);
 			shader.Set_Vec3("LightColor", ref worldTime.LightColor);
-
 			shader.Set_Mat4("projMatrix", projectionMatrix);
 			shader.Set_Mat4("viewMatrix", viewMatrix);
 			shader.Set_Mat4("modelMatrix", transform);
@@ -151,6 +152,7 @@ namespace OpenWorld.Engine.Video
 				GL.DrawArrays(PrimitiveType.Triangles, 0, VerticeCount);
 			else
 				GL.DrawElements(PrimitiveType.Triangles, indicesCount, DrawElementsType.UnsignedInt, 0);
+
 			shader.Unuse();
 
 			UnBind();
@@ -159,10 +161,12 @@ namespace OpenWorld.Engine.Video
 		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
 		{
 			var viewMatrix = camera.ViewMatrix;
+
 			if (fixedModel)
 				viewMatrix.Row3 = new Vector4(0, 0, 0, viewMatrix.Row3.W);
 
 			var projMatrix = camera.ProjectionMatrix;
+
 			Draw(ref worldTime ,ref shader, ref viewMatrix, ref projMatrix, ref transform, scale);
 		}
 

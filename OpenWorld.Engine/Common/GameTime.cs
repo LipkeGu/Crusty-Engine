@@ -37,33 +37,40 @@ namespace OpenWorld.Engine.Common
 			{
 				case 0:
 					AmbientStrength = 0.1f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 1:
 					AmbientStrength = 0.1f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 2:
-					AmbientStrength = 0.2f;
+					AmbientStrength = !IsSummerTime ? 0.2f : 0.2f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 3:
-					AmbientStrength = 0.3f;
+					AmbientStrength = !IsSummerTime ? 0.3f : 0.4f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 4:
-					AmbientStrength = 0.4f;
+					AmbientStrength = !IsSummerTime ? 0.4f : 0.6f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 5:
-					AmbientStrength = 0.5f;
+					AmbientStrength = !IsSummerTime ? 0.5f : 0.8f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 6:
-					AmbientStrength = 0.6f;
+					AmbientStrength = !IsSummerTime ? 0.6f : 0.9f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 7:
-					AmbientStrength = 0.7f;
+					AmbientStrength = !IsSummerTime ? 0.7f : 1.0f;
 					break;
 				case 8:
-					AmbientStrength = 0.8f;
+					AmbientStrength = !IsSummerTime ? 0.8f : 1.0f;
 					break;
 				case 9:
-					AmbientStrength = 0.9f;
+					AmbientStrength = !IsSummerTime ? 0.9f : 1.0f;
 					break;
 				case 10:
 					AmbientStrength = 1.0f;
@@ -81,34 +88,38 @@ namespace OpenWorld.Engine.Common
 					AmbientStrength = 1.0f;
 					break;
 				case 15:
-					AmbientStrength = 0.9f;
+					AmbientStrength = !IsSummerTime ? 0.9f : 1.0f;
 					break;
 				case 16:
-					AmbientStrength = 0.8f;
+					AmbientStrength = !IsSummerTime ? 0.8f : 1.0f;
 					break;
 				case 17:
-					AmbientStrength = 0.7f;
+					AmbientStrength = !IsSummerTime ? 0.7f : 1.0f;
 					break;
 				case 18:
-					AmbientStrength = 0.6f;
+					AmbientStrength = !IsSummerTime ? 0.6f : 1.0f;
 					break;
 				case 19:
-					AmbientStrength = 0.5f;
+					AmbientStrength = !IsSummerTime ? 0.5f : 1.0f;
 					break;
 				case 20:
-					AmbientStrength = 0.4f;
+					AmbientStrength = !IsSummerTime ? 0.4f : 0.9f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 21:
-					AmbientStrength = 0.3f;
+					AmbientStrength = !IsSummerTime ? 0.3f : 0.8f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 22:
-					AmbientStrength = 0.2f;
+					AmbientStrength = !IsSummerTime ? 0.2f : 0.6f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				case 23:
-					AmbientStrength = 0.1f;
+					AmbientStrength = !IsSummerTime ? 0.1f : 0.4f;
+					LightColor = new Vector3(0.790459f, 1.049128f, 1.505834f);
 					break;
 				default:
-					AmbientStrength = 1.0f;
+					AmbientStrength = 0.9f;
 					break;
 			}
 		}

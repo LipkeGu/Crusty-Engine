@@ -12,7 +12,6 @@ namespace OpenWorld.Engine.Models
 	{
 		public Triangle(string name, Vector3 position, Vector3 rotation, Vector3 scale) : base(name, position, rotation, scale)
 		{
-
 			Vertices.Add(new Vector3(-0.5f, -0.5f, 0.0f));
 			Vertices.Add(new Vector3(0.5f, -0.5f, 0.0f));
 			Vertices.Add(new Vector3(0.0f, 0.5f, 0.0f));
@@ -25,8 +24,8 @@ namespace OpenWorld.Engine.Models
 	{
 		public VertexArray VertexArray { get; private set; }
 		public Shader Shader;
-		public Texture texture;
-
+		public Texture Texture;
+		public Matrix4 ModelMatrix;
 		public string Name;
 
 		public List<int> Indices = new List<int>();
@@ -40,29 +39,41 @@ namespace OpenWorld.Engine.Models
 			Rotation = rotation;
 			Position = position;
 			Shader = new Shader();
-			texture = new Texture(string.Format("Data/Texture/{0}.png", Name));
+			Texture = new Texture(string.Format("Data/Texture/{0}.png", Name));
 			Shader.Create(string.Format("Data/Shaders/{0}.glsl", Name));
+
+
 			VertexArray = new VertexArray();
 			VertexArray.Create();
 		}
 
-		
+		protected Model(string name)
+		{
+			Name = name;
+			Shader = new Shader();
+			Texture = new Texture(string.Format("Data/Texture/{0}.png", Name));
+			Shader.Create(string.Format("Data/Shaders/{0}.glsl", Name));
+
+			VertexArray = new VertexArray();
+			VertexArray.Create();
+		}
+
 
 		public virtual void Update(double deltatime)
 		{
+			ModelMatrix = Functions.CreateTransformationMatrix(Position, Rotation, Scale);
 		}
 
 		public virtual void Draw(ref GameWorldTime worldTime, ref Camera camera, bool staticObject = false)
 		{
-			texture.Bind();
-			var modelMatrix = Functions.CreateTransformationMatrix(Position, Rotation, Scale);
-			VertexArray.Draw(ref worldTime, ref Shader, ref camera, ref modelMatrix, Scale, staticObject);
-			texture.UnBind();
+			Texture.Bind();
+			VertexArray.Draw(ref worldTime, ref Shader, ref camera, ref ModelMatrix, Scale, staticObject);
+			Texture.UnBind();
 		}
 
 		public void CleanUp()
 		{
-			texture.CleanUp();
+			Texture.CleanUp();
 			Shader.Cleanup();
 			VertexArray.CleanUp();
 			Vertices.Clear();
@@ -71,7 +82,7 @@ namespace OpenWorld.Engine.Models
 
 		public void Dispose()
 		{
-			texture.Dispose();
+			Texture.Dispose();
 			Shader.Dispose();
 			VertexArray.Dispose();
 		}
