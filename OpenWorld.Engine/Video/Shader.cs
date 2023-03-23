@@ -111,8 +111,6 @@ namespace OpenWorld.Engine.Video
 		{
 			var sources = PreProcess(filename);
 
-
-
 			#region Compiling the Shader
 			foreach (var shadersource in sources)
 				if (!string.IsNullOrEmpty(shadersource.Value))

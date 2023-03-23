@@ -58,8 +58,8 @@
     <None Include="Data\Models\Bunny.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Data\Models\Bunny.obj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="Data\Models\Bunny.mdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Data\Shaders\Bunny.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

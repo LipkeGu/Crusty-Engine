@@ -13,12 +13,12 @@ namespace OpenWorld.Engine.Models
 		public OBJLoader(string name, Vector3 position, Vector3 rotation, Vector3 scale)
 			: base(name, position, rotation, scale)
 		{
-			Create(string.Format("Data/Models/{0}.obj", name));
+			Create(string.Format("Data/Models/{0}.mdl", name));
 		}
 
 		public OBJLoader(string name): base(name)
 		{
-			Create(string.Format("Data/Models/{0}.obj", name));
+			Create(string.Format("Data/Models/{0}.mdl", name));
 		}
 
 		public void Create(string filename)
@@ -87,15 +87,16 @@ namespace OpenWorld.Engine.Models
 					if (line.StartsWith("f "))
 					{
 						var faceParts = Functions.SplitString(line, " ").ToList();
-						for (var f = 0; f < faceParts.Count; f++)
+						for (var f = 1; f < faceParts.Count; f++)
 						{
 							var face = Functions.SplitString(faceParts[f], "/");
-							if (face.Length < 2)
-								continue;
 
 							verticeIndice.Add(int.Parse(face[0]) - 1);
-							texCoordIndice.Add(int.Parse(face[1]) - 1);
-							normalIndice.Add(int.Parse(face[2]) - 1);
+							if (face.Length > 1)
+							{
+								texCoordIndice.Add(int.Parse(face[1]) - 1);
+								normalIndice.Add(int.Parse(face[2]) - 1);
+							}
 						}
 
 					}
@@ -120,8 +121,11 @@ namespace OpenWorld.Engine.Models
 				Normals.Add(normals[item]);
 
 			VertexArray.Upload(Vertices, Indices);
-			VertexArray.Upload(TexCoords);
-			VertexArray.Upload(Normals, new List<int>());
+			if (TexCoords.Count != 0)
+				VertexArray.Upload(TexCoords);
+
+			if (Normals.Count != 0)
+				VertexArray.Upload(Normals, new List<int>());
 		}
 	}
 }

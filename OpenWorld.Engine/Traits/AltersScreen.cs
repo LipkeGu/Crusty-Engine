@@ -9,8 +9,6 @@ namespace OpenWorld.Engine.Traits
 {
 	public class AltersScreen
 	{
-
-
 		protected AltersScreen() { }
 	}
 }
