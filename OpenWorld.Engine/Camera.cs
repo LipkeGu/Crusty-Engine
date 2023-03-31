@@ -1,4 +1,5 @@
 ﻿using OpenTK;
+using OpenWorld.Engine.Models;
 using OpenWorld.Engine.Traits;
 using System;
 namespace OpenWorld.Engine
@@ -19,9 +20,10 @@ namespace OpenWorld.Engine
 
 		public float Yaw {
 			get { return MathHelper.RadiansToDegrees(_yaw); }
-			set { _yaw = MathHelper.DegreesToRadians(value); } }
+			set { _yaw = MathHelper.DegreesToRadians(value); }
+		}
 
-		private float _fov = 90.0f;
+		private float _fov = 75.0f;
 
 		public Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
 		public Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
@@ -55,15 +57,17 @@ namespace OpenWorld.Engine
 			Update_ProjectionMatrix(width, height);
 		}
 
-		public void Update(double deltatime)
+		public void Update(Terrain terrain, double deltatime)
 		{
+			Position.Y = terrain.GetHeightAt((int)Position.X, (int)Position.Z) + 6;
 			_front.X = (float)Math.Cos(_pitch) * (float)Math.Cos(_yaw);
 			_front.Y = (float)Math.Sin(_pitch);
 			_front.Z = (float)Math.Cos(_pitch) * (float)Math.Sin(_yaw);
 			_front = Vector3.Normalize(_front);
 			_right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
 			_up = Vector3.Normalize(Vector3.Cross(_right, _front));
-		
+			Console.WriteLine(Position);
+
 			Update_ViewMatrix();
 		}
 	}
