@@ -70,6 +70,7 @@
     <Compile Include="Common\MousePicker.cs" />
     <Compile Include="Traits\Lighting.cs" />
     <Compile Include="Models\Light.cs" />
+    <Compile Include="Models\Fog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

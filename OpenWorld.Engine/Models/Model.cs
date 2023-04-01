@@ -68,10 +68,10 @@ namespace OpenWorld.Engine.Models
 			Shader.Unuse();
 		}
 
-		public virtual void Draw(ref GameWorldTime worldTime, ref Camera camera, bool staticObject = false)
+		public virtual void Draw(ref GameWorldTime worldTime, ref Fog fog, ref Camera camera, bool staticObject = false)
 		{
 			Texture.Bind();
-			VertexArray.Draw(ref worldTime, ref Shader, ref camera, ref ModelMatrix, Scale, staticObject);
+			VertexArray.Draw(ref worldTime, ref Shader, ref fog, ref camera, ref ModelMatrix, Scale, staticObject);
 			Texture.UnBind();
 		}
 

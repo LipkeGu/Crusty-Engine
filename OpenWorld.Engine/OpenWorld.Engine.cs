@@ -22,7 +22,7 @@ namespace OpenWorld.Engine
 
 		Camera camera;
 		Light sun;
-
+		Fog fog;
 		MousePicker picker;
 
 		public void PreloadModels(ref Terrain terrain)
@@ -70,6 +70,7 @@ namespace OpenWorld.Engine
 			camera.Update(terrain, 0.0);
 			picker = new MousePicker(camera);
 			sun = new Light(new Vector3(terrain.Width / 2, 100.0f, terrain.Height / 2), new Vector3(255), 10.0f);
+			fog = new Fog();
 			//PreloadModels(ref terrain);
 		}
 
@@ -145,15 +146,15 @@ namespace OpenWorld.Engine
 			GL.Enable(EnableCap.DepthTest);
 			GL.DepthFunc(DepthFunction.Lequal);
 
-			skyBox.Draw(ref WorldTime, ref camera, true);
+			skyBox.Draw(ref WorldTime, ref fog, ref camera, true);
 
 			GL.Enable(EnableCap.CullFace);
 			GL.CullFace(CullFaceMode.Back);
 
-			terrain.Draw(ref WorldTime, ref camera);
+			terrain.Draw(ref WorldTime, ref fog, ref camera);
 			GL.Disable(EnableCap.CullFace);
 
-			Models.Draw(ref WorldTime, ref camera);
+			Models.Draw(ref WorldTime, ref fog, ref camera);
 			GL.Disable(EnableCap.DepthTest);
 		}
 

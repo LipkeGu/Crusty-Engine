@@ -32,7 +32,7 @@ namespace OpenWorld.Engine.Models
 				Instances.Add(model, transform);
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Camera camera)
+		public void Draw(ref GameWorldTime worldTime, ref Fog fog, ref Camera camera)
 		{
 			foreach (var instance in Instances)
 			{
@@ -67,7 +67,7 @@ namespace OpenWorld.Engine.Models
 				}
 				else
 				{
-					instance.Key.Draw(ref worldTime, ref camera);
+					instance.Key.Draw(ref worldTime, ref fog, ref camera);
 				}
 
 				GL.Disable(EnableCap.Blend);

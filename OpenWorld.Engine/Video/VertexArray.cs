@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using OpenWorld.Engine.Common;
+using OpenWorld.Engine.Models;
 
 namespace OpenWorld.Engine.Video
 {
@@ -128,7 +129,7 @@ namespace OpenWorld.Engine.Video
 			GL.DeleteVertexArray(Id);
 		}
 
-		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
+		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
 		{
 			var indicesCount = 0;
 
@@ -140,19 +141,14 @@ namespace OpenWorld.Engine.Video
 
 			Bind();
 
-			float gradient = 5.0f;
-			float density = (float)Math.Sin(0.0040f);
-			var fogColor = new Vector3(38, 50, 56) / 255;
-
-
 			shader.Use();
 			shader.Set_Vec3("Scale", ref scale);
 
-			shader.Set_Vec1("gradient", ref gradient);
-			shader.Set_Vec1("density", ref density);
+			shader.Set_Vec1("gradient", fog.Gradient);
+			shader.Set_Vec1("density", fog.Density);
 
-			shader.Set_Vec3("fogColor", ref fogColor);
-			shader.Set_Vec1("AmbientStrength", ref worldTime.AmbientStrength);
+			shader.Set_Vec3("fogColor", fog.Color);
+			shader.Set_Vec1("AmbientStrength", worldTime.AmbientStrength);
 			shader.Set_Vec3("LightColor", ref worldTime.LightColor);
 			shader.Set_Mat4("projMatrix", projectionMatrix);
 			shader.Set_Mat4("viewMatrix", viewMatrix);
@@ -168,7 +164,7 @@ namespace OpenWorld.Engine.Video
 			UnBind();
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
+		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
 		{
 			var viewMatrix = camera.ViewMatrix;
 
@@ -177,7 +173,7 @@ namespace OpenWorld.Engine.Video
 
 			var projMatrix = camera.ProjectionMatrix;
 
-			Draw(ref worldTime, ref shader, ref viewMatrix, ref projMatrix, ref transform, scale);
+			Draw(ref worldTime, ref shader, ref fog, ref viewMatrix, ref projMatrix, ref transform, scale);
 		}
 
 		public void Dispose()

@@ -166,6 +166,11 @@ namespace OpenWorld.Engine.Video
 			GL.Uniform4(uniformLocations[name], ref value);
 		}
 
+		public void Set_Vec3(string name, Vector3 value)
+		{
+			Set_Vec3(name, ref value);
+		}
+
 		public void Set_Vec3(string name, ref Vector3 value)
 		{
 			if (!uniformLocations.ContainsKey(name))
@@ -182,7 +187,7 @@ namespace OpenWorld.Engine.Video
 			GL.Uniform2(uniformLocations[name], ref value);
 		}
 
-		public void Set_Vec1(string name, ref float value)
+		public void Set_Vec1(string name, float value)
 		{
 			if (!uniformLocations.ContainsKey(name))
 				uniformLocations.Add(name, GL.GetUniformLocation(shaderProgram, name));
