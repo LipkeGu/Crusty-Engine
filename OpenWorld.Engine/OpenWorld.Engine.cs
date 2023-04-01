@@ -44,11 +44,10 @@ namespace OpenWorld.Engine
 							float.Parse(positionParts[2], CultureInfo.InvariantCulture.NumberFormat));
 
 					modelPosition.Y = terrain.GetHeightAt((int)modelPosition.X, (int)modelPosition.Z);
-					Console.WriteLine(modelPosition);
 
 					var transform = Functions.CreateTransformationMatrix(modelPosition,
 						new Vector3(0.0f),
-						new Vector3(1)
+						new Vector3(10)
 						);
 
 					transforms.Add(transform);
@@ -61,10 +60,10 @@ namespace OpenWorld.Engine
 		public void Initialize(int width, int height)
 		{
 			WorldTime = new GameWorldTime();
-			terrain = new Models.Terrain("Data/Texture/heightmap.png");
-			skyBox = new Models.SkyBox(terrain.Width / 4);
+			terrain = new Models.Terrain("Data/Texture/heightmap.png", "Data/Texture/normalmap.png");
+			skyBox = new Models.SkyBox(terrain.Width / MathHelper.Pi);
 			camera = new Camera(new Vector3(1.0f, 1.0f, 1.0f));
-			camera.Create(width, height);
+			camera.Create(width, height, skyBox.Size + 10);
 			camera.Update(terrain, 0.0);
 
 			PreloadModels(ref terrain);
@@ -122,7 +121,7 @@ namespace OpenWorld.Engine
 		{
 			GL.Viewport(0, 0, width, height);
 
-			camera.Update_ProjectionMatrix(width, height);
+			camera.Update_ProjectionMatrix(width, height, skyBox.Size + 10);
 			camera.Update_ViewMatrix();
 		}
 

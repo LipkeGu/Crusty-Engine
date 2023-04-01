@@ -28,7 +28,7 @@ namespace OpenWorld.Engine
 		public Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
 		public Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
 
-		public void Update_ProjectionMatrix(int width, int height)
+		public void Update_ProjectionMatrix(int width, int height, float far)
 		{
 			if (width == 0 || height == 0)
 				return;
@@ -49,12 +49,12 @@ namespace OpenWorld.Engine
 			Position = position;
 		}
 
-		public void Create(int width, int height)
+		public void Create(int width, int height, float far)
 		{
 			if (width == 0 || height == 0)
 				return;
 
-			Update_ProjectionMatrix(width, height);
+			Update_ProjectionMatrix(width, height, far);
 		}
 
 		public void Update(Terrain terrain, double deltatime)
@@ -66,7 +66,6 @@ namespace OpenWorld.Engine
 			_front = Vector3.Normalize(_front);
 			_right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
 			_up = Vector3.Normalize(Vector3.Cross(_right, _front));
-			Console.WriteLine(Position);
 
 			Update_ViewMatrix();
 		}

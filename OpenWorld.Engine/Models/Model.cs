@@ -77,6 +77,7 @@ namespace OpenWorld.Engine.Models
 			Shader.Cleanup();
 			VertexArray.CleanUp();
 			Vertices.Clear();
+			Normals.Clear();
 			Indices.Clear();
 		}
 

@@ -27,6 +27,6 @@ uniform float AmbientStrength;
 uniform vec3 LightColor;
 
 void main() {
-	vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f) * testColor;
+	vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f);
 	frag_colour = vec4(texture(uTexture, texCoord).xyz, 1.0f) * lColor;
 }

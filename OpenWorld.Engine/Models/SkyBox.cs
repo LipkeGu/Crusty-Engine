@@ -5,8 +5,12 @@ namespace OpenWorld.Engine.Models
 {
 	public class SkyBox : Model
 	{
-		public SkyBox(int size) : base ("SkyBox", new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f))
+		public float Size { get; private set; }
+
+		public SkyBox(float size) : base ("SkyBox", new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f))
 		{
+			Size = size;
+
 			var textures = new List<string>();
 			textures.Add("Data/Texture/SkyBox/right.jpg");
 			textures.Add("Data/Texture/SkyBox/left.jpg");
@@ -61,6 +65,7 @@ namespace OpenWorld.Engine.Models
 
 			VertexArray.Upload(Vertices, Indices);
 			Texture = new Video.Texture(textures);
+			Vertices.Clear();
 		}
 	}
 }

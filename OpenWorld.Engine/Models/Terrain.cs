@@ -19,7 +19,7 @@ namespace OpenWorld.Engine.Models
 		public Dictionary<int, Dictionary<int, float>> Heights = new Dictionary<int, Dictionary<int, float>>();
 
 
-		public Terrain(string filename) : base("Terrain", new Vector3(0, 0, 0), new Vector3(0.0f), new OpenTK.Vector3(1, 1f, 1))
+		public Terrain(string filename, string normmap) : base("Terrain", new Vector3(0, 0, 0), new Vector3(0.0f), new OpenTK.Vector3(1, 1f, 1))
 		{
 			Heights = new Dictionary<int, Dictionary<int, float>>();
 
@@ -36,6 +36,19 @@ namespace OpenWorld.Engine.Models
 						var pixel = heightmap.GetPixel(x, z).B;
 
 						Vertices.Add(new Vector3(x, Heights[z][x] = pixel, z));
+					}
+				}
+			}
+
+			using (var normalmap = new Bitmap(normmap))
+			{
+				for (var z = 0; z < normalmap.Height; z++)
+				{
+					for (var x = 0; x < normalmap.Width; x++)
+					{
+						var pixel = normalmap.GetPixel(x, z);
+
+						Normals.Add(new Vector3(pixel.R, pixel.G, pixel.B));
 					}
 				}
 			}
@@ -57,6 +70,16 @@ namespace OpenWorld.Engine.Models
 				}
 
 			VertexArray.Upload(Vertices, Indices);
+			
+			if (TexCoords.Count != 0)
+				VertexArray.Upload(TexCoords);
+
+			if (Normals.Count != 0)
+				VertexArray.Upload(Normals, Indices);
+
+			Vertices.Clear();
+
+			GC.Collect();
 		}
 
 		public float GetHeightAt(int x, int z)
