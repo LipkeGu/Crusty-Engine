@@ -62,8 +62,8 @@ namespace OpenWorld.Engine
 			WorldTime = new GameWorldTime();
 			terrain = new Models.Terrain("Data/Texture/heightmap.png", "Data/Texture/normalmap.png");
 			skyBox = new Models.SkyBox(terrain.Width / MathHelper.Pi);
-			camera = new Camera(new Vector3(1.0f, 1.0f, 1.0f));
-			camera.Create(width, height, skyBox.Size + 10);
+			camera = new Camera(new Vector3(terrain.Width / 2, 6.0f, terrain.Height / 2));
+			camera.Create(width, height, skyBox.Size * 2);
 			camera.Update(terrain, 0.0);
 
 			PreloadModels(ref terrain);

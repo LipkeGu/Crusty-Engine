@@ -10,8 +10,10 @@ namespace OpenWorld.Loader
 		[STAThread]
 		static void Main(string[] args)
 		{
-			EngineLayer = new Engine.EngineLayer(1280, 768, OpenTK.Graphics.GraphicsMode.Default, "OpenWorld",
-				GameWindowFlags.Default, DisplayDevice.Default, 3, 3, OpenTK.Graphics.GraphicsContextFlags.ForwardCompatible);
+			var monitor = DisplayDevice.GetDisplay(DisplayIndex.Default);
+			EngineLayer = new Engine.EngineLayer(monitor.Width, monitor.Height, OpenTK.Graphics.GraphicsMode.Default, "OpenWorld",
+				GameWindowFlags.Fullscreen, monitor, 4, 3, OpenTK.Graphics.GraphicsContextFlags.ForwardCompatible);
+
 			EngineLayer.Run();
 		}
 	}

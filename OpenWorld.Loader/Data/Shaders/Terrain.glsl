@@ -13,7 +13,7 @@ out vec4 testColor;
 void main() {
 	texCoord = vec2(Position.x * Scale.x, Position.z * Scale.z);
 	gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(Position, 1.0f);
-	testColor = vec4(Position.xyz,1);
+	testColor = vec4(Position.xyz,1) / 21.0f;
 }
 
 #type fragment
@@ -27,6 +27,6 @@ uniform float AmbientStrength;
 uniform vec3 LightColor;
 
 void main() {
-	vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f);
+	vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f) * testColor;
 	frag_colour = vec4(texture(uTexture, texCoord).xyz, 1.0f) * lColor;
 }
