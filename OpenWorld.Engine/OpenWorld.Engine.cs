@@ -126,7 +126,6 @@ namespace OpenWorld.Engine
 		{
 			camera.Pitch -= y;
 			camera.Yaw += x;
-			Console.WriteLine(picker.CurrentRay);
 		}
 
 		public void OnResize(int width, int height)
