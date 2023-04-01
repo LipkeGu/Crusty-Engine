@@ -82,6 +82,15 @@ namespace OpenWorld.Engine.Models
 			GC.Collect();
 		}
 
+		public bool IsInsideBounds(float axe)
+		{
+			if ((axe < Width && Width > axe) && (Height > axe && axe < Height))
+				return true;
+
+			return false;
+		}
+
+
 		public float GetHeightAt(int x, int z)
 		{
 			var newPos = 0.0f;

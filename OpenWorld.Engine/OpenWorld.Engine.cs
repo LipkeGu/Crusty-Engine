@@ -21,9 +21,9 @@ namespace OpenWorld.Engine
 		Models.Models Models = new Models.Models();
 
 		Camera camera;
+		Light sun;
 
 		MousePicker picker;
-		public OpenWorldEngine() { }
 
 		public void PreloadModels(ref Terrain terrain)
 		{
@@ -69,6 +69,7 @@ namespace OpenWorld.Engine
 			camera.Create(width, height, skyBox.Size * 2);
 			camera.Update(terrain, 0.0);
 			picker = new MousePicker(camera);
+			sun = new Light(new Vector3(terrain.Width / 2, 100.0f, terrain.Height / 2), new Vector3(255), 10.0f);
 			//PreloadModels(ref terrain);
 		}
 
@@ -77,16 +78,20 @@ namespace OpenWorld.Engine
 			switch (key)
 			{
 				case OpenTK.Input.Key.A:
-					camera.Set_PositionX(+20.525f * deltaTime);
+					if (terrain.IsInsideBounds(camera.Position.X + 1.0f))
+						camera.Set_PositionX(+20.525f * deltaTime);
 					break;
 				case OpenTK.Input.Key.D:
-					camera.Set_PositionX(-20.525f * deltaTime);
+					if (terrain.IsInsideBounds(camera.Position.X - 1.0f))
+						camera.Set_PositionX(-20.525f * deltaTime);
 					break;
 				case OpenTK.Input.Key.W:
-					camera.Set_PositionZ(+20.525f * deltaTime);
+					if (terrain.IsInsideBounds(camera.Position.Z + 1.0f))
+						camera.Set_PositionZ(+20.525f * deltaTime);
 					break;
 				case OpenTK.Input.Key.S:
-					camera.Set_PositionZ(-20.525f * deltaTime);
+					if (terrain.IsInsideBounds(camera.Position.Z - 1.0f))
+						camera.Set_PositionZ(-20.525f * deltaTime);
 					break;
 				case OpenTK.Input.Key.Q:
 					//camera.Set_RotationY(-20.525f * deltaTime);
@@ -132,7 +137,6 @@ namespace OpenWorld.Engine
 		{
 			GL.Viewport(0, 0, width, height);
 			camera.OnResize(width, height);
-
 		}
 
 		public void Render(double deltaTime)
@@ -150,7 +154,6 @@ namespace OpenWorld.Engine
 			GL.Disable(EnableCap.CullFace);
 
 			Models.Draw(ref WorldTime, ref camera);
-
 			GL.Disable(EnableCap.DepthTest);
 		}
 

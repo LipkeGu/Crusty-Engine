@@ -140,8 +140,18 @@ namespace OpenWorld.Engine.Video
 
 			Bind();
 
+			float gradient = 5.0f;
+			float density = (float)Math.Sin(0.0040f);
+			var fogColor = new Vector3(38, 50, 56) / 255;
+
+
 			shader.Use();
 			shader.Set_Vec3("Scale", ref scale);
+
+			shader.Set_Vec1("gradient", ref gradient);
+			shader.Set_Vec1("density", ref density);
+
+			shader.Set_Vec3("fogColor", ref fogColor);
 			shader.Set_Vec1("AmbientStrength", ref worldTime.AmbientStrength);
 			shader.Set_Vec3("LightColor", ref worldTime.LightColor);
 			shader.Set_Mat4("projMatrix", projectionMatrix);

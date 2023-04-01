@@ -12,7 +12,7 @@ namespace OpenWorld.Engine.Traits
 		/// <summary>
 		/// Gibt die Position eines Elements zurück.
 		/// </summary>
-		protected Vector3 Position;
+		public Vector3 Position;
 		protected Vector3 Rotation;
 		protected Vector3 Scale;
 		protected MoveAble()

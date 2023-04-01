@@ -68,6 +68,8 @@
     <Compile Include="Video\VertexArray.cs" />
     <Compile Include="Common\Camera.cs" />
     <Compile Include="Common\MousePicker.cs" />
+    <Compile Include="Traits\Lighting.cs" />
+    <Compile Include="Models\Light.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenTK.dll.config" />

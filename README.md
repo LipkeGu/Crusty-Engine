@@ -5,6 +5,7 @@
 # Todo:
 - [X] * Mouse Picking
 - [ ] * Lighting
+- [X] * Fog Suppot
 - [ ] * Model loading
 
 # Debug:
