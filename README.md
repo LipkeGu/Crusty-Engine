@@ -1,11 +1,11 @@
 # OpenGL 4.3 - OpenWorld Engine
 
-![DebugPreview](https://user-images.githubusercontent.com/2057932/229257600-f313ba5d-b9d7-4b42-85d8-dbdc6bfff882.png)
+![Bildschirmfoto vom 2023-04-01 13-06-47](https://user-images.githubusercontent.com/2057932/229285209-9e018358-f634-4d7b-8d05-d5debe097154.png)
 
 # Todo:
 - [X] * Mouse Picking
 - [ ] * Lighting
-- [X] * Fog Suppot
+- [X] * Fog Support
 - [ ] * Model loading
 
 # Debug:
