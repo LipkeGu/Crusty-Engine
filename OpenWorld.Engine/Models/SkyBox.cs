@@ -7,7 +7,7 @@ namespace OpenWorld.Engine.Models
 	{
 		public float Size { get; private set; }
 
-		public SkyBox(float size) : base ("SkyBox", new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f))
+		public SkyBox(float size) : base("SkyBox", new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f))
 		{
 			Size = size;
 

@@ -1,6 +1,8 @@
 #type vertex
 #version 330 core
-layout (location = 0) in vec3 Position;
+in vec3 Position;
+in vec2 TexCoord;
+in vec3 Nomal;
 
 uniform mat4 projMatrix;
 uniform mat4 viewMatrix;
@@ -11,9 +13,9 @@ out vec2 texCoord;
 out vec4 testColor;
 
 void main() {
-	texCoord = vec2(Position.x * Scale.x, Position.z * Scale.z);
-	gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(Position, 1.0f);
-	testColor = vec4(Position.xyz,1) / 21.0f;
+ texCoord = vec2(Position.x * Scale.x, Position.z * Scale.z);
+ gl_Position = projMatrix * viewMatrix * modelMatrix * vec4(Position, 1.0f);
+ testColor = vec4(Position.xyz,1) / 90;
 }
 
 #type fragment
@@ -25,8 +27,14 @@ in vec4 testColor;
 uniform sampler2D uTexture;
 uniform float AmbientStrength;
 uniform vec3 LightColor;
+uniform int EnableTestColor;
 
 void main() {
-	vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f) * testColor;
-	frag_colour = vec4(texture(uTexture, texCoord).xyz, 1.0f) * lColor;
+ vec4 lColor = vec4(LightColor * AmbientStrength, 1.0f);
+ if (EnableTestColor == 1)
+ {
+    lColor = lColor * testColor;
+ }
+ 
+ frag_colour = vec4(texture(uTexture, texCoord).xyz, 1.0f) * lColor;
 }

@@ -2,7 +2,11 @@
 
 ![DebugPreview](https://user-images.githubusercontent.com/2057932/229257600-f313ba5d-b9d7-4b42-85d8-dbdc6bfff882.png)
 
+# Todo:
+* Mouse Picking
+* Lighting
+* Model loading
 
-* Todo:
-
-Mouse Picking
+# Debug:
+* F7: Enabe/Disable Terrain Debug Color
+* F11: Hide/Show Mouse Cursor

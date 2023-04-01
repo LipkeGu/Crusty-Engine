@@ -13,7 +13,7 @@ namespace OpenWorld.Engine.Video
 		Dictionary<string, int> attributeLocations;
 
 		int shaderProgram = 0;
-		
+
 		public Shader()
 		{
 			shaders = new Dictionary<ShaderType, int>();
@@ -60,8 +60,23 @@ namespace OpenWorld.Engine.Video
 								shaderType = ShaderType.VertexShader;
 								shadersources.Add(shaderType, string.Empty);
 								break;
+							case "geometry":
+								shaderType = ShaderType.GeometryShader;
+								shadersources.Add(shaderType, string.Empty);
+								break;
+							case "compute":
+								shaderType = ShaderType.ComputeShader;
+								shadersources.Add(shaderType, string.Empty);
+								break;
+							case "tesselCo":
+								shaderType = ShaderType.TessControlShader;
+								shadersources.Add(shaderType, string.Empty);
+								break;
+							case "tesselEv":
+								shaderType = ShaderType.TessEvaluationShader;
+								shadersources.Add(shaderType, string.Empty);
+								break;
 							default:
-
 								break;
 						}
 
@@ -82,7 +97,7 @@ namespace OpenWorld.Engine.Video
 		{
 			using (var strm = new StreamReader(src))
 			{
-				while(!strm.EndOfStream)
+				while (!strm.EndOfStream)
 				{
 					var line = strm.ReadLine().Trim();
 					if (string.IsNullOrEmpty(line))
@@ -93,14 +108,14 @@ namespace OpenWorld.Engine.Video
 						var parts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 						var attribute = parts[parts.Length - 1];
 
-						if (attributeLocations.ContainsKey(attribute))
+						if (!attributeLocations.ContainsKey(attribute))
 							attributeLocations.Add(attribute, -1);
 						else
 							attributeLocations[attribute] = GL.GetAttribLocation(shaderProgram, attribute);
 
 						continue;
 					}
-				
+
 				}
 
 				strm.Close();
@@ -116,7 +131,7 @@ namespace OpenWorld.Engine.Video
 				if (!string.IsNullOrEmpty(shadersource.Value))
 				{
 					CompileShader(shadersource.Key, shadersource.Value);
-					//Get_Attributes(shadersource.Value);
+					Get_Attributes(filename);
 				}
 			#endregion
 
@@ -197,6 +212,7 @@ namespace OpenWorld.Engine.Video
 		{
 			this.BindAttribute("Position");
 			this.BindAttribute("TexCoord");
+			this.BindAttribute("Nomal");
 		}
 
 
@@ -224,7 +240,7 @@ namespace OpenWorld.Engine.Video
 
 			GL.LinkProgram(shaderProgram);
 			GL.GetProgram(shaderProgram, GetProgramParameterName.LinkStatus, out var code);
-			
+
 			if (code != (int)All.True)
 			{
 				var error = GL.GetProgramInfoLog(shaderProgram);

@@ -88,7 +88,7 @@ namespace OpenWorld.Engine.Video
 			}
 
 			Bind();
-			
+
 			var elements = Marshal.SizeOf(data[0]) / sizeof(float);
 			GL.VertexAttribPointer(attributeCount, elements, VertexAttribPointerType.Float, false, elements * sizeof(float), 0);
 			GL.EnableVertexAttribArray(attributeCount);
@@ -167,7 +167,7 @@ namespace OpenWorld.Engine.Video
 
 			var projMatrix = camera.ProjectionMatrix;
 
-			Draw(ref worldTime ,ref shader, ref viewMatrix, ref projMatrix, ref transform, scale);
+			Draw(ref worldTime, ref shader, ref viewMatrix, ref projMatrix, ref transform, scale);
 		}
 
 		public void Dispose()

@@ -24,6 +24,16 @@ namespace OpenWorld.Engine.Common
 			return l1 * p1.Y + l2 * p2.Y + l3 * p3.Y;
 		}
 
+		public static Matrix4 Update_ViewMatrix(Vector3 position, Vector3 rotation, Vector3 front, Vector3 up)
+		{
+			var ViewMatrix = Matrix4.LookAt(position, position + front, up);
+			ViewMatrix *= Matrix4.CreateRotationX(rotation.X);
+			ViewMatrix *= Matrix4.CreateRotationY(rotation.Y);
+			ViewMatrix *= Matrix4.CreateRotationZ(rotation.Z);
+
+			return ViewMatrix;
+		}
+
 		public static Matrix4 CreateTransformationMatrix(Vector3 position, Vector3 rotation, Vector3 scale)
 		{
 			var modelMatrix = Matrix4.Identity;

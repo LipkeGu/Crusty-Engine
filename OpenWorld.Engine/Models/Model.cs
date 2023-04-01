@@ -33,7 +33,8 @@ namespace OpenWorld.Engine.Models
 		public List<Vector3> Normals = new List<Vector3>();
 		public List<Vector2> TexCoords = new List<Vector2>();
 
-		protected Model(string name, Vector3 position, Vector3 rotation, Vector3 scale) {
+		protected Model(string name, Vector3 position, Vector3 rotation, Vector3 scale)
+		{
 			Name = name;
 			Scale = scale;
 			Rotation = rotation;
@@ -59,9 +60,12 @@ namespace OpenWorld.Engine.Models
 		}
 
 
-		public virtual void Update(double deltatime)
+		public virtual void Update(double deltatime, bool terrainDebug)
 		{
 			ModelMatrix = Functions.CreateTransformationMatrix(Position, Rotation, Scale);
+			Shader.Use();
+			Shader.Set_Int("EnableTestColor", terrainDebug ? 1 : 0);
+			Shader.Unuse();
 		}
 
 		public virtual void Draw(ref GameWorldTime worldTime, ref Camera camera, bool staticObject = false)

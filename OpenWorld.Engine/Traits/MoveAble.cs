@@ -15,8 +15,9 @@ namespace OpenWorld.Engine.Traits
 		protected Vector3 Position;
 		protected Vector3 Rotation;
 		protected Vector3 Scale;
-		protected MoveAble() {
-		
+		protected MoveAble()
+		{
+
 		}
 
 		public void Set_RotationX(float rot)

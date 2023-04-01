@@ -6,18 +6,20 @@ using System;
 
 namespace OpenWorld.Engine
 {
-		public class EngineLayer : GameWindow
+	public class EngineLayer : GameWindow
 	{
 		public static OpenWorldEngine Engine { get; set; }
 
 		private Vector2 lastPost = new Vector2(400.0f);
 		private double deltaTime = 0;
-
+		bool hideCursor = true;
 		bool firstMouse = true;
 
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{
+			lastPost = new Vector2(width / 2, Height / 2);
+
 			Engine = new OpenWorldEngine();
 		}
 
@@ -32,6 +34,21 @@ namespace OpenWorld.Engine
 		{
 			if (e.Key == Key.Escape)
 				Exit();
+			else if (e.Key == Key.F10)
+			{
+				if (hideCursor)
+				{
+					base.CursorGrabbed = false;
+					base.CursorVisible = true;
+					hideCursor = false;
+				}
+				else
+				{
+					hideCursor = true;
+					base.CursorVisible = false;
+					base.CursorGrabbed = true;
+				}
+			}
 			else
 				Engine.OnKeyDown(e.Key, (float)deltaTime);
 
@@ -45,6 +62,8 @@ namespace OpenWorld.Engine
 
 		protected override void OnLoad(EventArgs e)
 		{
+			Mouse.SetPosition(lastPost.X, lastPost.Y);
+
 			GL.ClearColor(color: Color4.CornflowerBlue);
 			Engine.Initialize(Width, Height);
 
@@ -83,6 +102,7 @@ namespace OpenWorld.Engine
 		protected override void OnMouseUp(MouseButtonEventArgs e)
 		{
 			base.OnMouseUp(e);
+
 		}
 
 		protected override void OnMouseWheel(MouseWheelEventArgs e)
@@ -116,7 +136,7 @@ namespace OpenWorld.Engine
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			Engine.Update(e.Time);
+			Engine.Update(Width, Height, e.Time);
 
 			base.OnUpdateFrame(e);
 		}

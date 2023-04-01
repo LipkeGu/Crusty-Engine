@@ -16,16 +16,19 @@ namespace OpenWorld.Engine
 		Models.SkyBox skyBox;
 		Models.Terrain terrain;
 
+		bool TerainDebug = false;
+
 		Models.Models Models = new Models.Models();
 
 		Camera camera;
 
+		MousePicker picker;
 		public OpenWorldEngine() { }
 
 		public void PreloadModels(ref Terrain terrain)
 		{
-			var path = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Data","Models"));
-			var files = new DirectoryInfo(path).GetFiles("*.ini",SearchOption.AllDirectories).ToList();
+			var path = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Data", "Models"));
+			var files = new DirectoryInfo(path).GetFiles("*.ini", SearchOption.AllDirectories).ToList();
 
 			for (var i = 0; i < files.Count; i++)
 			{
@@ -65,8 +68,8 @@ namespace OpenWorld.Engine
 			camera = new Camera(new Vector3(terrain.Width / 2, 6.0f, terrain.Height / 2));
 			camera.Create(width, height, skyBox.Size * 2);
 			camera.Update(terrain, 0.0);
-
-			PreloadModels(ref terrain);
+			picker = new MousePicker(camera);
+			//PreloadModels(ref terrain);
 		}
 
 		public void OnKeyDown(OpenTK.Input.Key key, float deltaTime)
@@ -74,7 +77,7 @@ namespace OpenWorld.Engine
 			switch (key)
 			{
 				case OpenTK.Input.Key.A:
-					camera.Set_PositionX(+20.525f * deltaTime) ;
+					camera.Set_PositionX(+20.525f * deltaTime);
 					break;
 				case OpenTK.Input.Key.D:
 					camera.Set_PositionX(-20.525f * deltaTime);
@@ -97,36 +100,45 @@ namespace OpenWorld.Engine
 				case OpenTK.Input.Key.RShift:
 					camera.Set_PositionY(-20.525f * deltaTime);
 					break;
+				case OpenTK.Input.Key.F7:
+					if (TerainDebug)
+						TerainDebug = false;
+					else
+						TerainDebug = true;
+					break;
 				default:
 					break;
 			}
 		}
 
-		public void Update(double deltatime)
+		public void Update(int width, int height, double deltatime)
 		{
 			WorldTime.Update();
-			skyBox.Update(deltatime);
-			terrain.Update(deltatime);
+			skyBox.Update(deltatime, false);
+			terrain.Update(deltatime, TerainDebug);
 			Models.Update(deltatime);
 			camera.Update(terrain, deltatime);
+			picker.Update(width, height);
+
 		}
 
 		public void OnMouseMove(float x, float y, double deltaTime)
 		{
 			camera.Pitch -= y;
-			camera.Yaw += x; 
+			camera.Yaw += x;
+			Console.WriteLine(picker.CurrentRay);
 		}
 
 		public void OnResize(int width, int height)
 		{
 			GL.Viewport(0, 0, width, height);
+			camera.OnResize(width, height);
 
-			camera.Update_ProjectionMatrix(width, height, skyBox.Size + 10);
-			camera.Update_ViewMatrix();
 		}
 
 		public void Render(double deltaTime)
 		{
+
 			GL.Enable(EnableCap.DepthTest);
 			GL.DepthFunc(DepthFunction.Lequal);
 

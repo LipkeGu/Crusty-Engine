@@ -38,9 +38,9 @@ namespace OpenWorld.Engine.Video
 			}
 
 			Bind();
-			
+
 			Create(filename);
-			
+
 			UnBind();
 		}
 
@@ -50,7 +50,7 @@ namespace OpenWorld.Engine.Video
 
 			for (var i = 0; i < filenames.Count; i++)
 				Create(filenames[i], TextureTarget.TextureCubeMap, i);
-			
+
 			UnBind();
 		}
 
@@ -73,7 +73,7 @@ namespace OpenWorld.Engine.Video
 			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, (int)All.Nearest);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-			
+
 			var GLPixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat.Bgra;
 			var InternalPixelFormat = PixelInternalFormat.Rgba;
 

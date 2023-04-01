@@ -70,7 +70,7 @@ namespace OpenWorld.Engine.Models
 				}
 
 			VertexArray.Upload(Vertices, Indices);
-			
+
 			if (TexCoords.Count != 0)
 				VertexArray.Upload(TexCoords);
 
@@ -101,7 +101,7 @@ namespace OpenWorld.Engine.Models
 			if (gridX < 0 || gridX + 1 >= (int)Heights.Count || gridZ < 0 || gridZ + 1 >= (int)Heights.Count)
 				return 0.0f;
 
-				if (xCoord <= (1 - zCoord))
+			if (xCoord <= (1 - zCoord))
 			{
 				newPos = Functions.BarryCentric(
 					new Vector3(0, Heights[gridZ][gridX], 0),

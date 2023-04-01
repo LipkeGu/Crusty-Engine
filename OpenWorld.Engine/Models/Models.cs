@@ -97,7 +97,7 @@ namespace OpenWorld.Engine.Models
 		{
 			foreach (var model in Instances)
 			{
-				model.Key.Update(deltatime);
+				model.Key.Update(deltatime, false);
 			}
 		}
 	}

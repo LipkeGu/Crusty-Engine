@@ -16,7 +16,7 @@ namespace OpenWorld.Engine.Models
 			Create(string.Format("Data/Models/{0}.mdl", name));
 		}
 
-		public OBJLoader(string name): base(name)
+		public OBJLoader(string name) : base(name)
 		{
 			Create(string.Format("Data/Models/{0}.mdl", name));
 		}
@@ -46,7 +46,7 @@ namespace OpenWorld.Engine.Models
 					if (line.StartsWith("v "))
 					{
 						var vertexParts = Functions.SplitString(line.Replace("  ", " "), " ");
-						
+
 						var vertice = new Vector3(
 							float.Parse(vertexParts[1], CultureInfo.InvariantCulture.NumberFormat),
 							float.Parse(vertexParts[2], CultureInfo.InvariantCulture.NumberFormat),
