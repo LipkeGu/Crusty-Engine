@@ -60,29 +60,40 @@ namespace Crusty.Engine
 			}
 		}
 
-		public void OnKeyUp(Key key)
+		public void OnKeyUp(Key key, bool altPressed, bool shiftPressed)
 		{
-			Input.SetState(key, false);
+			Input.SetState(key, false,altPressed, shiftPressed);
 		}
 
 		public void Initialize(int width, int height)
 		{
+			Input.InputMouseButtonDown += (sender, e) =>
+			{
+				switch (e.Button)
+				{
+					default:
+						Console.WriteLine(e.RayPosition);
+						break;
+				}
+			};
+
+
 			Input.InputKeyDown += (sender, e) =>
 			{
-				var camSpeed = 5.525f;
+				var camSpeed = e.ShiftPressed? 9.525f : 5.525f;
 				switch (e.Key)
 				{
 					case Key.W:
-						camera.Move_Forward(camSpeed * deltaTime);
+						camera.Move_Forward(camSpeed * e.DeltaTIme);
 						break;
 					case Key.S:
-						camera.Move_Backward(camSpeed / (camSpeed / 2) * deltaTime);
+						camera.Move_Backward(camSpeed / (camSpeed / 2) * e.DeltaTIme);
 						break;
 					case Key.A:
-						camera.Move_Left((camSpeed / 1.5f) * deltaTime);
+						camera.Move_Left((camSpeed / 1.5f) * e.DeltaTIme);
 						break;
 					case Key.D:
-						camera.Move_Right((camSpeed / 1.5f) * deltaTime);
+						camera.Move_Right((camSpeed / 1.5f) * e.DeltaTIme);
 						break;
 					case Key.F7:
 						if (TerainDebug)
@@ -90,9 +101,14 @@ namespace Crusty.Engine
 						else
 							TerainDebug = true;
 						break;
+					case Key.F8:
+						if (camera.FlyMode)
+							camera.FlyMode = false;
+						else
+							camera.FlyMode = true;
+						break;
 				}
 			};
-
 
 			Input.Initialize();
 			EngineWorld = new EngineWorld();
@@ -102,10 +118,9 @@ namespace Crusty.Engine
 			fog = new Fog();
 		}
 
-		public void OnKeyDown(OpenTK.Input.Key key, float deltaTime)
+		public void OnKeyDown(Key key, bool altPressed, bool shiftPressed)
 		{
-			this.deltaTime = deltaTime;
-			Input.SetState(key, true);
+			Input.SetState(key, true, altPressed, shiftPressed);
 		}
 
 		public void Update(double deltatime)
@@ -127,12 +142,12 @@ namespace Crusty.Engine
 
 		public void OnMouseDown(bool pressed, CursorPosition position, MouseButton button)
 		{
-			Input.SetState(button, position, pressed);
+			Input.SetState(button, position, camera.CurrentRay, pressed);
 		}
 
 		public void OnMouseUp(bool pressed, CursorPosition position, MouseButton button)
 		{
-			Input.SetState(button, position, pressed);
+			Input.SetState(button, position, camera.CurrentRay, pressed);
 		}
 
 		public void OnResize(int width, int height)
