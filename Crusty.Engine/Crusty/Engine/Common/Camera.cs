@@ -9,7 +9,7 @@ namespace Crusty.Engine
 {
 	public class Camera
 	{
-		
+
 
 		private Vector3 _front = -Vector3.UnitZ;
 		private Vector3 _right = Vector3.UnitX;
@@ -23,6 +23,9 @@ namespace Crusty.Engine
 
 		int width = 0;
 		int height = 0;
+
+		public bool FlyMode {get; set;} = false;
+
 
 		public float Pitch
 		{
@@ -84,7 +87,9 @@ namespace Crusty.Engine
 
 		public void Update(Terrain terrain, double deltatime)
 		{
-			Position.Y = terrain.GetHeightAt((int)Position.X, (int)Position.Z) + 6;
+			if (!FlyMode)
+				Position.Y = terrain.GetHeightAt((int)Position.X, (int)Position.Z) + 6;
+			
 			_front.X = (float)Math.Cos(_pitch) * (float)Math.Cos(_yaw);
 			_front.Y = (float)Math.Sin(_pitch);
 			_front.Z = (float)Math.Cos(_pitch) * (float)Math.Sin(_yaw);
