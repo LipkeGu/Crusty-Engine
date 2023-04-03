@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crusty.Engine", "Crusty.Engine\Crusty.Engine.csproj", "{78773F6F-6BC2-4B5C-A0EE-26A17C5D3A6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crusty.Loader", "Crusty.Loader\Crusty.Loader.csproj", "{AB8B274E-74D2-4505-9FDA-3EDD70893897}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78773F6F-6BC2-4B5C-A0EE-26A17C5D3A6F}.Debug|x64.ActiveCfg = Debug|x64
+		{78773F6F-6BC2-4B5C-A0EE-26A17C5D3A6F}.Debug|x64.Build.0 = Debug|x64
+		{AB8B274E-74D2-4505-9FDA-3EDD70893897}.Debug|x64.ActiveCfg = Debug|x64
+		{AB8B274E-74D2-4505-9FDA-3EDD70893897}.Debug|x64.Build.0 = Debug|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2211843E-3B81-4C54-837A-F7FA7E5CED6A}
+	EndGlobalSection
+EndGlobal
