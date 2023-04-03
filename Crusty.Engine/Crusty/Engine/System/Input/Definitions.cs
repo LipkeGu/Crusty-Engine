@@ -1,4 +1,5 @@
-﻿using OpenTK.Input;
+﻿using OpenTK;
+using OpenTK.Input;
 using System;
 using System.Drawing;
 
@@ -9,10 +10,15 @@ namespace Crusty.Engine
 		public Key Key { get; set; }
 		public bool IsPressed { get; set; }
 
-		public KeyboardKeyState(Key key, bool isPressed)
+		public bool ModifiedAlt { get; private set; }
+		public bool ModifiedShift { get; private set; }
+
+		public KeyboardKeyState(Key key, bool isPressed, bool shiftModified, bool altmodified)
 		{
 			IsPressed = isPressed;
 			Key = key;
+			ModifiedAlt = altmodified;
+			ModifiedShift = shiftModified;
 		}
 	}
 
@@ -37,19 +43,25 @@ namespace Crusty.Engine
 
 	public struct MouseButtonState
 	{
-		public MouseButton Key { get; set; }
+		public MouseButton Key;
 
-		public bool IsPressed { get; set; }
+		public bool IsPressed;
 
 		/// <summary>
 		/// The Position where the button was pressed.
 		/// </summary>
-		public CursorPosition Position { get; set; }
+		public CursorPosition Position;
 
-		public MouseButtonState(MouseButton key, CursorPosition position, bool isPressed)
+		/// <summary>
+		/// The Position where the button was pressed (Picking).
+		/// </summary>
+		public Vector3 RayPosition;
+
+		public MouseButtonState(MouseButton key, CursorPosition position, Vector3 pickPosition, bool isPressed)
 		{
 			Position = position;
 			IsPressed = isPressed;
+			RayPosition = pickPosition;
 			Key = key;
 		}
 	}
