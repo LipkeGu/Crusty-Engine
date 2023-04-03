@@ -50,14 +50,14 @@ namespace Crusty.Engine
 				}
 			}
 			else
-				Engine.OnKeyDown(e.Key, (float)deltaTime);
+				Engine.OnKeyDown(e.Key, e.Alt, e.Shift);
 
 			base.OnKeyDown(e);
 		}
 
 		protected override void OnKeyUp(KeyboardKeyEventArgs e)
 		{
-			Engine.OnKeyUp(e.Key);
+			Engine.OnKeyUp(e.Key, e.Alt, e.Shift);
 			base.OnKeyUp(e);
 		}
 
