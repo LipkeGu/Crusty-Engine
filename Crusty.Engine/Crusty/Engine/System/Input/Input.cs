@@ -1,4 +1,5 @@
-﻿using OpenTK.Input;
+﻿using OpenTK;
+using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,6 +16,13 @@ namespace Crusty.Engine
 
 		public delegate void InputKeyUpEventHandler(object sender, InputKeyEventArgs e);
 		public event InputKeyDownEventHandler InputKeyUp;
+
+		public delegate void InputMouseButtonDownEventHandler(object sender, InputButtonEventArgs e);
+		public event InputMouseButtonDownEventHandler InputMouseButtonDown;
+
+		public delegate void InputMouseButtonUpEventHandler(object sender, InputButtonEventArgs e);
+		public event InputMouseButtonUpEventHandler InputMouseButtonUp;
+
 
 		public Dictionary<Key, KeyboardKeyState> KeyStates;
 		public Dictionary<MouseButton, MouseButtonState> ButtonStates;
@@ -37,12 +45,12 @@ namespace Crusty.Engine
 
 		public KeyboardKeyState GetState(Key key) => KeyStates[key];
 
-		public void SetState(MouseButton button, CursorPosition position, bool pressed)
+		public void SetState(MouseButton button, CursorPosition position, Vector3 pickPosition, bool pressed)
 		{
-			if (!pressed && ButtonStates.ContainsKey(button))
+			if (ButtonStates.ContainsKey(button))
 				ButtonStates.Remove(button);
 
-			ButtonStates.Add(button, new MouseButtonState(button, position, pressed));
+				ButtonStates.Add(button, new MouseButtonState(button, position, pickPosition, pressed));
 		}
 
 		public void Update(double deltatime)
@@ -51,13 +59,14 @@ namespace Crusty.Engine
 			{
 				var pressedButtons = ButtonStates.Values.Where(btn => btn.IsPressed).LastOrDefault();
 				if (pressedButtons.IsPressed)
-					Console.WriteLine(pressedButtons.Key);
+					InputMouseButtonDown?.DynamicInvoke(this, new InputButtonEventArgs(pressedButtons.Key,pressedButtons.Position, pressedButtons.RayPosition,pressedButtons.IsPressed,deltatime));
 			}
 
 			if (KeyStates.Count != 0)
 			{
 				var pressedButtons = KeyStates.Values.Where(btn => btn.IsPressed).LastOrDefault();
-					InputKeyDown?.DynamicInvoke(this, new InputKeyEventArgs(pressedButtons.Key, pressedButtons.IsPressed));
+					InputKeyDown?.DynamicInvoke(this, new InputKeyEventArgs(pressedButtons.Key, pressedButtons.IsPressed, 
+						deltatime,pressedButtons.ModifiedAlt, pressedButtons.ModifiedShift));
 			}
 		}
 
@@ -66,12 +75,12 @@ namespace Crusty.Engine
 			MousePosition = position;
 		}
 
-		public void SetState(Key key, bool pressed)
+		public void SetState(Key key, bool pressed, bool altPRessed, bool shiftPRessed)
 		{
 			if (KeyStates.ContainsKey(key))
 				KeyStates.Remove(key);
 
-			KeyStates.Add(key, new KeyboardKeyState(key, pressed));
+			KeyStates.Add(key, new KeyboardKeyState(key, pressed, shiftPRessed, altPRessed));
 		}
 
 		public void Start()
