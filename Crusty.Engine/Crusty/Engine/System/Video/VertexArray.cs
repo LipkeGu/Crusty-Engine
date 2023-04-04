@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using Crusty.Engine.Common;
 using Crusty.Engine.Models;
 
-namespace Crusty.Engine.Video
+namespace Crusty.Engine
 {
 	public class VertexArray : IDisposable
 	{

@@ -1,5 +1,4 @@
-﻿using Crusty.Engine.Video;
-using System;
+﻿using System;
 using OpenTK;
 using System.Collections.Generic;
 using Crusty.Engine.Traits;

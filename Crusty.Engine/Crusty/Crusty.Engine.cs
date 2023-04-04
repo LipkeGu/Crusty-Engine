@@ -9,12 +9,15 @@ using System.Globalization;
 using Crusty.Engine.Models;
 using OpenTK.Input;
 using System.Drawing;
+using Crusty.Engine.System;
 
 namespace Crusty.Engine
 {
 	public class CrustyEngine : IDisposable
 	{
 		public Input Input { get; private set; } = new Input();
+		public Video Video { get; private set; } = new Video();
+
 		GameWorldTime WorldTime = new GameWorldTime();
 		EngineWorld EngineWorld;
 		bool TerainDebug = false;
@@ -81,6 +84,9 @@ namespace Crusty.Engine
 			Input.InputKeyDown += (sender, e) =>
 			{
 				var camSpeed = e.ShiftPressed? 9.525f : 5.525f;
+				if (!e.Pressed)
+					return;
+
 				switch (e.Key)
 				{
 					case Key.W:
@@ -106,6 +112,11 @@ namespace Crusty.Engine
 							camera.FlyMode = false;
 						else
 							camera.FlyMode = true;
+						break;
+					default:
+#if DEBUG
+						Video.OnKeyDown(e.Key);
+#endif
 						break;
 				}
 			};
@@ -135,9 +146,10 @@ namespace Crusty.Engine
 
 		public void OnMouseMove(CursorPosition cursorPosition, double deltaTime)
 		{
-			Input.SetMousePosition(cursorPosition);
+			
 			camera.Pitch -= cursorPosition.Y;
 			camera.Yaw += cursorPosition.X;
+			Input.SetMousePosition(camera.CurrentRay, cursorPosition);
 		}
 
 		public void OnMouseDown(bool pressed, CursorPosition position, MouseButton button)

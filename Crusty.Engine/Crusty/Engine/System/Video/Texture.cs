@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using OpenTK.Graphics.OpenGL4;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-namespace Crusty.Engine.Video
+namespace Crusty.Engine
 {
 	public class Texture : IDisposable
 	{
@@ -17,7 +20,7 @@ namespace Crusty.Engine.Video
 			textureTarget = TextureTarget.TextureCubeMap;
 
 			for (var i = 0; i < filenames.Count; i++)
-				if (!System.IO.File.Exists(filenames[i]))
+				if (!File.Exists(filenames[i]))
 				{
 					Console.WriteLine("[E] Could not find Texture: {0}", filenames[i]);
 					return;
@@ -31,7 +34,7 @@ namespace Crusty.Engine.Video
 			Id = GL.GenTexture();
 			textureTarget = TextureTarget.Texture2D;
 
-			if (!System.IO.File.Exists(filename))
+			if (!File.Exists(filename))
 			{
 				Console.WriteLine("[E] Could not find Texture: {0}", filename);
 				return;
@@ -56,9 +59,9 @@ namespace Crusty.Engine.Video
 
 		private void Create(string filename, TextureTarget textureTarget = TextureTarget.Texture2D, int index = 0)
 		{
-			using (var bitmap = new System.Drawing.Bitmap(filename))
+			using (var bitmap = new Bitmap(filename))
 			{
-				var data = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
+				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
 					ImageLockMode.ReadOnly, bitmap.PixelFormat);
 
 				__setTextureFormat(index, ref data);
@@ -79,12 +82,12 @@ namespace Crusty.Engine.Video
 
 			switch (data.PixelFormat)
 			{
-				case System.Drawing.Imaging.PixelFormat.Format24bppRgb:
+				case PixelFormat.Format24bppRgb:
 					GLPixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat.Bgr;
 					InternalPixelFormat = PixelInternalFormat.Rgb;
 					break;
 				default:
-				case System.Drawing.Imaging.PixelFormat.Format32bppArgb:
+				case PixelFormat.Format32bppArgb:
 					InternalPixelFormat = PixelInternalFormat.Rgba;
 					GLPixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat.Bgra;
 					break;

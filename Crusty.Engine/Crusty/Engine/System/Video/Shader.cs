@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Crusty.Engine.Video
+namespace Crusty.Engine
 {
 	public class Shader : IDisposable
 	{

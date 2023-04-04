@@ -64,7 +64,7 @@ namespace Crusty.Engine.Models
 			Vertices.Add(new Vector3(-size, size, -size));
 
 			VertexArray.Upload(Vertices, Indices);
-			Texture = new Video.Texture(textures);
+			Texture = new Texture(textures);
 			Vertices.Clear();
 		}
 	}

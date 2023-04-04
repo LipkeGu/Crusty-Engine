@@ -36,9 +36,6 @@ namespace Crusty.Engine.Models
 		{
 			foreach (var instance in Instances)
 			{
-				GL.Enable(EnableCap.Blend);
-				GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
 				if (instance.Value.Count > 1)
 				{
 					instance.Key.VertexArray.Bind();
@@ -69,9 +66,6 @@ namespace Crusty.Engine.Models
 				{
 					instance.Key.Draw(ref worldTime, ref fog, ref camera);
 				}
-
-				GL.Disable(EnableCap.Blend);
-
 			}
 		}
 

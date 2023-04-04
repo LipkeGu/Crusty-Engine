@@ -1,7 +1,6 @@
 ﻿using OpenTK;
 using Crusty.Engine.Common;
 using Crusty.Engine.Generators;
-using Crusty.Engine.Video;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

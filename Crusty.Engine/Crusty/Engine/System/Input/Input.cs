@@ -28,7 +28,7 @@ namespace Crusty.Engine
 		public Dictionary<MouseButton, MouseButtonState> ButtonStates;
 
 		public CursorPosition MousePosition {get; private set;}
-
+		public Vector3 RayPosition { get; private set; }
 
 		public Input()
 		{
@@ -59,7 +59,7 @@ namespace Crusty.Engine
 			{
 				var pressedButtons = ButtonStates.Values.Where(btn => btn.IsPressed).LastOrDefault();
 				if (pressedButtons.IsPressed)
-					InputMouseButtonDown?.DynamicInvoke(this, new InputButtonEventArgs(pressedButtons.Key,pressedButtons.Position, pressedButtons.RayPosition,pressedButtons.IsPressed,deltatime));
+					InputMouseButtonDown?.DynamicInvoke(this, new InputButtonEventArgs(pressedButtons.Key,pressedButtons.Position, RayPosition, pressedButtons.IsPressed,deltatime));
 			}
 
 			if (KeyStates.Count != 0)
@@ -70,9 +70,10 @@ namespace Crusty.Engine
 			}
 		}
 
-		public void SetMousePosition(CursorPosition position)
+		public void SetMousePosition(Vector3 rayPosition, CursorPosition position)
 		{
 			MousePosition = position;
+			RayPosition = rayPosition;
 		}
 
 		public void SetState(Key key, bool pressed, bool altPRessed, bool shiftPRessed)
