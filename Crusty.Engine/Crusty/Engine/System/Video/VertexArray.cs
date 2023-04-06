@@ -162,7 +162,7 @@ namespace Crusty.Engine
 
 		}
 
-		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
+		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Light light, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
 		{
 			
 			shader.Use();
@@ -170,7 +170,7 @@ namespace Crusty.Engine
 
 			shader.Set_Vec1("gradient", fog.Gradient);
 			shader.Set_Vec1("density", fog.Density);
-
+			shader.Set_Light(light);
 			shader.Set_Vec3("fogColor", fog.Color);
 			shader.Set_Vec1("AmbientStrength", worldTime.AmbientStrength);
 			shader.Set_Vec3("LightColor", ref worldTime.LightColor);
@@ -183,7 +183,7 @@ namespace Crusty.Engine
 			shader.Unuse();
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
+		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Light light, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
 		{
 			var viewMatrix = camera.ViewMatrix;
 
@@ -192,7 +192,7 @@ namespace Crusty.Engine
 
 			var projMatrix = camera.ProjectionMatrix;
 
-			Draw(ref worldTime, ref shader, ref fog, ref viewMatrix, ref projMatrix, ref transform, scale);
+			Draw(ref worldTime, ref shader, ref light, ref fog, ref viewMatrix, ref projMatrix, ref transform, scale);
 		}
 
 		public void Dispose()

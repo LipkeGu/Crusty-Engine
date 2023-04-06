@@ -28,6 +28,7 @@ namespace Crusty.Engine
 		
 		Camera camera;
 		Fog fog;
+		Light Light;
 
 		public void PreloadModels(ref Terrain terrain)
 		{
@@ -118,6 +119,8 @@ namespace Crusty.Engine
 			camera = new Camera(new Vector3(EngineWorld.Terrain.Width / 2, 6.0f, EngineWorld.Terrain.Height / 2));
 			camera.Create(width, height, EngineWorld.Skybox.Size * 3);
 			fog = new Fog();
+			Light = new Light(new Vector3(0, 1000, 0), WorldTime.LightColor);
+
 		}
 
 		public void OnKeyDown(Key key, bool altPressed, bool shiftPressed)
@@ -131,6 +134,7 @@ namespace Crusty.Engine
 			camera.Update(EngineWorld.Terrain, deltatime);
 			EngineWorld.Update(deltatime);
 			WorldTime.Update();
+
 			Models.Update(deltatime);
 		}
 
@@ -160,7 +164,7 @@ namespace Crusty.Engine
 
 		public void Render(double deltaTime)
 		{
-			EngineWorld.Render(ref WorldTime, ref fog, ref camera);
+			EngineWorld.Render(ref WorldTime, ref Light, ref fog, ref camera);
 		}
 
 		public void Dispose()

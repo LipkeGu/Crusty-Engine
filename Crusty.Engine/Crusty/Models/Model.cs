@@ -27,6 +27,9 @@ namespace Crusty.Engine.Models
 		public Matrix4 ModelMatrix;
 		public string Name;
 
+		public float shineDamper = 1.0f;
+		public float reflectivity = 0.0f;
+
 		public Vector3 Position = new Vector3(0.0f, 6.0f, 0.0f);
 		public Vector3 Rotation = new Vector3(0.0f, 0.0f, 0.0f);
 		public Vector3 Scale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -67,14 +70,16 @@ namespace Crusty.Engine.Models
 		{
 			ModelMatrix = Functions.CreateTransformationMatrix(Position, Rotation, Scale);
 			Shader.Use();
+
+			Shader.Set_Shine_Variables(shineDamper, reflectivity);
 			Shader.Set_Int("EnableTestColor", terrainDebug ? 1 : 0);
 			Shader.Unuse();
 		}
 
-		public virtual void Draw(ref GameWorldTime worldTime, ref Fog fog, ref Camera camera, bool staticObject = false)
+		public virtual void Draw(ref GameWorldTime worldTime, ref Light light, ref Fog fog, ref Camera camera, bool staticObject = false)
 		{
 			Texture.Bind();
-			VertexArray.Draw(ref worldTime, ref Shader, ref fog, ref camera, ref ModelMatrix, Scale, staticObject);
+			VertexArray.Draw(ref worldTime, ref Shader, ref light, ref fog, ref camera, ref ModelMatrix, Scale, staticObject);
 			Texture.UnBind();
 		}
 

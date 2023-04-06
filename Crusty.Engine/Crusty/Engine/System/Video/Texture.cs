@@ -78,17 +78,18 @@ namespace Crusty.Engine
 			switch (textureTarget)
 			{
 				case TextureTarget.TextureCubeMap:
-					texMinFilterValue = (int)All.NearestMipmapNearest;
-					texMagFilterValue = (int)All.NearestMipmapNearest;
+					texMinFilterValue = (int)All.LinearMipmapLinear;
+					texMagFilterValue = (int)All.LinearMipmapLinear;
 					break;
 				case TextureTarget.Texture2D:
 				default:
-					texMinFilterValue = (int)All.Nearest;
-					texMagFilterValue = (int)All.Nearest;
+					texMinFilterValue = (int)All.Linear;
+					texMagFilterValue = (int)All.Linear;
 					break;
 			}
 			GL.TextureParameter(Id, TextureParameterName.TextureMinFilter, texMinFilterValue);
 			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, texMagFilterValue);
+			GL.TextureParameter(Id, TextureParameterName.TextureLodBias, -0.4f);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 

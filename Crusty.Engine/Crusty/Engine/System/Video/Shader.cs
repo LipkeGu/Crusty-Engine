@@ -1,4 +1,5 @@
-﻿using OpenTK;
+﻿using Crusty.Engine.Models;
+using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
@@ -166,6 +167,18 @@ namespace Crusty.Engine
 			GL.Uniform4(uniformLocations[name], ref value);
 		}
 
+		public void Set_Shine_Variables(float shineDamper, float reflectivity)
+		{
+			Set_Vec1("shineDamper", shineDamper);
+			Set_Vec1("reflectivity", reflectivity);
+		}
+
+		public void Set_Light(Light light)
+		{
+			Set_Vec3("lightPosition", light.Position);
+			Set_Vec3("lightColor", light.LightColor);
+		}
+
 		public void Set_Vec3(string name, Vector3 value)
 		{
 			Set_Vec3(name, ref value);
@@ -217,7 +230,7 @@ namespace Crusty.Engine
 		{
 			this.BindAttribute("Position");
 			this.BindAttribute("TexCoord");
-			this.BindAttribute("Nomal");
+			this.BindAttribute("Normal");
 		}
 
 

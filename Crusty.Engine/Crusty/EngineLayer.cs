@@ -4,11 +4,6 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using System;
-using System.Runtime.InteropServices;
-using DebugProc = OpenTK.Graphics.OpenGL4.DebugProc;
-using DebugSeverity = OpenTK.Graphics.OpenGL4.DebugSeverity;
-using DebugSource = OpenTK.Graphics.OpenGL4.DebugSource;
-using DebugType = OpenTK.Graphics.OpenGL4.DebugType;
 
 namespace Crusty.Engine
 {

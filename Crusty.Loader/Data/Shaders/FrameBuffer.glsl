@@ -21,5 +21,5 @@ uniform sampler2D texFramebuffer;
 
 void main()
 {
-	outColor = texture(texFramebuffer, passTexcoord) / 0.3f;
+	outColor = texture(texFramebuffer, passTexcoord);
 }

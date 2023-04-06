@@ -32,7 +32,7 @@ namespace Crusty.Engine.Models
 				Instances.Add(model, transform);
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Fog fog, ref Camera camera)
+		public void Draw(ref GameWorldTime worldTime, ref Light light, ref Fog fog, ref Camera camera)
 		{
 			foreach (var instance in Instances)
 			{
@@ -44,7 +44,7 @@ namespace Crusty.Engine.Models
 					instance.Key.Shader.Use();
 					instance.Key.Shader.Set_Mat4("projMatrix", camera.ProjectionMatrix);
 					instance.Key.Shader.Set_Mat4("viewMatrix", camera.ViewMatrix);
-
+					instance.Key.Shader.Set_Shine_Variables(instance.Key.shineDamper, instance.Key.reflectivity);
 					instance.Key.VertexArray.Instanced = instance.Value.Count > 1;
 
 					for (var i = 0; i < instance.Value.Count; i++)
@@ -64,7 +64,7 @@ namespace Crusty.Engine.Models
 				}
 				else
 				{
-					instance.Key.Draw(ref worldTime, ref fog, ref camera);
+					instance.Key.Draw(ref worldTime, ref light, ref fog, ref camera);
 				}
 			}
 		}

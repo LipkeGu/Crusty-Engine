@@ -23,6 +23,7 @@ namespace Crusty.Engine
 			Terrain = new Terrain("Data/Texture/heightmap.png", "Data/Texture/normalmap.png");
 			Skybox = new SkyBox(Terrain.Width / MathHelper.Pi);
 
+
 			GL.Enable(EnableCap.CullFace);
 			GL.CullFace(CullFaceMode.Back);
 			GL.Disable(EnableCap.CullFace);
@@ -38,13 +39,13 @@ namespace Crusty.Engine
 			Terrain.Update(deltatime);
 		}
 
-		public void Render(ref GameWorldTime gameWorldTime, ref Fog fog,  ref Camera camera)
+		public void Render(ref GameWorldTime gameWorldTime, ref Light light, ref Fog fog,  ref Camera camera)
 		{
 			GL.Enable(EnableCap.DepthTest);
-			Skybox.Draw(ref gameWorldTime, ref fog, ref camera, true);
+			Skybox.Draw(ref gameWorldTime, ref light, ref fog, ref camera, true);
 
 			GL.Enable(EnableCap.CullFace);
-			Terrain.Draw(ref gameWorldTime, ref fog, ref camera);
+			Terrain.Draw(ref gameWorldTime, ref light, ref fog, ref camera);
 
 			GL.Disable(EnableCap.CullFace);
 			GL.Disable(EnableCap.DepthTest);
