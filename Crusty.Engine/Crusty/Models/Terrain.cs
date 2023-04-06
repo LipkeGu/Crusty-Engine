@@ -107,7 +107,7 @@ namespace Crusty.Engine.Models
 			float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
 
 			if (gridX < 0 || gridX + 1 >= (int)Heights.Count || gridZ < 0 || gridZ + 1 >= (int)Heights.Count)
-				return 0.0f;
+				return newPos;
 
 			if (xCoord <= (1 - zCoord))
 			{

@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenTK;
+using OpenTK.Graphics;
 
 namespace Crusty.Loader
 {
@@ -10,10 +11,17 @@ namespace Crusty.Loader
 		[STAThread]
 		static void Main(string[] args)
 		{
-			var monitor = DisplayDevice.GetDisplay(DisplayIndex.Default);
-			EngineLayer = new Engine.EngineLayer(monitor.Width, monitor.Height, OpenTK.Graphics.GraphicsMode.Default, "",
-				GameWindowFlags.Fullscreen, monitor, 4, 3, OpenTK.Graphics.GraphicsContextFlags.ForwardCompatible);
+			var contextFlags = GraphicsContextFlags.ForwardCompatible;
+			var width = 1280;
+			var height = 720;
+			var gamewindowFlags = GameWindowFlags.Default;
 
+			var monitor = DisplayDevice.GetDisplay(DisplayIndex.Default);
+			width = monitor.Width;
+			height = monitor.Height;
+			gamewindowFlags = GameWindowFlags.Fullscreen;
+
+			EngineLayer = new Engine.EngineLayer(width, height, GraphicsMode.Default, "", gamewindowFlags, monitor, 4, 3, contextFlags);
 			EngineLayer.Run();
 		}
 	}

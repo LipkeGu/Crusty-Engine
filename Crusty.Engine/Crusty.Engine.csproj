@@ -7,8 +7,8 @@
     <ProjectGuid>{78773F6F-6BC2-4B5C-A0EE-26A17C5D3A6F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenWorld.Engine</RootNamespace>
-    <AssemblyName>OpenWorld.Engine</AssemblyName>
+    <RootNamespace>Crusty.Engine</RootNamespace>
+    <AssemblyName>Crusty.Engine</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -58,6 +58,7 @@
     <Compile Include="Crusty\Engine\System\Input\Input.cs" />
     <Compile Include="Crusty\Engine\System\Input\InputKeyEventArgs.cs" />
     <Compile Include="Crusty\Engine\System\Input\InputMButtonEventArgs.cs" />
+    <Compile Include="Crusty\Engine\System\Video\FrameBuffer.cs" />
     <Compile Include="Crusty\Engine\System\Video\Video.cs" />
     <Compile Include="Crusty\Generators\PerlinNoise.cs" />
     <Compile Include="Crusty\Models\Models.cs" />

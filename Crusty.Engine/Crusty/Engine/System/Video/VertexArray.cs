@@ -46,6 +46,9 @@ namespace Crusty.Engine
 
 		public void Upload(List<Vector2> data)
 		{
+			if (!GL.IsVertexArray(Id))
+				throw new Exception("Given Id is not a VertexArray!");
+
 			var vbo = new VertexBuffer();
 			vbo.Create();
 			vbo.Upload(data);
@@ -71,6 +74,9 @@ namespace Crusty.Engine
 
 		public void Upload(List<Vector3> data, List<int> indices, bool instanced = false)
 		{
+			if (!GL.IsVertexArray(Id))
+				throw new Exception("Given Id is not a VertexArray!");
+
 			var vbo = new VertexBuffer();
 			vbo.Create();
 			vbo.Upload(data);
@@ -129,7 +135,7 @@ namespace Crusty.Engine
 			GL.DeleteVertexArray(Id);
 		}
 
-		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
+		public void Draw(Shader shader = null)
 		{
 			var indicesCount = 0;
 
@@ -139,8 +145,26 @@ namespace Crusty.Engine
 			if (VerticeCount == 0)
 				return;
 
-			Bind();
+			if (shader != null)
+				shader.Use();
 
+			Bind();
+			
+			if (indicesCount == 0)
+				GL.DrawArrays(PrimitiveType.Triangles, 0, VerticeCount);
+			else
+				GL.DrawElements(PrimitiveType.Triangles, indicesCount, DrawElementsType.UnsignedInt, 0);
+
+			UnBind();
+
+			if (shader != null)
+				shader.Unuse();
+
+		}
+
+		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
+		{
+			
 			shader.Use();
 			shader.Set_Vec3("Scale", ref scale);
 
@@ -154,14 +178,9 @@ namespace Crusty.Engine
 			shader.Set_Mat4("viewMatrix", viewMatrix);
 			shader.Set_Mat4("modelMatrix", transform);
 
-			if (indicesCount == 0)
-				GL.DrawArrays(PrimitiveType.Triangles, 0, VerticeCount);
-			else
-				GL.DrawElements(PrimitiveType.Triangles, indicesCount, DrawElementsType.UnsignedInt, 0);
+			Draw();
 
 			shader.Unuse();
-
-			UnBind();
 		}
 
 		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)

@@ -1,12 +1,18 @@
-﻿using OpenTK;
+﻿using Crusty.Engine.System;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using System;
+using System.Runtime.InteropServices;
+using DebugProc = OpenTK.Graphics.OpenGL4.DebugProc;
+using DebugSeverity = OpenTK.Graphics.OpenGL4.DebugSeverity;
+using DebugSource = OpenTK.Graphics.OpenGL4.DebugSource;
+using DebugType = OpenTK.Graphics.OpenGL4.DebugType;
 
 namespace Crusty.Engine
 {
-	public class EngineLayer : GameWindow
+	public class EngineLayer : GameWindow, IDisposable
 	{
 		public static CrustyEngine Engine { get; set; }
 
@@ -14,18 +20,19 @@ namespace Crusty.Engine
 		private double deltaTime = 0;
 		bool hideCursor = true;
 		bool firstMouse = true;
+		FrameBuffer FrameBuffer;
 
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{
 			lastPost = new Vector2(width / 2, Height / 2);
-
 			Engine = new CrustyEngine();
 		}
 
 		public override void Dispose()
 		{
 			Engine.Dispose();
+			FrameBuffer.Dispose();
 
 			base.Dispose();
 		}
@@ -67,6 +74,7 @@ namespace Crusty.Engine
 
 			GL.ClearColor(color: Color4.Black);
 			Engine.Initialize(Width, Height);
+			FrameBuffer = new FrameBuffer(Width, Height);
 
 			base.OnLoad(e);
 		}
@@ -89,7 +97,7 @@ namespace Crusty.Engine
 				var deltaY = e.Mouse.Y - lastPost.Y;
 
 				lastPost = new Vector2(e.Mouse.X, e.Mouse.Y);
-				Engine.OnMouseMove(new CursorPosition(deltaX, deltaY), deltaTime);
+				Engine.OnMouseMove(new CursorPosition(deltaX, deltaY));
 			}
 
 			base.OnMouseMove(e);
@@ -115,8 +123,8 @@ namespace Crusty.Engine
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			deltaTime = e.Time;
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-			Engine.Render(deltaTime);
+			FrameBuffer.Render(Engine.Render, deltaTime);
+			
 			SwapBuffers();
 
 			base.OnRenderFrame(e);
@@ -124,6 +132,7 @@ namespace Crusty.Engine
 
 		protected override void OnResize(EventArgs e)
 		{
+			FrameBuffer.OnResize(Width, Height);
 			Engine.OnResize(Width, Height);
 
 			base.OnResize(e);

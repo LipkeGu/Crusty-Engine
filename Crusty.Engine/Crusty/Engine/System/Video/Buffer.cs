@@ -27,12 +27,17 @@ namespace Crusty.Engine
 		public int Id { get; private set; } = 0;
 
 		/// <summary>
-		/// Anzahl der Elemente im Buffer.
+		/// Usage of the Buffer
+		/// </summary>
+		public BufferUsageHint BufferUsage { get; private set; } = BufferUsageHint.DynamicDraw;
+
+		/// <summary>
+		/// Number of Elements in the buffer
 		/// </summary>
 		public int Elements { get; private set; } = 0;
 
 		/// <summary>
-		/// Typ des Buffers... (Array, Element, etc...)
+		/// Typ of Buffer (Array, Element, etc...)
 		/// </summary>
 		public BufferTarget BufferType { get; private set; } = BufferTarget.ArrayBuffer;
 
@@ -42,16 +47,19 @@ namespace Crusty.Engine
 		}
 
 		/// <summary>
-		/// Erzeugt  und bindet einen Buffer.
+		/// Creates the Buffer
 		/// </summary>
-		public void Create()
+		public void Create(BufferUsageHint bufferUsage = BufferUsageHint.DynamicDraw, bool bind = true)
 		{
 			Id = GL.GenBuffer();
-			Bind();
+			BufferUsage = bufferUsage;
+
+			if (bind)
+				Bind();
 		}
 
 		/// <summary>
-		/// Aktiviert den Buffer für die Verwendung.
+		/// Bind the Buffer
 		/// </summary>
 		public void Bind()
 		{
@@ -63,10 +71,10 @@ namespace Crusty.Engine
 		/// </summary>
 		/// <param name="data">Die Daten...</param>
 		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
-		public void Upload(List<int> data, BufferUsageHint usage = BufferUsageHint.DynamicDraw)
+		public void Upload(List<int> data)
 		{
 			Bind();
-			GL.BufferData(BufferType, data.Count * Marshal.SizeOf(data[0]), data.ToArray(), usage);
+			GL.BufferData(BufferType, data.Count * Marshal.SizeOf(data[0]), data.ToArray(), BufferUsage);
 			Elements = data.Count;
 			UnBind();
 		}
@@ -127,10 +135,10 @@ namespace Crusty.Engine
 		/// </summary>
 		/// <param name="data">Die Daten...</param>
 		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
-		public void Upload(List<Vector3> data, BufferUsageHint usage = BufferUsageHint.DynamicDraw)
+		public void Upload(List<Vector3> data)
 		{
 			Bind();
-			GL.BufferData(BufferType, data.Count * Vector3.SizeInBytes, data.ToArray(), usage);
+			GL.BufferData(BufferType, data.Count * Vector3.SizeInBytes, data.ToArray(), BufferUsage);
 			Elements = data.Count;
 			UnBind();
 		}
@@ -140,10 +148,10 @@ namespace Crusty.Engine
 		/// </summary>
 		/// <param name="data">Die Daten...</param>
 		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
-		public void Upload(List<Vector2> data, BufferUsageHint usage = BufferUsageHint.DynamicDraw)
+		public void Upload(List<Vector2> data)
 		{
 			Bind();
-			GL.BufferData(BufferType, data.Count * Vector2.SizeInBytes, data.ToArray(), usage);
+			GL.BufferData(BufferType, data.Count * Vector2.SizeInBytes, data.ToArray(), BufferUsage);
 			Elements = data.Count;
 			UnBind();
 		}

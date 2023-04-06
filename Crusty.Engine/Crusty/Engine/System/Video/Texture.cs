@@ -72,8 +72,23 @@ namespace Crusty.Engine
 
 		private void __setTextureFormat(int index, ref BitmapData data)
 		{
-			GL.TextureParameter(Id, TextureParameterName.TextureMinFilter, (int)All.Nearest);
-			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, (int)All.Nearest);
+			int texMinFilterValue = (int)All.Nearest;
+			int texMagFilterValue = (int)All.Nearest;
+
+			switch (textureTarget)
+			{
+				case TextureTarget.TextureCubeMap:
+					texMinFilterValue = (int)All.NearestMipmapNearest;
+					texMagFilterValue = (int)All.NearestMipmapNearest;
+					break;
+				case TextureTarget.Texture2D:
+				default:
+					texMinFilterValue = (int)All.Nearest;
+					texMagFilterValue = (int)All.Nearest;
+					break;
+			}
+			GL.TextureParameter(Id, TextureParameterName.TextureMinFilter, texMinFilterValue);
+			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, texMagFilterValue);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
@@ -112,17 +127,6 @@ namespace Crusty.Engine
 
 		public void Bind(int slot = 0)
 		{
-			switch (textureTarget)
-			{
-				case TextureTarget.TextureCubeMap:
-					GL.Enable(EnableCap.TextureCubeMap);
-					break;
-				case TextureTarget.Texture2D:
-				default:
-					GL.Enable(EnableCap.Texture2D);
-					break;
-			}
-
 			GL.ActiveTexture(TextureUnit.Texture0 + slot);
 			GL.BindTexture(textureTarget, Id);
 		}
@@ -130,17 +134,6 @@ namespace Crusty.Engine
 		public void UnBind()
 		{
 			GL.BindTexture(textureTarget, 0);
-
-			switch (textureTarget)
-			{
-				case TextureTarget.TextureCubeMap:
-					GL.Disable(EnableCap.TextureCubeMap);
-					break;
-				case TextureTarget.Texture2D:
-				default:
-					GL.Disable(EnableCap.Texture2D);
-					break;
-			}
 		}
 
 		public void CleanUp()

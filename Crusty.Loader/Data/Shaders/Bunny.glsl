@@ -1,5 +1,5 @@
 #type vertex
-#version 330 core
+#version 430 core
 const int MAX_MODELS = 128;
 layout(location = 0) in vec3 Position;
 layout(location = 1) in vec2 TexCoords;

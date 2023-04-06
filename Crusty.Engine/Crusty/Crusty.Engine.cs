@@ -23,8 +23,9 @@ namespace Crusty.Engine
 		bool TerainDebug = false;
 
 		Models.Models Models = new Models.Models();
-		float deltaTime = 0.0f;
+		
 
+		
 		Camera camera;
 		Fog fog;
 
@@ -70,20 +71,19 @@ namespace Crusty.Engine
 
 		public void Initialize(int width, int height)
 		{
+
 			Input.InputMouseButtonDown += (sender, e) =>
 			{
 				switch (e.Button)
 				{
 					default:
-						Console.WriteLine(e.RayPosition);
 						break;
 				}
 			};
 
-
 			Input.InputKeyDown += (sender, e) =>
 			{
-				var camSpeed = e.ShiftPressed? 9.525f : 5.525f;
+				var camSpeed = e.ShiftPressed ? 9.525f : 5.525f;
 				if (!e.Pressed)
 					return;
 
@@ -102,21 +102,12 @@ namespace Crusty.Engine
 						camera.Move_Right((camSpeed / 1.5f) * e.DeltaTIme);
 						break;
 					case Key.F7:
-						if (TerainDebug)
-							TerainDebug = false;
-						else
-							TerainDebug = true;
+						TerainDebug = TerainDebug ? false : true;
 						break;
 					case Key.F8:
-						if (camera.FlyMode)
-							camera.FlyMode = false;
-						else
-							camera.FlyMode = true;
+						camera.FlyMode = camera.FlyMode ? false : true;
 						break;
 					default:
-#if DEBUG
-						Video.OnKeyDown(e.Key);
-#endif
 						break;
 				}
 			};
@@ -125,7 +116,7 @@ namespace Crusty.Engine
 			EngineWorld = new EngineWorld();
 			WorldTime = new GameWorldTime();
 			camera = new Camera(new Vector3(EngineWorld.Terrain.Width / 2, 6.0f, EngineWorld.Terrain.Height / 2));
-			camera.Create(width, height,EngineWorld.Skybox.Size *3);
+			camera.Create(width, height, EngineWorld.Skybox.Size * 3);
 			fog = new Fog();
 		}
 
@@ -141,10 +132,9 @@ namespace Crusty.Engine
 			EngineWorld.Update(deltatime);
 			WorldTime.Update();
 			Models.Update(deltatime);
-
 		}
 
-		public void OnMouseMove(CursorPosition cursorPosition, double deltaTime)
+		public void OnMouseMove(CursorPosition cursorPosition)
 		{
 			
 			camera.Pitch -= cursorPosition.Y;
