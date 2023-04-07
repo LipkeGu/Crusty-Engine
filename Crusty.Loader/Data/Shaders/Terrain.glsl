@@ -16,7 +16,6 @@ uniform vec3 lightPosition[4];
 
 out vec2 passTexCoord;
 out float visibility;
-out vec4 testColor;
 out vec3 surfaceNormal;
 out vec3 toLightVector[4];
 out vec3 toCameraVector;
@@ -41,14 +40,12 @@ void main()
     visibility = clamp(visibility, 0.0f, 1.0f);
         
     passTexCoord = vec2(Position.x * Scale.x, Position.z * Scale.z);
-    testColor = vec4(Position.xyz,1) / 90;
 }
 
 #type fragment
 #version 430 core
 
 in vec2 passTexCoord;
-in vec4 testColor;
 in vec3 surfaceNormal;
 in vec3 toLightVector[4];
 in vec3 toCameraVector;
@@ -58,7 +55,6 @@ uniform sampler2D uTexture;
 uniform float AmbientStrength;
 uniform vec3 lightColor[4];
 uniform vec3 attenuation[4];
-uniform int EnableTestColor;
 uniform vec3 fogColor;
 uniform float shineDamper;
 uniform float reflectivity;

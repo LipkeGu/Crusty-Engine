@@ -15,7 +15,7 @@ void main() {
 }
 
 #type fragment
-#version 330 core
+#version 430 core
 out vec4 frag_colour;
 in vec4 pColor;
 

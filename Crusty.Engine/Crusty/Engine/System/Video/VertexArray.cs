@@ -173,7 +173,6 @@ namespace Crusty.Engine
 			shader.Set_Light(light);
 			shader.Set_Vec3("fogColor", fog.Color);
 			shader.Set_Vec1("AmbientStrength", worldTime.AmbientStrength);
-			shader.Set_Vec3("LightColor", ref worldTime.LightColor);
 			shader.Set_Mat4("projMatrix", projectionMatrix);
 			shader.Set_Mat4("viewMatrix", viewMatrix);
 			shader.Set_Mat4("modelMatrix", transform);
