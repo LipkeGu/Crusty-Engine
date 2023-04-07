@@ -162,7 +162,7 @@ namespace Crusty.Engine
 
 		}
 
-		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Light light, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
+		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref List<Light> light, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
 		{
 			
 			shader.Use();
@@ -183,7 +183,7 @@ namespace Crusty.Engine
 			shader.Unuse();
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref Light light, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
+		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref List<Light> light, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
 		{
 			var viewMatrix = camera.ViewMatrix;
 

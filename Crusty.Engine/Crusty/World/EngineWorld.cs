@@ -39,7 +39,7 @@ namespace Crusty.Engine
 			Terrain.Update(deltatime);
 		}
 
-		public void Render(ref GameWorldTime gameWorldTime, ref Light light, ref Fog fog,  ref Camera camera)
+		public void Render(ref GameWorldTime gameWorldTime, ref List<Light> light, ref Fog fog,  ref Camera camera)
 		{
 			GL.Enable(EnableCap.DepthTest);
 			Skybox.Draw(ref gameWorldTime, ref light, ref fog, ref camera, true);

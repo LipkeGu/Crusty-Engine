@@ -173,10 +173,14 @@ namespace Crusty.Engine
 			Set_Vec1("reflectivity", reflectivity);
 		}
 
-		public void Set_Light(Light light)
+		public void Set_Light(List<Light> light)
 		{
-			Set_Vec3("lightPosition", light.Position);
-			Set_Vec3("lightColor", light.LightColor);
+			for (var i = 0; i < light.Count; i++)
+			{
+				Set_Vec3(string.Format("lightPosition[{0}]", i), light[i].Position);
+				Set_Vec3(string.Format("lightColor[{0}]", i), light[i].LightColor);
+				Set_Vec3(string.Format("attenuation[{0}]", i), light[i].Attenuation);
+			}
 		}
 
 		public void Set_Vec3(string name, Vector3 value)

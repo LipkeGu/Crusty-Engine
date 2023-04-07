@@ -76,7 +76,7 @@ namespace Crusty.Engine.Models
 			Shader.Unuse();
 		}
 
-		public virtual void Draw(ref GameWorldTime worldTime, ref Light light, ref Fog fog, ref Camera camera, bool staticObject = false)
+		public virtual void Draw(ref GameWorldTime worldTime, ref List<Light> light, ref Fog fog, ref Camera camera, bool staticObject = false)
 		{
 			Texture.Bind();
 			VertexArray.Draw(ref worldTime, ref Shader, ref light, ref fog, ref camera, ref ModelMatrix, Scale, staticObject);

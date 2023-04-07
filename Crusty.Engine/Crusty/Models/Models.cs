@@ -32,7 +32,7 @@ namespace Crusty.Engine.Models
 				Instances.Add(model, transform);
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Light light, ref Fog fog, ref Camera camera)
+		public void Draw(ref GameWorldTime worldTime, ref List<Light> light, ref Fog fog, ref Camera camera)
 		{
 			foreach (var instance in Instances)
 			{
