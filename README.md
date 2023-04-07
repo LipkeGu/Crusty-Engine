@@ -1,14 +1,13 @@
 # OpenGL 4.3 - Crusty Engine
 
-![Bildschirmfoto vom 2023-04-01 13-06-47](https://user-images.githubusercontent.com/2057932/229285209-9e018358-f634-4d7b-8d05-d5debe097154.png)
+![Preview](https://user-images.githubusercontent.com/2057932/230497788-e3e5bbc2-a1e6-4837-a34a-446dfb8143b9.png)
 
 # Todo:
 - [X] * Mouse Picking
 - [X] * Framebuffer
-- [ ] * Lighting
+- [X] * Lighting
 - [X] * Fog Support
 - [ ] * Model loading
 
 # Debug:
-* F7: Enabe/Disable Terrain Debug Color
 * F11: Hide/Show Mouse Cursor
