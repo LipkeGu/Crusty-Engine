@@ -11,7 +11,7 @@ namespace Crusty.Engine
 	{
 		public static CrustyEngine Engine { get; set; }
 
-		private Vector2 lastPost = new Vector2(400.0f);
+		private Vector2 lastPost;
 		private double deltaTime = 0;
 		bool hideCursor = true;
 		bool firstMouse = true;
@@ -20,7 +20,7 @@ namespace Crusty.Engine
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{
-			lastPost = new Vector2(width / 2, Height / 2);
+			lastPost = new Vector2(width / 2, height / 2);
 			Engine = new CrustyEngine();
 		}
 
