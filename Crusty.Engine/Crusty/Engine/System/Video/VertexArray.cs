@@ -28,7 +28,10 @@ namespace Crusty.Engine
 
 		public void Create()
 		{
-			Id = GL.GenVertexArray();
+			var _id = 0;
+			GL.GenVertexArrays(1, out _id);
+			Id = _id;
+
 			Bind();
 		}
 
@@ -48,9 +51,6 @@ namespace Crusty.Engine
 
 		public void Upload(List<Vector2> data)
 		{
-			if (!GL.IsVertexArray(Id))
-				throw new Exception("Given Id is not a VertexArray!");
-
 			var vbo = new VertexBuffer();
 			vbo.Create();
 			vbo.Upload(data);
@@ -76,9 +76,6 @@ namespace Crusty.Engine
 
 		public void Upload(List<Vector3> data, List<int> indices, bool instanced = false)
 		{
-			if (!GL.IsVertexArray(Id))
-				throw new Exception("Given Id is not a VertexArray!");
-
 			var vbo = new VertexBuffer();
 			vbo.Create();
 			vbo.Upload(data);
@@ -101,6 +98,7 @@ namespace Crusty.Engine
 			var elements = Marshal.SizeOf(data[0]) / sizeof(float);
 			GL.VertexAttribPointer(attributeCount, elements, VertexAttribPointerType.Float, false, elements * sizeof(float), 0);
 			GL.EnableVertexAttribArray(attributeCount);
+			
 			if (Instanced)
 				GL.VertexAttribDivisor(attributeCount, 1);
 
@@ -137,7 +135,7 @@ namespace Crusty.Engine
 			GL.DeleteVertexArray(Id);
 		}
 
-		public void Draw(Shader shader = null)
+		public void Draw(IShader shader = null)
 		{
 			var indicesCount = 0;
 

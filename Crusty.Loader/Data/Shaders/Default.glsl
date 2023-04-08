@@ -1,7 +1,7 @@
 #type vertex
-#version 430 core
-layout (location = 0) in vec3 Position;
-layout (location = 1) in vec2 TexCoord;
+#version ##GL_VERSION##0 core
+in vec3 Position;
+in vec2 TexCoord;
 
 uniform mat4 projMatrix;
 uniform mat4 viewMatrix;
@@ -15,7 +15,7 @@ void main() {
 }
 
 #type fragment
-#version 430 core
+#version ##GL_VERSION##0 core
 out vec4 frag_colour;
 in vec4 pColor;
 

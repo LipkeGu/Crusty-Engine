@@ -18,7 +18,10 @@ namespace Crusty.Engine
 
 		public Texture(List<string> filenames)
 		{
-			Id = GL.GenTexture();
+			var _id = 0;
+			GL.GenTextures(1, out _id);
+			Id = _id;
+
 			textureTarget = TextureTarget.TextureCubeMap;
 
 			for (var i = 0; i < filenames.Count; i++)
@@ -33,7 +36,10 @@ namespace Crusty.Engine
 
 		public Texture(string filename)
 		{
-			Id = GL.GenTexture();
+			var _id = 0;
+			GL.GenTextures(1, out _id);
+			Id = _id;
+
 			textureTarget = TextureTarget.Texture2D;
 
 			if (!File.Exists(filename))
@@ -90,11 +96,11 @@ namespace Crusty.Engine
 					break;
 			}
 
-			GL.TextureParameter(Id, TextureParameterName.TextureMinFilter, texMinFilterValue);
-			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, texMagFilterValue);
-			GL.TextureParameter(Id, TextureParameterName.TextureLodBias, LODBias);
-			GL.TextureParameter(Id, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-			GL.TextureParameter(Id, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+			GL.TexParameter(textureTarget, TextureParameterName.TextureMinFilter, texMinFilterValue);
+			GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, texMagFilterValue);
+			GL.TexParameter(textureTarget, TextureParameterName.TextureLodBias, LODBias);
+			GL.TexParameter(textureTarget, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+			GL.TexParameter(textureTarget, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
 			var GLPixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat.Bgra;
 			var InternalPixelFormat = PixelInternalFormat.Rgba;
@@ -115,7 +121,7 @@ namespace Crusty.Engine
 			switch (textureTarget)
 			{
 				case TextureTarget.TextureCubeMap:
-					GL.TextureParameter(Id, TextureParameterName.TextureWrapR, (int)TextureWrapMode.Repeat);
+					GL.TexParameter(textureTarget, TextureParameterName.TextureWrapR, (int)TextureWrapMode.Repeat);
 					GL.TexImage2D(TextureTarget.TextureCubeMapPositiveX + index, 0, InternalPixelFormat, data.Width, data.Height,
 						0, GLPixelFormat, PixelType.UnsignedByte, data.Scan0);
 					GL.GenerateMipmap(GenerateMipmapTarget.TextureCubeMap);

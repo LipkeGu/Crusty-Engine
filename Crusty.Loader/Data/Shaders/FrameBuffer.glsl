@@ -1,5 +1,5 @@
 #type vertex
-#version 430 core
+#version ##GL_VERSION##0 core
 in vec2 Position;
 in vec2 TexCoord;
 
@@ -12,7 +12,7 @@ void main()
 }
 
 #type fragment
-#version 430 core
+#version ##GL_VERSION##0 core
 
 in vec2 passTexcoord;
 out vec4 outColor;

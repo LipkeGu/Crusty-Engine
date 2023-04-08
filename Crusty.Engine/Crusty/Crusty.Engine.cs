@@ -22,9 +22,6 @@ namespace Crusty.Engine
 		Models.Models Models = new Models.Models();
 
 		ICamera camera;
-		
-
-
 
 		public void PreloadModels(ref Terrain terrain)
 		{

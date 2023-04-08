@@ -1,5 +1,5 @@
 #type vertex
-#version 330 core
+#version ##GL_VERSION##0 core
 in vec3 Position;
 in vec2 TexCoords;
 in vec3 Normal;
@@ -17,23 +17,23 @@ out vec3 toCameraVector;
 
 void main() {
 	vec4 worldPosition = modelMatrix * vec4(Position, 1.0f);
-    vec4 positionRelativeToCam = viewMatrix * worldPosition;
-    gl_Position = projMatrix * positionRelativeToCam;
+	vec4 positionRelativeToCam = viewMatrix * worldPosition;
+	gl_Position = projMatrix * positionRelativeToCam;
 
 	surfaceNormal = (modelMatrix * vec4(Normal, 0.0f)).xyz;
-    
-    for (int i=0;i<4;i++)
-    {
-        toLightVector[i] = lightPosition[i] - worldPosition.xyz;
-    }
-    
-    toCameraVector = (inverse(viewMatrix) * vec4(0.0f, 0.0f, 0.0f, 1.0f)).xyz - worldPosition.xyz;
+	
+	for (int i=0;i<4;i++)
+	{
+		toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+	}
+	
+	toCameraVector = (inverse(viewMatrix) * vec4(0.0f, 0.0f, 0.0f, 1.0f)).xyz - worldPosition.xyz;
 
 	passTexCoord = Position;
 }
 
 #type fragment
-#version 430 core
+#version ##GL_VERSION##0 core
 in vec3 passTexCoord;
 in vec3 surfaceNormal;
 in vec3 toLightVector[4];
@@ -50,28 +50,28 @@ uniform float reflectivity;
 
 void main() {
 	vec3 unitNormal = normalize(surfaceNormal);
-    vec3 unitVectorToCamera = normalize(toCameraVector);
-    
-    vec3 totalDiffuse = vec3(0.0f);
-    vec3 totalSpecular = vec3(0.0f);
-    
-    for (int i = 0; i< 4; i++)
-    {
-         float distance = length(toLightVector[i]);
-         //float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
-         vec3 unitLightVector = normalize(toLightVector[i]);
-         vec3 lightDirection = -unitLightVector;
-         vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
-         float nDot1 = dot(unitNormal, unitLightVector);
-         float brightness = max(nDot1, 0.0f);
-         float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
-         specularFactor = max(specularFactor, 0.0f);
-         float dampedFactor = pow(specularFactor, shineDamper);
-         totalDiffuse = totalDiffuse + (brightness * lightColor[i]);
-         totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]);
-     }
-    
-    totalDiffuse = max(totalDiffuse, 0.2f);
+	vec3 unitVectorToCamera = normalize(toCameraVector);
+	
+	vec3 totalDiffuse = vec3(0.0f);
+	vec3 totalSpecular = vec3(0.0f);
+	
+	for (int i = 0; i< 4; i++)
+	{
+		 float distance = length(toLightVector[i]);
+		 //float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
+		 vec3 unitLightVector = normalize(toLightVector[i]);
+		 vec3 lightDirection = -unitLightVector;
+		 vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
+		 float nDot1 = dot(unitNormal, unitLightVector);
+		 float brightness = max(nDot1, 0.0f);
+		 float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
+		 specularFactor = max(specularFactor, 0.0f);
+		 float dampedFactor = pow(specularFactor, shineDamper);
+		 totalDiffuse = totalDiffuse + (brightness * lightColor[i]);
+		 totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]);
+	 }
+	
+	totalDiffuse = max(totalDiffuse, 0.2f);
 
-    frag_colour = vec4(totalDiffuse, 1.0f) * vec4(texture(uTexture, passTexCoord).xyz, 1.0f) + vec4(totalSpecular,1.0);
+	frag_colour = vec4(totalDiffuse, 1.0f) * vec4(texture(uTexture, passTexCoord).xyz, 1.0f) + vec4(totalSpecular,1.0);
 }

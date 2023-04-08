@@ -1,5 +1,5 @@
 #type vertex
-#version 430 core
+#version ##GL_VERSION##0 core
 
 in vec3 Position;
 in vec2 TexCoords;
@@ -11,15 +11,15 @@ uniform mat4 modelMatrix;
 
 void main() {
 	vec4 worldPosition = modelMatrix * vec4(Position, 1.0f);
-    vec4 positionRelativeToCam = viewMatrix * worldPosition;
-    gl_Position = projMatrix * positionRelativeToCam;
+	vec4 positionRelativeToCam = viewMatrix * worldPosition;
+	gl_Position = projMatrix * positionRelativeToCam;
 }
 
 #type fragment
-#version 430 core
+#version ##GL_VERSION##0 core
 
 out vec4 frag_colour;
 
 void main() {
-    frag_colour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	frag_colour = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }

@@ -17,6 +17,11 @@ namespace Crusty.Engine
 		bool firstMouse = true;
 		FrameBuffer FrameBuffer;
 
+		public static int GLVerMajor = 4;
+		public static int GLVerMinor = 3;
+
+
+
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{

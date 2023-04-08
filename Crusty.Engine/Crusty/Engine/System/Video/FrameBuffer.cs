@@ -17,7 +17,7 @@ namespace Crusty.Engine.System
 		private int rbid = 0;
 		public int texId = 0;
 
-		Shader screenShader = new Shader();
+		IShader screenShader = new Shader();
 		VertexArray screen = new VertexArray();
 
 		private TextureTarget textureTarget = TextureTarget.Texture2D;

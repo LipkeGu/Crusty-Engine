@@ -44,6 +44,13 @@ namespace Crusty.Engine
 					if (string.IsNullOrEmpty(line))
 						continue;
 
+					if (line.Contains("##GL_VERSION##"))
+						line = line.Replace("##GL_VERSION##", string.Format("{0}{1}",
+							EngineLayer.GLVerMajor, EngineLayer.GLVerMinor));
+
+					if (line.Contains("#bind "))
+						line = line.Replace("#bind ", string.Empty);
+
 					#region Get type of shader 
 					if (line.StartsWith("#type"))
 					{

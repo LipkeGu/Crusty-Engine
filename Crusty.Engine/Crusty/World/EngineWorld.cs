@@ -31,26 +31,6 @@ namespace Crusty.Engine
 				new Light(new Vector3(0, (Skybox.Size)  / 2 , 0), new Vector3(1.0f))
 			};
 
-
-
-
-			var rand = new Random();
-
-			
-
-			for (int i = 0; i < 1000; i++)
-			{
-				var x = rand.Next(-Terrain.Width, Terrain.Width);
-				var z = rand.Next(-Terrain.Height, Terrain.Height);
-				var scale = new Vector3(0.2f);
-				var rot = new Vector3(x, 0, z);
-				var pos = new Vector3(x, 0, z);
-
-				var transform = Functions.CreateTransformationMatrix(pos, rot, scale);
-
-				Models.Add(new Quad("Sun", 10, pos, rot, scale), transform);
-			}
-
 			GL.Enable(EnableCap.CullFace);
 			GL.CullFace(CullFaceMode.Back);
 			GL.Disable(EnableCap.CullFace);

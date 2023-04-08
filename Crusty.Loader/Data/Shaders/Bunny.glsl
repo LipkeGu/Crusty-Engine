@@ -1,9 +1,10 @@
 #type vertex
-#version 430 core
+#version ##GL_VERSION##0 core
 const int MAX_MODELS = 128;
-layout(location = 0) in vec3 Position;
-layout(location = 1) in vec2 TexCoords;
-layout(location = 2) in vec3 Normals;
+
+in vec3 Position;
+in vec2 TexCoords;
+in vec3 Normals;
 
 uniform mat4 projMatrix;
 uniform mat4 viewMatrix;
@@ -14,7 +15,7 @@ void main() {
 }
 
 #type fragment
-#version 430 core
+#version ##GL_VERSION##0 core
 out vec4 frag_colour;
 
 void main() {

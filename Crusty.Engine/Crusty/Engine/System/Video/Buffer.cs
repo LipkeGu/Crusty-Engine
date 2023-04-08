@@ -51,7 +51,11 @@ namespace Crusty.Engine
 		/// </summary>
 		public void Create(BufferUsageHint bufferUsage = BufferUsageHint.DynamicDraw, bool bind = true)
 		{
-			Id = GL.GenBuffer();
+			var _id = 0;
+			GL.GenBuffers(1, out _id);
+
+			Id = _id;
+
 			BufferUsage = bufferUsage;
 
 			if (bind)
