@@ -118,7 +118,7 @@ namespace Crusty.Engine.System
 			GL.GenTextures(1, out texId);
 			GL.BindTexture(TextureTarget.Texture2D, texId);
 
-			GL.TexImage2D(textureTarget, 0, PixelInternalFormat.Rgb, Width, Height, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
+			GL.TexImage2D(textureTarget, 0, PixelInternalFormat.Rgba8, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 			GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, (int)All.Nearest);
 			GL.TexParameter(textureTarget, TextureParameterName.TextureMinFilter, (int)All.Nearest);
 
