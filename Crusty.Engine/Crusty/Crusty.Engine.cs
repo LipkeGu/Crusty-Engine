@@ -1,15 +1,13 @@
 ﻿using OpenTK;
-using OpenTK.Graphics.OpenGL4;
 using System;
 using Crusty.Engine.Common;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Globalization;
 using Crusty.Engine.Models;
 using OpenTK.Input;
-using System.Drawing;
 using Crusty.Engine.System;
+using Crusty.Engine.Common.Camera;
 
 namespace Crusty.Engine
 {
@@ -20,15 +18,13 @@ namespace Crusty.Engine
 
 		GameWorldTime WorldTime = new GameWorldTime();
 		EngineWorld EngineWorld;
-		bool TerainDebug = false;
 
 		Models.Models Models = new Models.Models();
+
+		ICamera camera;
 		
 
-		
-		Camera camera;
-		Fog fog;
-		List<Light> Lights = new List<Light>();
+
 
 		public void PreloadModels(ref Terrain terrain)
 		{
@@ -45,46 +41,34 @@ namespace Crusty.Engine
 
 				for (var iP = 0; iP < numPositions; iP++)
 				{
-					var positionParts = Functions.SplitString(modelInfo.IniReadValue("Positions", string.Format("Position{0}", iP)), ";");
-					var modelPosition = new Vector3(
-							float.Parse(positionParts[0], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(positionParts[1], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(positionParts[2], CultureInfo.InvariantCulture.NumberFormat));
+					var positionParts = modelInfo.IniReadValue("Positions", string.Format("Position{0}", iP)).Split(";");
+					var modelPosition = Functions.CreateVec3(positionParts[0], positionParts[1], positionParts[2]);
 
-					modelPosition.Y = terrain.GetHeightAt((int)modelPosition.X, (int)modelPosition.Z);
+					modelPosition.Y = terrain.QueryHeightAt((int)modelPosition.X, (int)modelPosition.Z);
 
 					var transform = Functions.CreateTransformationMatrix(modelPosition,
-						new Vector3(0.0f),
-						new Vector3(10)
-						);
+						new Vector3(0.0f), new Vector3(1));
 
 					transforms.Add(transform);
 				}
 
-				Models.Add(new Models.OBJLoader(name), transforms);
+				Models.Add(new OBJLoader(name), transforms);
 			}
 		}
 
 		public void OnKeyUp(Key key, bool altPressed, bool shiftPressed)
 		{
-			Input.SetState(key, false,altPressed, shiftPressed);
+			Input.SetState(key, false, altPressed, shiftPressed);
 		}
 
 		public void Initialize(int width, int height)
 		{
 
-			Input.InputMouseButtonDown += (sender, e) =>
-			{
-				switch (e.Button)
-				{
-					default:
-						break;
-				}
-			};
+			Input.InputMouseButtonDown += (sender, e) => { };
 
 			Input.InputKeyDown += (sender, e) =>
 			{
-				var camSpeed = e.ShiftPressed ? 9.525f : 5.525f;
+				var camSpeed = e.ShiftPressed ? 90.525f : 50.525f;
 				if (!e.Pressed)
 					return;
 
@@ -102,12 +86,6 @@ namespace Crusty.Engine
 					case Key.D:
 						camera.Move_Right((camSpeed / 1.5f) * e.DeltaTIme);
 						break;
-					case Key.F7:
-						TerainDebug = TerainDebug ? false : true;
-						break;
-					case Key.F8:
-						camera.FlyMode = camera.FlyMode ? false : true;
-						break;
 					default:
 						break;
 				}
@@ -116,10 +94,9 @@ namespace Crusty.Engine
 			Input.Initialize();
 			EngineWorld = new EngineWorld();
 			WorldTime = new GameWorldTime();
+
 			camera = new Camera(new Vector3(EngineWorld.Terrain.Width / 2, 6.0f, EngineWorld.Terrain.Height / 2));
-			camera.Create(width, height, EngineWorld.Skybox.Size * 3);
-			fog = new Fog();
-			Lights.Add(new Light(new Vector3(0, 1000, 0), WorldTime.LightColor));
+			camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
 		}
 
 		public void OnKeyDown(Key key, bool altPressed, bool shiftPressed)
@@ -134,36 +111,33 @@ namespace Crusty.Engine
 			EngineWorld.Update(deltatime);
 			WorldTime.Update();
 
-			Models.Update(deltatime);
+			Models.Update(EngineWorld.Terrain, deltatime);
 		}
 
 		public void OnMouseMove(CursorPosition cursorPosition)
 		{
-			
-			camera.Pitch -= cursorPosition.Y;
-			camera.Yaw += cursorPosition.X;
-			Input.SetMousePosition(camera.CurrentRay, cursorPosition);
+			camera.OnMouseMove(cursorPosition);
+			Input.SetMousePosition(camera.RayPosition, cursorPosition);
 		}
 
 		public void OnMouseDown(bool pressed, CursorPosition position, MouseButton button)
 		{
-			Input.SetState(button, position, camera.CurrentRay, pressed);
+			Input.SetState(button, position, camera.RayPosition, pressed);
 		}
 
 		public void OnMouseUp(bool pressed, CursorPosition position, MouseButton button)
 		{
-			Input.SetState(button, position, camera.CurrentRay, pressed);
+			Input.SetState(button, position, camera.RayPosition, pressed);
 		}
 
 		public void OnResize(int width, int height)
 		{
-			GL.Viewport(new Rectangle(0, 0, width, height));
-			camera.OnResize(width, height);
+			camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
 		}
 
 		public void Render(double deltaTime)
 		{
-			EngineWorld.Render(ref WorldTime, ref Lights, ref fog, ref camera);
+			EngineWorld.Render(deltaTime, ref WorldTime, ref camera);
 		}
 
 		public void Dispose()

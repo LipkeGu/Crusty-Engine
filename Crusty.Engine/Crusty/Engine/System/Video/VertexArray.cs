@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Crusty.Engine.Common;
 using Crusty.Engine.Models;
+using Crusty.Engine.System;
 
 namespace Crusty.Engine
 {
@@ -15,6 +16,7 @@ namespace Crusty.Engine
 
 		public List<Buffer> VertexBuffers;
 		public IndexBuffer IndexBuffer;
+
 		public int VerticeCount { get; private set; } = 0;
 
 		public int Id { get; private set; } = 0;
@@ -162,17 +164,18 @@ namespace Crusty.Engine
 
 		}
 
-		private void Draw(ref GameWorldTime worldTime, ref Shader shader, ref List<Light> light, ref Fog fog, ref Matrix4 viewMatrix, ref Matrix4 projectionMatrix, ref Matrix4 transform, Vector3 scale)
+		private void Draw(ref GameWorldTime worldTime, ref IShader shader, ref IList<Light> light, ref Fog fog,
+			Matrix4 viewMatrix, Matrix4 projectionMatrix, Matrix4 transform, Vector3 scale)
 		{
 			
 			shader.Use();
-			shader.Set_Vec3("Scale", ref scale);
+			shader.Set_Vec3("Scale", scale);
 
-			shader.Set_Vec1("gradient", fog.Gradient);
-			shader.Set_Vec1("density", fog.Density);
+			shader.Set_Float("gradient", fog.Gradient);
+			shader.Set_Float("density", fog.Density);
 			shader.Set_Light(light);
 			shader.Set_Vec3("fogColor", fog.Color);
-			shader.Set_Vec1("AmbientStrength", worldTime.AmbientStrength);
+			shader.Set_Float("AmbientStrength", worldTime.AmbientStrength);
 			shader.Set_Mat4("projMatrix", projectionMatrix);
 			shader.Set_Mat4("viewMatrix", viewMatrix);
 			shader.Set_Mat4("modelMatrix", transform);
@@ -182,16 +185,15 @@ namespace Crusty.Engine
 			shader.Unuse();
 		}
 
-		public void Draw(ref GameWorldTime worldTime, ref Shader shader, ref List<Light> light, ref Fog fog, ref Camera camera, ref Matrix4 transform, Vector3 scale, bool fixedModel = false)
+		public void Draw(ref GameWorldTime worldTime, ref IShader shader, ref IList<Light> light, ref Fog fog,
+			Matrix4 projMatrix, Matrix4 viewMatrix, Matrix4 transform, Vector3 scale, bool fixedModel = false)
 		{
-			var viewMatrix = camera.ViewMatrix;
+			var view = viewMatrix;
 
 			if (fixedModel)
-				viewMatrix.Row3 = new Vector4(0, 0, 0, viewMatrix.Row3.W);
+				view.Row3 = new Vector4(0, 0, 0, view.Row3.W);
 
-			var projMatrix = camera.ProjectionMatrix;
-
-			Draw(ref worldTime, ref shader, ref light, ref fog, ref viewMatrix, ref projMatrix, ref transform, scale);
+			Draw(ref worldTime, ref shader, ref light, ref fog, view, projMatrix, transform, scale);
 		}
 
 		public void Dispose()

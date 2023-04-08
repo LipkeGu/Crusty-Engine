@@ -91,7 +91,8 @@ namespace Crusty.Engine
 
 		public void Stop()
 		{
-
+			ButtonStates.Clear();
+			KeyStates.Clear();
 		}
 
 

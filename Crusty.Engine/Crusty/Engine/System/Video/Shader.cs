@@ -1,4 +1,5 @@
 ﻿using Crusty.Engine.Models;
+using Crusty.Engine.System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using System;
@@ -7,7 +8,7 @@ using System.IO;
 
 namespace Crusty.Engine
 {
-	public class Shader : IDisposable
+	public class Shader : IShader
 	{
 		Dictionary<ShaderType, int> shaders;
 		Dictionary<string, int> uniformLocations;
@@ -94,7 +95,7 @@ namespace Crusty.Engine
 			return shadersources;
 		}
 
-		public void Get_Attributes(string src, bool getAttributes = false)
+		void Get_Attributes(string src, bool getAttributes = false)
 		{
 			using (var strm = new StreamReader(src))
 			{
@@ -159,7 +160,7 @@ namespace Crusty.Engine
 			GL.UniformMatrix4(uniformLocations[name], false, ref value);
 		}
 
-		public void Set_Vec4(string name, ref Vector4 value)
+		public void Set_Vec4(string name, Vector4 value)
 		{
 			if (!uniformLocations.ContainsKey(name))
 				uniformLocations.Add(name, GL.GetUniformLocation(shaderProgram, name));
@@ -167,13 +168,7 @@ namespace Crusty.Engine
 			GL.Uniform4(uniformLocations[name], ref value);
 		}
 
-		public void Set_Shine_Variables(float shineDamper, float reflectivity)
-		{
-			Set_Vec1("shineDamper", shineDamper);
-			Set_Vec1("reflectivity", reflectivity);
-		}
-
-		public void Set_Light(List<Light> light)
+		public void Set_Light(IList<Light> light)
 		{
 			for (var i = 0; i < light.Count; i++)
 			{
@@ -185,18 +180,13 @@ namespace Crusty.Engine
 
 		public void Set_Vec3(string name, Vector3 value)
 		{
-			Set_Vec3(name, ref value);
-		}
-
-		public void Set_Vec3(string name, ref Vector3 value)
-		{
 			if (!uniformLocations.ContainsKey(name))
 				uniformLocations.Add(name, GL.GetUniformLocation(shaderProgram, name));
 
 			GL.Uniform3(uniformLocations[name], ref value);
 		}
 
-		public void Set_Vec2(string name, ref Vector2 value)
+		public void Set_Vec2(string name, Vector2 value)
 		{
 			if (!uniformLocations.ContainsKey(name))
 				uniformLocations.Add(name, GL.GetUniformLocation(shaderProgram, name));
@@ -204,7 +194,7 @@ namespace Crusty.Engine
 			GL.Uniform2(uniformLocations[name], ref value);
 		}
 
-		public void Set_Vec1(string name, float value)
+		public void Set_Float(string name, float value)
 		{
 			if (!uniformLocations.ContainsKey(name))
 				uniformLocations.Add(name, GL.GetUniformLocation(shaderProgram, name));
@@ -212,7 +202,7 @@ namespace Crusty.Engine
 			GL.Uniform1(uniformLocations[name], value);
 		}
 
-		public void Get_Error(ShaderType type)
+		void Get_Error(ShaderType type)
 		{
 			var lastError = GL.GetShaderInfoLog(shaders[type]);
 			if (lastError != string.Empty)
@@ -237,8 +227,7 @@ namespace Crusty.Engine
 			this.BindAttribute("Normal");
 		}
 
-
-		public void BindAttribute(string variableName)
+		void BindAttribute(string variableName)
 		{
 			if (!attributeLocations.ContainsKey(variableName))
 				attributeLocations.Add(variableName, GL.GetAttribLocation(shaderProgram, variableName));

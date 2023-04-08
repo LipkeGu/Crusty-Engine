@@ -3,14 +3,10 @@ using System.Collections.Generic;
 
 namespace Crusty.Engine.Models
 {
-	public class SkyBox : Model
+	public class SkyBox : Quad
 	{
-		public float Size { get; private set; }
-
-		public SkyBox(float size) : base("SkyBox", new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f))
+		public SkyBox(float size) : base("SkyBox", size, new Vector3(0.0f), new Vector3(0.0f), new Vector3(1.0f))
 		{
-			Size = size;
-
 			var textures = new List<string>();
 			textures.Add("Data/Texture/SkyBox/right.jpg");
 			textures.Add("Data/Texture/SkyBox/left.jpg");
@@ -21,51 +17,7 @@ namespace Crusty.Engine.Models
 			textures.Add("Data/Texture/SkyBox/back.jpg");
 			textures.Add("Data/Texture/SkyBox/front.jpg");
 
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(-size, size, -size));
-			Vertices.Add(new Vector3(-size, -size, -size));
-
-			Vertices.Add(new Vector3(-size, -size, size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(-size, size, size));
-			Vertices.Add(new Vector3(-size, -size, size));
-
-			Vertices.Add(new Vector3(-size, size, size));
-			Vertices.Add(new Vector3(-size, size, -size));
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(-size, -size, size));
-			Vertices.Add(new Vector3(-size, size, size));
-
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(size, size, size));
-
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(-size, -size, size));
-			Vertices.Add(new Vector3(-size, -size, -size));
-
-			Vertices.Add(new Vector3(-size, size, -size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(-size, size, size));
-			Vertices.Add(new Vector3(-size, size, -size));
-
-			VertexArray.Upload(Vertices, Indices);
 			Texture = new Texture(textures);
-			Vertices.Clear();
 		}
 	}
 }

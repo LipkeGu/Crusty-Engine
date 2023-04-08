@@ -72,7 +72,7 @@ void main()
     for (int i = 0; i< 4; i++)
     {
          float distance = length(toLightVector[i]);
-         //float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
+         float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
          vec3 unitLightVector = normalize(toLightVector[i]);
          vec3 lightDirection = -unitLightVector;
          vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);

@@ -39,58 +39,5 @@ namespace Crusty.Engine.System
 			RendererState.Culling = GL.IsEnabled(EnableCap.CullFace);
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 		}
-
-		public void OnKeyDown(Key key)
-		{
-			switch (key)
-			{
-				case Key.F4:
-					switch (RendererState.PolygonMode)
-					{
-						case PolygonMode.Point:
-							RendererState.PolygonMode = PolygonMode.Line;
-							break;
-						case PolygonMode.Line:
-
-							RendererState.PolygonMode = PolygonMode.Fill;
-							break;
-						case PolygonMode.Fill:
-
-							RendererState.PolygonMode = PolygonMode.Point;
-							break;
-						default:
-							break;
-					}
-
-					GL.PolygonMode(MaterialFace.FrontAndBack, RendererState.PolygonMode);
-					break;
-				case Key.F3:
-					if (RendererState.Blending)
-					{
-						GL.Disable(EnableCap.Blend);
-						RendererState.Blending = false;
-					}
-					else
-					{
-						GL.Enable(EnableCap.Blend);
-						RendererState.Blending = true;
-					}
-					break;
-				case Key.F2:
-					if (RendererState.Culling)
-					{
-						GL.Disable(EnableCap.CullFace);
-						RendererState.Culling = false;
-					}
-					else
-					{
-						GL.Enable(EnableCap.CullFace);
-						RendererState.Culling = true;
-					}
-					break;
-				default:
-					break;
-			}
-		}
 	}
 }

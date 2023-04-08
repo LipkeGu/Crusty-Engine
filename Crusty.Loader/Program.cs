@@ -19,7 +19,7 @@ namespace Crusty.Loader
 			var monitor = DisplayDevice.GetDisplay(DisplayIndex.Default);
 			width = monitor.Width;
 			height = monitor.Height;
-			gamewindowFlags = GameWindowFlags.Fullscreen;
+			gamewindowFlags = GameWindowFlags.Default;
 
 			EngineLayer = new Engine.EngineLayer(width, height, GraphicsMode.Default, "", gamewindowFlags, monitor, 4, 3, contextFlags);
 			EngineLayer.Run();

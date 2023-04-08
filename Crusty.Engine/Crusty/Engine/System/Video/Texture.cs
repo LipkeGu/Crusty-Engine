@@ -14,6 +14,8 @@ namespace Crusty.Engine
 
 		private TextureTarget textureTarget;
 
+		public float LODBias { get; private set; } = -0.4f; 
+
 		public Texture(List<string> filenames)
 		{
 			Id = GL.GenTexture();
@@ -87,9 +89,10 @@ namespace Crusty.Engine
 					texMagFilterValue = (int)All.Linear;
 					break;
 			}
+
 			GL.TextureParameter(Id, TextureParameterName.TextureMinFilter, texMinFilterValue);
 			GL.TextureParameter(Id, TextureParameterName.TextureMagFilter, texMagFilterValue);
-			GL.TextureParameter(Id, TextureParameterName.TextureLodBias, -0.4f);
+			GL.TextureParameter(Id, TextureParameterName.TextureLodBias, LODBias);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
 			GL.TextureParameter(Id, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
 
@@ -145,7 +148,7 @@ namespace Crusty.Engine
 
 		public void Dispose()
 		{
-			this.UnBind();
+			CleanUp();
 		}
 	}
 }

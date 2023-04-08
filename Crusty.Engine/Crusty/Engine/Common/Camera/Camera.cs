@@ -1,25 +1,20 @@
 ﻿using OpenTK;
 using Crusty.Engine.Common;
 using Crusty.Engine.Models;
-using Crusty.Engine.Traits;
 using System;
 using OpenTK.Input;
+using Crusty.Engine.Common.Camera;
+using Crusty.Engine.Common.Traits;
+using System.Drawing;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Crusty.Engine
 {
-	public class Camera
+	public class Camera : MoveAble, ICamera 
 	{
-
-
-		private Vector3 _front = -Vector3.UnitZ;
-		private Vector3 _right = Vector3.UnitX;
-		private Vector3 _up = Vector3.UnitY;
+		Vector3 front = -Vector3.UnitZ;
 		private float _yaw = 90.0f;
 		private float _pitch = 0.0f;
-		public Vector3 CurrentRay;
-
-		public Vector3 Position = new Vector3(0.0f, 6.0f, 0.0f);
-		public Vector3 Rotation = new Vector3(0.0f, 0.0f, 0.0f);
 
 		int width = 0;
 		int height = 0;
@@ -42,20 +37,11 @@ namespace Crusty.Engine
 			set { _yaw = MathHelper.DegreesToRadians( value); }
 		}
 
-		private float _fov = 75.0f;
-		private float far = 1000.0f;
+		public Matrix4 ProjectionMatrix { get; set; } = Matrix4.Identity;
 
-		public Matrix4 ProjectionMatrix { get; private set; } = Matrix4.Identity;
-		public Matrix4 ViewMatrix { get; private set; } = Matrix4.Identity;
+		public Matrix4 ViewMatrix { get; set; } = Matrix4.Identity;
 
-		public void Update_ProjectionMatrix(int width, int height, float far = 1000.0f)
-		{
-			if (width == 0 || height == 0)
-				return;
-			this.far = far;
-
-			ProjectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(_fov), width / height, 0.01f, this.far);
-		}
+		public Vector3 RayPosition { get; set; }
 
 		public Camera(Vector3 position)
 		{
@@ -63,41 +49,50 @@ namespace Crusty.Engine
 			cameraDirection = Vector3.Normalize(Position - cameraTarget);
 		}
 
-
-		public void Create(int width, int height, float far)
+		public virtual void Move_Forward(float speed)
 		{
-			if (width == 0 || height == 0)
-				return;
-
-			this.width = width;
-			this.height = height;
-
-			this.far = far;
-
-			OnResize(width, height);
+			Move_Forward(front, speed);
 		}
 
-		public void OnResize(int width, int height)
+		public virtual void Move_Backward(float speed)
+		{
+			Move_Backward(front, speed);
+		}
+
+		public virtual void Move_Left(float speed)
+		{
+			Move_Left(front, Vector3.UnitY, speed);
+		}
+
+		public virtual void Move_Right(float speed)
+		{
+			Move_Right(front, Vector3.UnitY, speed);
+		}
+
+		public void OnMouseMove(CursorPosition cursorPosition)
+		{
+			Pitch -= cursorPosition.Y;
+			Yaw += cursorPosition.X;
+		}
+
+		public void OnResize(int width, int height, float far)
 		{
 			this.width = width;
 			this.height = height;
 
-			Update_ProjectionMatrix(width, height, far);
+			GL.Viewport(new Rectangle(0, 0, width, height));
+
+			ProjectionMatrix = Functions.Update_ProjectionMatrix(width, height, far + 500);
 		}
 
 		public void Update(Terrain terrain, double deltatime)
 		{
-			if (!FlyMode)
-				Position.Y = terrain.GetHeightAt((int)Position.X, (int)Position.Z) + 6;
-			
-			_front.X = (float)Math.Cos(_pitch) * (float)Math.Cos(_yaw);
-			_front.Y = (float)Math.Sin(_pitch);
-			_front.Z = (float)Math.Cos(_pitch) * (float)Math.Sin(_yaw);
-			_front = Vector3.Normalize(_front);
+			Position.Y = terrain.QueryHeightAt((int)Position.X, (int)Position.Z) + 6;
 
+			front = Functions.CalculateFront(_pitch, _yaw);
 
-			ViewMatrix = Functions.Update_ViewMatrix(Position, Rotation, _front, _up);
-			CurrentRay = calculateMouseRay();
+			ViewMatrix = Functions.Update_ViewMatrix(Position, Rotation, front, Vector3.UnitY);
+			RayPosition = calculateMouseRay();
 		}
 
 		Vector3 calculateMouseRay()
@@ -136,27 +131,5 @@ namespace Crusty.Engine
 
 			return new Vector3(worldCoords.X, worldCoords.Y, worldCoords.Z).Normalized();
 		}
-
-
-		public void Move_Forward(float speed)
-		{
-			Position += _front * speed;
-		}
-
-		public void Move_Backward(float speed)
-		{
-			Position -= _front * speed;
-		}
-
-		public void Move_Left(float speed)
-		{
-			Position -= Vector3.Normalize(Vector3.Cross(_front, _up)) * speed; //Left
-		}
-
-		public void Move_Right(float speed)
-		{
-			Position += Vector3.Normalize(Vector3.Cross(_front, _up)) * speed; //Left
-		}
-
 	}
 }

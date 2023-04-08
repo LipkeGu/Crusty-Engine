@@ -51,14 +51,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crusty\Engine\Common\Camera\ICamera.cs" />
     <Compile Include="Crusty\Engine\Common\Functions.cs" />
     <Compile Include="Crusty\Engine\Common\GameTime.cs" />
     <Compile Include="Crusty\EngineLayer.cs" />
+    <Compile Include="Crusty\Engine\Common\Traits\MoveAble.cs" />
     <Compile Include="Crusty\Engine\System\Input\Definitions.cs" />
     <Compile Include="Crusty\Engine\System\Input\Input.cs" />
     <Compile Include="Crusty\Engine\System\Input\InputKeyEventArgs.cs" />
     <Compile Include="Crusty\Engine\System\Input\InputMButtonEventArgs.cs" />
     <Compile Include="Crusty\Engine\System\Video\FrameBuffer.cs" />
+    <Compile Include="Crusty\Engine\System\Video\Interfaces\IShader.cs" />
     <Compile Include="Crusty\Engine\System\Video\Video.cs" />
     <Compile Include="Crusty\Generators\PerlinNoise.cs" />
     <Compile Include="Crusty\Models\Models.cs" />
@@ -75,7 +78,7 @@
     <Compile Include="Crusty\Engine\System\Video\Shader.cs" />
     <Compile Include="Crusty\Engine\System\Video\Texture.cs" />
     <Compile Include="Crusty\Engine\System\Video\VertexArray.cs" />
-    <Compile Include="Crusty\Engine\Common\Camera.cs" />
+    <Compile Include="Crusty\Engine\Common\Camera\Camera.cs" />
     <Compile Include="Crusty\Traits\Lighting.cs" />
     <Compile Include="Crusty\Models\Light.cs" />
     <Compile Include="Crusty\Models\Fog.cs" />

@@ -40,45 +40,27 @@ namespace Crusty.Engine.Models
 			{
 				while (!objStream.EndOfStream)
 				{
-					var line = objStream.ReadLine().Trim();
+					var line = objStream.ReadLine().Replace("  ", " ").Trim();
 
 					#region "Sort out Vertices"
 					if (line.StartsWith("v "))
 					{
-						var vertexParts = Functions.SplitString(line.Replace("  ", " "), " ");
-
-						var vertice = new Vector3(
-							float.Parse(vertexParts[1], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(vertexParts[2], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(vertexParts[3], CultureInfo.InvariantCulture.NumberFormat)
-							);
-
-						vertices.Add(vertice);
+						var vertexParts = line.Split(" ");
+						vertices.Add(Functions.CreateVec3(vertexParts[1], vertexParts[2], vertexParts[3]));
 						continue;
 					}
 
 					if (line.StartsWith("vt "))
 					{
-						var vertexTexCoord = Functions.SplitString(line, " ");
-						var texCoord = new Vector2(
-							float.Parse(vertexTexCoord[1], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(vertexTexCoord[2], CultureInfo.InvariantCulture.NumberFormat)
-							);
-
-						texCoords.Add(texCoord);
+						var vertexTexCoord = line.Split(" ");
+						texCoords.Add(Functions.CreateVec2(vertexTexCoord[1], vertexTexCoord[2]));
 						continue;
 					}
 
 					if (line.StartsWith("vn "))
 					{
-						var vertexNormal = Functions.SplitString(line, " ");
-						var normal = new Vector3(
-							float.Parse(vertexNormal[1], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(vertexNormal[2], CultureInfo.InvariantCulture.NumberFormat),
-							float.Parse(vertexNormal[3], CultureInfo.InvariantCulture.NumberFormat)
-							);
-
-						normals.Add(normal);
+						var vertexNormal = line.Split(" ");
+						normals.Add(Functions.CreateVec3(vertexNormal[1], vertexNormal[2], vertexNormal[3]));
 						continue;
 					}
 					#endregion
@@ -86,10 +68,10 @@ namespace Crusty.Engine.Models
 					#region "Faces"
 					if (line.StartsWith("f "))
 					{
-						var faceParts = Functions.SplitString(line, " ").ToList();
+						var faceParts = line.Split(" ").ToList();
 						for (var f = 1; f < faceParts.Count; f++)
 						{
-							var face = Functions.SplitString(faceParts[f], "/");
+							var face = faceParts[f].Split("/");
 
 							verticeIndice.Add(int.Parse(face[0]) - 1);
 							if (face.Length > 1)
@@ -120,12 +102,8 @@ namespace Crusty.Engine.Models
 			foreach (var item in normalIndice)
 				Normals.Add(normals[item]);
 
-			VertexArray.Upload(Vertices, Indices);
-			if (TexCoords.Count != 0)
-				VertexArray.Upload(TexCoords);
 
-			if (Normals.Count != 0)
-				VertexArray.Upload(Normals, new List<int>());
+			UploadToVertexArray();
 		}
 	}
 }
