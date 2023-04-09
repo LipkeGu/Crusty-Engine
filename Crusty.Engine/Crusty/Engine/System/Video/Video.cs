@@ -1,5 +1,6 @@
 ﻿
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using System;
@@ -18,6 +19,9 @@ namespace Crusty.Engine
 
 		public bool Culling { get; set; } = true;
 
+
+		public System.Numerics.Vector4 ClearColor = new System.Numerics.Vector4();
+		
 		public bool Blending { get; set; } = true;
 
 		public PolygonMode PolygonMode { get; set; } = PolygonMode.Fill;
@@ -30,13 +34,22 @@ namespace Crusty.Engine
 
 	public class Video
 	{
-		RendererState RendererState { get; set; } = new RendererState();
+		public RendererState RendererState { get; set; } = new RendererState();
 
 		public Video()
 		{
 			RendererState.Blending = GL.IsEnabled(EnableCap.Blend);
 			RendererState.Culling = GL.IsEnabled(EnableCap.CullFace);
 			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+		}
+
+		public void BeginRender()
+		{
+			GL.ClearColor(RendererState.ClearColor.X, RendererState.ClearColor.Y, 
+				RendererState.ClearColor.Z, RendererState.ClearColor.W);
+
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
 		}
 	}
 }

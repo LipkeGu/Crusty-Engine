@@ -17,12 +17,14 @@ namespace Crusty.Engine
 		public Input Input { get; private set; } = new Input();
 		public Video Video { get; private set; } = new Video();
 
+		public bool Enabled = true;
+
 		GameWorldTime WorldTime = new GameWorldTime();
 		EngineWorld EngineWorld;
 
 		Models.Models Models = new Models.Models();
 
-		ICamera camera;
+		public ICamera Camera;
 
 		public void PreloadModels(ref ITerrain terrain)
 		{
@@ -72,16 +74,16 @@ namespace Crusty.Engine
 				switch (e.Key)
 				{
 					case Key.W:
-						camera.Move_Forward(camSpeed * e.DeltaTIme);
+						Camera.Move_Forward(camSpeed * e.DeltaTIme);
 						break;
 					case Key.S:
-						camera.Move_Backward(camSpeed / (camSpeed / 2) * e.DeltaTIme);
+						Camera.Move_Backward(camSpeed / (camSpeed / 2) * e.DeltaTIme);
 						break;
 					case Key.A:
-						camera.Move_Left((camSpeed / 1.5f) * e.DeltaTIme);
+						Camera.Move_Left((camSpeed / 1.5f) * e.DeltaTIme);
 						break;
 					case Key.D:
-						camera.Move_Right((camSpeed / 1.5f) * e.DeltaTIme);
+						Camera.Move_Right((camSpeed / 1.5f) * e.DeltaTIme);
 						break;
 					default:
 						break;
@@ -92,8 +94,8 @@ namespace Crusty.Engine
 			EngineWorld = new EngineWorld();
 			WorldTime = new GameWorldTime();
 
-			camera = new Camera(new Vector3(EngineWorld.Terrain.Width / 2, 6.0f, EngineWorld.Terrain.Height / 2));
-			camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
+			Camera = new Camera(new Vector3(EngineWorld.Terrain.Width / 2, 6.0f, EngineWorld.Terrain.Height / 2));
+			Camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
 		}
 
 		public void OnKeyDown(Key key, bool altPressed, bool shiftPressed)
@@ -104,7 +106,7 @@ namespace Crusty.Engine
 		public void Update(double deltatime)
 		{
 			Input.Update(deltatime);
-			camera.Update(EngineWorld.Terrain, deltatime);
+			Camera.Update(EngineWorld.Terrain, deltatime);
 			EngineWorld.Update(deltatime);
 			WorldTime.Update();
 
@@ -113,33 +115,34 @@ namespace Crusty.Engine
 
 		public void OnMouseMove(CursorPosition cursorPosition)
 		{
-			camera.OnMouseMove(cursorPosition);
-			Input.SetMousePosition(camera.RayPosition, cursorPosition);
+			Camera.OnMouseMove(cursorPosition);
+			Input.SetMousePosition(Camera.RayPosition, cursorPosition);
 		}
 
 		public void OnMouseDown(bool pressed, CursorPosition position, MouseButton button)
 		{
-			Input.SetState(button, position, camera.RayPosition, pressed);
+			Input.SetState(button, position, Camera.RayPosition, pressed);
 		}
 
 		public void OnMouseUp(bool pressed, CursorPosition position, MouseButton button)
 		{
-			Input.SetState(button, position, camera.RayPosition, pressed);
+			Input.SetState(button, position, Camera.RayPosition, pressed);
 		}
 
 		public void OnResize(int width, int height)
 		{
-			camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
+			Camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
 		}
 
 		public void Render(double deltaTime)
 		{
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+			Video.BeginRender();
 
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.StencilTest);
 
-			EngineWorld.Render(deltaTime, ref WorldTime, ref camera);
+			if (Enabled)
+				EngineWorld.Render(deltaTime, ref WorldTime, ref Camera);
 
 			GL.Disable(EnableCap.DepthTest);
 			GL.Disable(EnableCap.StencilTest);

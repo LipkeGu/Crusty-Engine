@@ -1,17 +1,23 @@
 ﻿#define INTELGL
 
+using Crusty.Engine.Models;
+using Crusty.Engine.UI;
 using ImGuiNET;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace Crusty.Engine
 {
 	public class EngineLayer : GameWindow, IDisposable
 	{
 		private ImGuiController ImGuiController;
+		public static Dictionary<string, IControl> GUIWIndows = new Dictionary<string, IControl>();
+
 
 		public static CrustyEngine Engine { get; set; }
 
@@ -26,11 +32,35 @@ namespace Crusty.Engine
 		public static int GLVerMajor = 4;
 		public static int GLVerMinor = 3;
 
+
+		private void openGL_GUI_Content()
+		{
+			ImGui.LabelText(GL.GetString(StringName.Renderer), "Renderer: ");
+			ImGui.LabelText(GL.GetString(StringName.Vendor), "Vendor: ");
+			ImGui.LabelText(GL.GetString(StringName.Version), "Version: ");
+		}
+
+
+
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{
 			lastPost = new Vector2(width / 2, height / 2);
 			Engine = new CrustyEngine();
+
+			CursorGrabbed = true;
+
+			GUIWIndows.Add("main0", new Window("OpenGL Info", openGL_GUI_Content));
+			GUIWIndows.Add("main1", new Window("Crusty Engine", () =>
+			{
+				var mRay = Engine.Camera.RayPosition;
+				ImGui.LabelText(string.Format("X: {0} Y: {1} Z: {2}", mRay.X, mRay.Y, mRay.Z), "MouseRay: ");
+			//	ImGui.LabelText(string.Format("{0} (MS: {1})", Math.Round(RenderFrequency,1), Math.Round(RenderPeriod * 1000,2)), "FPS");
+
+			//	ImGui.Checkbox("Render Scene", ref Engine.Enabled);
+
+			//	ImGui.ColorPicker4("ClearColor", ref Engine.Video.RendererState.ClearColor);
+			}));
 		}
 
 		public override void Dispose()
@@ -136,6 +166,12 @@ namespace Crusty.Engine
 #else
 			Engine.Render(deltaTime);
 #endif
+
+			foreach (var item in GUIWIndows.Values)
+			{
+				item.Draw();
+			}
+
 			ImGuiController.Render();
 
 			SwapBuffers();
@@ -145,6 +181,9 @@ namespace Crusty.Engine
 
 		protected override void OnResize(EventArgs e)
 		{
+			if (Width == 0  || Height == 0) return;
+			GL.Viewport(new Rectangle(0, 0, Width, Height));
+
 #if !INTELGL
 			FrameBuffer.OnResize(Width, Height);
 #endif
@@ -163,7 +202,10 @@ namespace Crusty.Engine
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			Engine.Update(e.Time);
-			ImGuiController.Update(this, (float)e.Time);
+
+
+
+            ImGuiController.Update(this, (float)e.Time);
 			base.OnUpdateFrame(e);
 		}
 	}

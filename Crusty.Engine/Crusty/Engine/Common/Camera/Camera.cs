@@ -81,7 +81,6 @@ namespace Crusty.Engine
 			this.width = width;
 			this.height = height;
 
-			GL.Viewport(new Rectangle(0, 0, width, height));
 
 			ProjectionMatrix = Functions.Update_ProjectionMatrix(width, height, far + 500);
 		}
@@ -109,26 +108,26 @@ namespace Crusty.Engine
 
 		}
 
-		Vector2 GetNormalizedDeviceCoords(float mouseX, float mouseY, bool flipY = false)
+		Vector2 GetNormalizedDeviceCoords(float mouseX, float mouseY)
 		{
-			float x = (2 * mouseX) / (width - 1);
-			float y = (2 * mouseY) / (height - 1);
+			float x = (mouseX) / (width - 1);
+			float y = (mouseY) / (height - 1);
 
-			return new Vector2(x, flipY ? y : -y);
+			return new Vector2(x, -y);
 		}
 
 		Vector4 ToEyeCoords(Vector4 clipCoords)
 		{
-			Matrix4 inverseProjMatrix = ProjectionMatrix.Inverted();
-			Vector4 eyeCoords = Vector4.Transform(inverseProjMatrix, clipCoords);
+			var eyeCoords = clipCoords * ProjectionMatrix.Inverted();
+			eyeCoords.Z = -1;
+			eyeCoords.W = 0;
 
-			return new Vector4(eyeCoords.X, eyeCoords.Y, -1, 0f);
+			return eyeCoords;
 		}
 
 		Vector3 toWorldCoords(Vector4 eyeCoords)
 		{
-			var inversViewMatrix = ViewMatrix.Inverted();
-			var worldCoords = Vector4.Transform(inversViewMatrix, eyeCoords);
+			var worldCoords = eyeCoords * ViewMatrix.Inverted();
 
 			return new Vector3(worldCoords.X, worldCoords.Y, worldCoords.Z).Normalized();
 		}

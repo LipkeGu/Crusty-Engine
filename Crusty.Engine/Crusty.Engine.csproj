@@ -77,7 +77,10 @@
     <Compile Include="Crusty\Engine\System\Input\InputMButtonEventArgs.cs" />
     <Compile Include="Crusty\Engine\System\Video\FrameBuffer.cs" />
     <Compile Include="Crusty\Engine\System\Video\Interfaces\IShader.cs" />
+    <Compile Include="Crusty\Engine\System\Video\UI\GUI_Control.cs" />
+    <Compile Include="Crusty\Engine\System\Video\UI\GUI_Window.cs" />
     <Compile Include="Crusty\Engine\System\Video\UI\ImGuiController.cs" />
+    <Compile Include="Crusty\Engine\System\Video\UI\Interfaces\IControl.cs" />
     <Compile Include="Crusty\Engine\System\Video\Video.cs" />
     <Compile Include="Crusty\Engine\System\Video\Generators\PerlinNoise.cs" />
     <Compile Include="Crusty\Models\Interface\ITerrain.cs" />
