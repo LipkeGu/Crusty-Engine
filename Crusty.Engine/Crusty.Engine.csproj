@@ -51,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Crusty\Engine\Common\Camera\ICamera.cs" />
+    <Compile Include="Crusty\Engine\Common\Camera\Interfaces\ICamera.cs" />
     <Compile Include="Crusty\Engine\Common\Functions.cs" />
     <Compile Include="Crusty\Engine\Common\GameTime.cs" />
     <Compile Include="Crusty\EngineLayer.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Crusty\Engine\System\Video\Interfaces\IShader.cs" />
     <Compile Include="Crusty\Engine\System\Video\Video.cs" />
     <Compile Include="Crusty\Generators\PerlinNoise.cs" />
+    <Compile Include="Crusty\Models\Interface\ITerrain.cs" />
     <Compile Include="Crusty\Models\Models.cs" />
     <Compile Include="Crusty\Models\SkyBox.cs" />
     <Compile Include="Crusty\Models\Model.cs" />

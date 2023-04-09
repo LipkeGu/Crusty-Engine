@@ -8,6 +8,8 @@ using Crusty.Engine.Models;
 using OpenTK.Input;
 using Crusty.Engine.System;
 using Crusty.Engine.Common.Camera;
+using Crusty.Engine.Crusty.Models.Interface;
+using OpenTK.Graphics.OpenGL;
 
 namespace Crusty.Engine
 {
@@ -23,7 +25,7 @@ namespace Crusty.Engine
 
 		ICamera camera;
 
-		public void PreloadModels(ref Terrain terrain)
+		public void PreloadModels(ref ITerrain terrain)
 		{
 			var path = Path.Combine(Directory.GetCurrentDirectory(), Path.Combine("Data", "Models"));
 			var files = new DirectoryInfo(path).GetFiles("*.ini", SearchOption.AllDirectories).ToList();
@@ -60,7 +62,6 @@ namespace Crusty.Engine
 
 		public void Initialize(int width, int height)
 		{
-
 			Input.InputMouseButtonDown += (sender, e) => { };
 
 			Input.InputKeyDown += (sender, e) =>
@@ -134,7 +135,15 @@ namespace Crusty.Engine
 
 		public void Render(double deltaTime)
 		{
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+			GL.Enable(EnableCap.DepthTest);
+			GL.Enable(EnableCap.StencilTest);
+
 			EngineWorld.Render(deltaTime, ref WorldTime, ref camera);
+
+			GL.Disable(EnableCap.DepthTest);
+			GL.Disable(EnableCap.StencilTest);
 		}
 
 		public void Dispose()
@@ -143,8 +152,9 @@ namespace Crusty.Engine
 			Models.Dispose();
 		}
 
-		public void Unload()
+		public void OnUnload()
 		{
+			Input.Stop();
 			Models.CleanUp();
 		}
 	}

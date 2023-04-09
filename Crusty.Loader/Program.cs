@@ -6,21 +6,24 @@ namespace Crusty.Loader
 {
 	class Program
 	{
-		public static Crusty.Engine.EngineLayer EngineLayer;
+		public static Engine.EngineLayer EngineLayer;
 
 		[STAThread]
 		static void Main(string[] args)
 		{
-			var contextFlags = GraphicsContextFlags.ForwardCompatible;
 			var width = 1280;
 			var height = 720;
 			var gamewindowFlags = GameWindowFlags.Default;
-
 			var monitor = DisplayDevice.GetDisplay(DisplayIndex.Default);
+
+			var contextFlags = GraphicsContextFlags.ForwardCompatible;
+#if DEBUG
+			contextFlags |= GraphicsContextFlags.Debug;
+#else
 			width = monitor.Width;
 			height = monitor.Height;
-			gamewindowFlags = GameWindowFlags.Default;
-
+			gamewindowFlags = GameWindowFlags.Fullscreen;
+#endif
 			EngineLayer = new Engine.EngineLayer(width, height, GraphicsMode.Default, "", gamewindowFlags, monitor, 4, 3, contextFlags);
 			EngineLayer.Run();
 		}

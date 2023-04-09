@@ -159,7 +159,6 @@ namespace Crusty.Engine
 
 			if (shader != null)
 				shader.Unuse();
-
 		}
 
 		private void Draw(ref GameWorldTime worldTime, ref IShader shader, ref IList<Light> light, ref Fog fog,

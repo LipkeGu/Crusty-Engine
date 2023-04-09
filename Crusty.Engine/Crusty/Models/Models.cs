@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using Crusty.Engine.Common;
 using Crusty.Engine.Common.Camera;
+using Crusty.Engine.Crusty.Models.Interface;
 
 namespace Crusty.Engine.Models
 {
@@ -77,7 +78,7 @@ namespace Crusty.Engine.Models
 				model.Key.CleanUp();
 		}
 
-		internal void Update(Terrain terrain, double deltatime)
+		internal void Update(ITerrain terrain, double deltatime)
 		{
 			foreach (var model in Instances)
 				model.Key.Update(terrain, deltatime, false);

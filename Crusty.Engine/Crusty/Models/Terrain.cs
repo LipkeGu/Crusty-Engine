@@ -1,18 +1,16 @@
 ﻿using OpenTK;
-using Crusty.Engine.Common;
-using Crusty.Engine.Generators;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Crusty.Engine.Crusty.Models.Interface;
 
 namespace Crusty.Engine.Models
 {
-	public class Terrain : Model
+	public class Terrain : Model, ITerrain
 	{
-		public int Width = 0;
-		public int Height = 0;
+		public int Width { get; set; } = 0;
+		public int Height { get; set; } = 0;
 
-		public Dictionary<int, Dictionary<int, float>> Heights = new Dictionary<int, Dictionary<int, float>>();
+		public Dictionary<int, Dictionary<int, float>> Heights;
 
 		public Terrain(string filename, string normmap) : base("Terrain",
 			new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f), new OpenTK.Vector3(1f, 1f, 1f))

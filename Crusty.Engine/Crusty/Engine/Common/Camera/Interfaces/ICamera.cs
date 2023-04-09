@@ -1,4 +1,5 @@
-﻿using Crusty.Engine.Models;
+﻿using Crusty.Engine.Crusty.Models.Interface;
+using Crusty.Engine.Models;
 using OpenTK;
 
 namespace Crusty.Engine.Common.Camera
@@ -11,7 +12,7 @@ namespace Crusty.Engine.Common.Camera
 
 		Vector3 RayPosition { get; set; }
 
-		void Update(Terrain terrain, double deltatime);
+		void Update(ITerrain terrain, double deltatime);
 
 		void OnResize(int width, int height, float far);
 		

@@ -1,4 +1,6 @@
-﻿using Crusty.Engine.System;
+﻿#define INTELGL
+
+using Crusty.Engine.System;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -15,12 +17,12 @@ namespace Crusty.Engine
 		private double deltaTime = 0;
 		bool hideCursor = true;
 		bool firstMouse = true;
-		FrameBuffer FrameBuffer;
 
+#if !INTELGL
+		FrameBuffer FrameBuffer;
+#endif
 		public static int GLVerMajor = 4;
 		public static int GLVerMinor = 3;
-
-
 
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
@@ -32,8 +34,9 @@ namespace Crusty.Engine
 		public override void Dispose()
 		{
 			Engine.Dispose();
+#if !INTELGL
 			FrameBuffer.Dispose();
-
+#endif
 			base.Dispose();
 		}
 
@@ -73,9 +76,11 @@ namespace Crusty.Engine
 			Mouse.SetPosition(lastPost.X, lastPost.Y);
 
 			GL.ClearColor(color: Color4.Black);
+		
 			Engine.Initialize(Width, Height);
+#if !INTELGL
 			FrameBuffer = new FrameBuffer(Width, Height);
-
+#endif
 			base.OnLoad(e);
 		}
 
@@ -123,8 +128,12 @@ namespace Crusty.Engine
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			deltaTime = e.Time;
+#if !INTELGL
 			FrameBuffer.Render(Engine.Render, deltaTime);
-			
+#else
+			Engine.Render(deltaTime);
+#endif
+
 			SwapBuffers();
 
 			base.OnRenderFrame(e);
@@ -132,7 +141,9 @@ namespace Crusty.Engine
 
 		protected override void OnResize(EventArgs e)
 		{
+#if !INTELGL
 			FrameBuffer.OnResize(Width, Height);
+#endif
 			Engine.OnResize(Width, Height);
 
 			base.OnResize(e);
@@ -140,7 +151,7 @@ namespace Crusty.Engine
 
 		protected override void OnUnload(EventArgs e)
 		{
-			Engine.Unload();
+			Engine.OnUnload();
 
 			base.OnUnload(e);
 		}

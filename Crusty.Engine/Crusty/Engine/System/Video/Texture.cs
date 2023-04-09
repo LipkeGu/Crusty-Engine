@@ -149,7 +149,7 @@ namespace Crusty.Engine
 		public void CleanUp()
 		{
 			UnBind();
-			GL.DeleteTexture(1);
+			GL.DeleteTexture(Id);
 		}
 
 		public void Dispose()

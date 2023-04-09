@@ -7,6 +7,7 @@ using Crusty.Engine.Common.Camera;
 using Crusty.Engine.Common.Traits;
 using System.Drawing;
 using OpenTK.Graphics.OpenGL4;
+using Crusty.Engine.Crusty.Models.Interface;
 
 namespace Crusty.Engine
 {
@@ -85,7 +86,7 @@ namespace Crusty.Engine
 			ProjectionMatrix = Functions.Update_ProjectionMatrix(width, height, far + 500);
 		}
 
-		public void Update(Terrain terrain, double deltatime)
+		public void Update(ITerrain terrain, double deltatime)
 		{
 			Position.Y = terrain.QueryHeightAt((int)Position.X, (int)Position.Z) + 6;
 

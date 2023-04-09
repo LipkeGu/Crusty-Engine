@@ -6,6 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using Crusty.Engine.Common;
 using Crusty.Engine.Common.Traits;
 using Crusty.Engine.System;
+using Crusty.Engine.Crusty.Models.Interface;
 
 namespace Crusty.Engine.Models
 {
@@ -123,14 +124,19 @@ namespace Crusty.Engine.Models
 			Shader.Unuse();
 		}
 
-		public virtual void Update(Terrain terrain, double deltatime, bool terrainDebug = false)
+		public virtual void Update(double deltaTime)
 		{
-			if (terrain != null)
-				Position.Y = terrain.QueryHeightAt((int)Position.X, (int)Position.Z);
-			
 			UpdateModelMatrix();
 
 			Set_Shine_Variables(shineDamper, reflectivity);
+		}
+
+		public virtual void Update(ITerrain terrain, double deltatime, bool terrainDebug = false)
+		{
+			if (terrain != null)
+				Position.Y = terrain.QueryHeightAt((int)Position.X, (int)Position.Z);
+
+			Update(deltatime);
 		}
 
 		public virtual void Draw(ref GameWorldTime worldTime, ref IList<Light> light, ref Fog fog,
@@ -140,7 +146,6 @@ namespace Crusty.Engine.Models
 			VertexArray.Draw(ref worldTime, ref Shader, ref light, ref fog, projMatrix, viewMatrix, ModelMatrix, Scale, staticObject);
 			Texture.UnBind();
 		}
-
 
 		public void UploadToVertexArray()
 		{

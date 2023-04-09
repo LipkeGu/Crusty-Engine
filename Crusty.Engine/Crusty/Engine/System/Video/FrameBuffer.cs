@@ -25,50 +25,40 @@ namespace Crusty.Engine.System
 		public void BindTexture()
 		{
 			GL.ActiveTexture(TextureUnit.Texture0);
-			GL.BindTexture(TextureTarget.Texture2D, texId);
+			GL.BindTexture(textureTarget, texId);
 		}
 
 		public void UnBindTexture()
 		{
-			GL.BindTexture(TextureTarget.Texture2D, 0);
+			GL.BindTexture(textureTarget, 0);
 		}
 
-		public void Render(Action<double> func, double delaTime)
+		public void Render(Action<double> delegatedDrawFunction, double delaTime)
 		{
+			#region "Render Scene to Texture"
 			Bind();
-			GL.Viewport(0, 0, Width, Height);
-			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-
-			GL.Enable(EnableCap.DepthTest);
-			GL.Enable(EnableCap.StencilTest);
-			func(delaTime);
-			GL.Disable(EnableCap.DepthTest);
-			GL.Disable(EnableCap.StencilTest);
+			delegatedDrawFunction(delaTime);
 			UnBind();
+			#endregion
 
+			#region "Draw Texture to Window"
 			GL.Clear(ClearBufferMask.ColorBufferBit);
-			
 			BindTexture();
-
 			screen.Draw(screenShader);
 			UnBindTexture();
-
+			#endregion
 		}
 
 		public FrameBuffer(int width, int height)
 		{
-			Width = width;
-			Height = height;
-
 			{
-				var id = 0;
-				GL.GenFramebuffers(1, out id);
-				Id = id;
+				var _id = 0;
+				GL.GenFramebuffers(1, out _id);
+				Id = _id;
 			}
 
-
 			Create();
-			CreateTexture();
+			OnResize(width, height);
 		}
 
 		private void Create()
@@ -108,6 +98,8 @@ namespace Crusty.Engine.System
 			Width = width;
 			Height = height;
 
+			GL.Viewport(0, 0, Width, Height);
+			
 			CreateTexture();
 		}
 
@@ -116,7 +108,7 @@ namespace Crusty.Engine.System
 			Bind();
 
 			GL.GenTextures(1, out texId);
-			GL.BindTexture(TextureTarget.Texture2D, texId);
+			GL.BindTexture(textureTarget, texId);
 
 			GL.TexImage2D(textureTarget, 0, PixelInternalFormat.Rgba8, Width, Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
 			GL.TexParameter(textureTarget, TextureParameterName.TextureMagFilter, (int)All.Nearest);

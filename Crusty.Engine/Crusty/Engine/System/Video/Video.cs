@@ -25,7 +25,6 @@ namespace Crusty.Engine.System
 		public int DepthRange { get; private set; } = 2;
 
 		public RendererState() { }
-
 	}
 
 

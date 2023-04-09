@@ -78,7 +78,7 @@ namespace Crusty.Engine
 		public void Upload(List<int> data)
 		{
 			Bind();
-			GL.BufferData(BufferType, data.Count * Marshal.SizeOf(data[0]), data.ToArray(), BufferUsage);
+			GL.BufferData(BufferType, data.Count * sizeof(int), data.ToArray(), BufferUsage);
 			Elements = data.Count;
 			UnBind();
 		}

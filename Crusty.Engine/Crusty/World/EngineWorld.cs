@@ -1,5 +1,6 @@
 ﻿using Crusty.Engine.Common;
 using Crusty.Engine.Common.Camera;
+using Crusty.Engine.Crusty.Models.Interface;
 using Crusty.Engine.Models;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
@@ -18,7 +19,7 @@ namespace Crusty.Engine
 
 		IList<Light> Lights;
 
-		public Terrain Terrain { get; private set; }
+		public ITerrain Terrain { get; private set; }
 
 		public EngineWorld()
 		{
@@ -43,7 +44,7 @@ namespace Crusty.Engine
 		public void Update(double deltatime)
 		{
 			Skybox.Update(null, deltatime);
-			Terrain.Update(null, deltatime);
+			Terrain.Update(deltatime);
 
 			Models.Update(Terrain, deltatime);
 

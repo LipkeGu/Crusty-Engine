@@ -124,7 +124,6 @@ namespace Crusty.Engine
 
 						continue;
 					}
-
 				}
 
 				strm.Close();
@@ -148,7 +147,6 @@ namespace Crusty.Engine
 
 			LinkShader();
 			#endregion
-
 		}
 
 		public void Set_Int(string name, int value)
