@@ -1,5 +1,4 @@
 ﻿using Crusty.Engine.Models;
-using Crusty.Engine.System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using System;

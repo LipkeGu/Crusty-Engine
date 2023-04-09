@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Crusty.Engine.Models;
 using OpenTK.Input;
-using Crusty.Engine.System;
 using Crusty.Engine.Common.Camera;
 using Crusty.Engine.Crusty.Models.Interface;
 using OpenTK.Graphics.OpenGL;

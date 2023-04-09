@@ -1,6 +1,6 @@
 ﻿#define INTELGL
 
-using Crusty.Engine.System;
+using ImGuiNET;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -11,6 +11,8 @@ namespace Crusty.Engine
 {
 	public class EngineLayer : GameWindow, IDisposable
 	{
+		private ImGuiController ImGuiController;
+
 		public static CrustyEngine Engine { get; set; }
 
 		private Vector2 lastPost;
@@ -74,13 +76,14 @@ namespace Crusty.Engine
 		protected override void OnLoad(EventArgs e)
 		{
 			Mouse.SetPosition(lastPost.X, lastPost.Y);
-
+			Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
 			GL.ClearColor(color: Color4.Black);
 		
 			Engine.Initialize(Width, Height);
 #if !INTELGL
 			FrameBuffer = new FrameBuffer(Width, Height);
 #endif
+			ImGuiController = new ImGuiController(Width, Height);
 			base.OnLoad(e);
 		}
 
@@ -133,6 +136,7 @@ namespace Crusty.Engine
 #else
 			Engine.Render(deltaTime);
 #endif
+			ImGuiController.Render();
 
 			SwapBuffers();
 
@@ -145,7 +149,7 @@ namespace Crusty.Engine
 			FrameBuffer.OnResize(Width, Height);
 #endif
 			Engine.OnResize(Width, Height);
-
+			ImGuiController.WindowResized(Width, Height);
 			base.OnResize(e);
 		}
 
@@ -159,7 +163,7 @@ namespace Crusty.Engine
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			Engine.Update(e.Time);
-
+			ImGuiController.Update(this, (float)e.Time);
 			base.OnUpdateFrame(e);
 		}
 	}

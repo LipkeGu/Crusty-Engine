@@ -5,7 +5,6 @@ using Crusty.Engine.Traits;
 using OpenTK.Graphics.OpenGL4;
 using Crusty.Engine.Common;
 using Crusty.Engine.Common.Traits;
-using Crusty.Engine.System;
 using Crusty.Engine.Crusty.Models.Interface;
 
 namespace Crusty.Engine.Models

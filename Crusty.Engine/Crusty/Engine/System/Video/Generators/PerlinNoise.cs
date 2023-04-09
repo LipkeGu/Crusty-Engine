@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crusty.Engine.Generators
+namespace Crusty.Engine
 {
 	public class PerlinNoise
 	{

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Crusty.Engine.Common;
 using Crusty.Engine.Models;
-using Crusty.Engine.System;
 
 namespace Crusty.Engine
 {

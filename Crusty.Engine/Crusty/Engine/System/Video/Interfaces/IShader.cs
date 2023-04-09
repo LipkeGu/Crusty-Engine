@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Crusty.Engine.System
+namespace Crusty.Engine
 {
 	public interface IShader : IDisposable
 	{
