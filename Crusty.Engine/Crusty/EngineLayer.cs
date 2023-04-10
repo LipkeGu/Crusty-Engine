@@ -1,5 +1,6 @@
 ﻿#define INTELGL
 
+using Crusty.Engine.Common.Camera;
 using Crusty.Engine.Models;
 using Crusty.Engine.UI;
 using ImGuiNET;
@@ -10,6 +11,7 @@ using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Crusty.Engine
 {
@@ -32,19 +34,23 @@ namespace Crusty.Engine
 		public static int GLVerMajor = 4;
 		public static int GLVerMinor = 3;
 
-
+		Matrix4 x;
 		private void openGL_GUI_Content()
 		{
 			ImGui.LabelText(GL.GetString(StringName.Renderer), "Renderer: ");
 			ImGui.LabelText(GL.GetString(StringName.Vendor), "Vendor: ");
 			ImGui.LabelText(GL.GetString(StringName.Version), "Version: ");
+
+			
+
 		}
-
-
 
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{
+
+			x = new Matrix4();
+
 			lastPost = new Vector2(width / 2, height / 2);
 			Engine = new CrustyEngine();
 
@@ -55,6 +61,16 @@ namespace Crusty.Engine
 			{
 				var mRay = Engine.Camera.RayPosition;
 				ImGui.LabelText(string.Format("X: {0} Y: {1} Z: {2}", mRay.X, mRay.Y, mRay.Z), "MouseRay: ");
+			}));
+
+			GUIWIndows.Add("main2", new Window("Camera Viewmatrix", () =>
+			{
+				var matrix = Engine.Camera.ViewMatrix;
+
+				ImGui.LabelText(matrix.Row0.ToString(), "Row0: ");
+				ImGui.LabelText(matrix.Row1.ToString(), "Row1: ");
+				ImGui.LabelText(matrix.Row2.ToString(), "Row2: ");
+				ImGui.LabelText(matrix.Row3.ToString(), "Row3: ");
 			}));
 		}
 
@@ -132,6 +148,7 @@ namespace Crusty.Engine
 				lastPost = new Vector2(e.Mouse.X, e.Mouse.Y);
 				Engine.OnMouseMove(new CursorPosition(deltaX, deltaY));
 			}
+
 
 			base.OnMouseMove(e);
 		}

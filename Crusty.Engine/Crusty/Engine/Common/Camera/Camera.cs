@@ -17,8 +17,8 @@ namespace Crusty.Engine
 		private float _yaw = 90.0f;
 		private float _pitch = 0.0f;
 
-		int Width = 0;
-		int Height = 0;
+		public int Width { get; set; } = 0;
+		public int Height { get; set; } = 0;
 
 		public bool FlyMode {get; set;} = false;
 
@@ -77,8 +77,6 @@ namespace Crusty.Engine
 		{
 			Pitch -= cursorPosition.Y;
 			Yaw += cursorPosition.X;
-
-			RayPosition = calculateMouseRay(cursorPosition.X, cursorPosition.Y);
 		}
 
 		public void OnResize(int width, int height, float far)
@@ -97,34 +95,9 @@ namespace Crusty.Engine
 			ViewMatrix = Functions.Update_ViewMatrix(Position, Rotation, front, Vector3.UnitY);
 		}
 
-		Vector3 calculateMouseRay(int mouseX, int mouseY)
+		public Vector3 GetPosition()
 		{
-			var NomalizeddeviceCoords = GetNormalizedDeviceCoords(mouseX, mouseY);
-			var ClipCoords = new Vector4(NomalizeddeviceCoords.X, NomalizeddeviceCoords.Y, -1, 1);
-			var eyeCoords = ToEyeCoords(ClipCoords);
-
-			return toWorldCoords(eyeCoords);
-		}
-
-		Vector2 GetNormalizedDeviceCoords(float mouseX, float mouseY)
-		{
-			float x = (2 * mouseX) / (Width - 1);
-			float y = (2 * mouseY) / (Height - 1);
-
-			return new Vector2(x, -y);
-		}
-
-		Vector4 ToEyeCoords(Vector4 clipCoords)
-		{
-			var eyeCoords = Vector4.Transform(ProjectionMatrix.Inverted(), clipCoords);
-			return new Vector4(eyeCoords.X, eyeCoords.Y, -1, 0f);
-		}
-
-		Vector3 toWorldCoords(Vector4 eyeCoords)
-		{
-			var worldCoords = Vector4.Transform(ViewMatrix.Inverted(), eyeCoords);
-
-			return new Vector3(worldCoords.X, worldCoords.Y, worldCoords.Z).Normalized();
+			return Position;
 		}
 	}
 }

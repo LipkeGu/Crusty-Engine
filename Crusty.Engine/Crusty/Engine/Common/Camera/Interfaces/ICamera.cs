@@ -1,4 +1,5 @@
-﻿using Crusty.Engine.Crusty.Models.Interface;
+﻿using Crusty.Engine.Common.Traits;
+using Crusty.Engine.Crusty.Models.Interface;
 using Crusty.Engine.Models;
 using OpenTK;
 
@@ -11,6 +12,12 @@ namespace Crusty.Engine.Common.Camera
 		Matrix4 ViewMatrix { get; set; }
 
 		Vector3 RayPosition { get; set; }
+
+		Vector3 GetPosition();
+
+		int Width { get; set; }
+
+		int Height { get; set; }
 
 		float Far { get; set; }
 

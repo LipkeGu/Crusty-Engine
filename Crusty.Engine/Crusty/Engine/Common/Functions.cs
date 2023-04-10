@@ -1,4 +1,6 @@
-﻿using OpenTK;
+﻿using Crusty.Engine.Common.Camera;
+using OpenTK;
+using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Globalization;
 
@@ -15,7 +17,15 @@ namespace Crusty.Engine.Common
 				float.Parse(y, CultureInfo.InvariantCulture.NumberFormat), 
 				float.Parse(z, CultureInfo.InvariantCulture.NumberFormat));
 		}
-		
+
+		public static Vector3 UnProject(CursorPosition pos, ref ICamera camera)
+		{
+			var pixelVec = new Vector3(pos.X, camera.Height - pos.Y, camera.Near);
+			var vp = ( camera.ViewMatrix * camera.ProjectionMatrix).Inverted();
+
+			return Vector3.Unproject(pixelVec, 0, 0, camera.Width, camera.Height, camera.Near, camera.Far, vp).Normalized();
+		}
+
 		public static Vector3 CalculateFront(float pitch, float yaw)
 		{
 			var _front = -Vector3.UnitZ;
@@ -43,7 +53,7 @@ namespace Crusty.Engine.Common
 			return matrix;
 		}
 
-		public static Matrix4 Update_ProjectionMatrix(int width, int height, float near, float far = 1000.0f, float fov = 75.0f)
+		public static Matrix4 Update_ProjectionMatrix(int width, int height, float near, float far = 1000.0f, float fov = 90.0f)
 		{
 			return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), width / height, near, far);
 		}

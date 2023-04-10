@@ -93,13 +93,13 @@
     <Compile Include="Crusty\Parsers\INIFile.cs" />
     <Compile Include="Crusty\World\EngineWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Crusty\Traits\AltersScreen.cs" />
+    <Compile Include="Crusty\Engine\Common\Traits\AltersScreen.cs" />
     <Compile Include="Crusty\Engine\System\Video\Buffer.cs" />
     <Compile Include="Crusty\Engine\System\Video\Shader.cs" />
     <Compile Include="Crusty\Engine\System\Video\Texture.cs" />
     <Compile Include="Crusty\Engine\System\Video\VertexArray.cs" />
     <Compile Include="Crusty\Engine\Common\Camera\Camera.cs" />
-    <Compile Include="Crusty\Traits\Lighting.cs" />
+    <Compile Include="Crusty\Engine\Common\Traits\Lighting.cs" />
     <Compile Include="Crusty\Models\Light.cs" />
     <Compile Include="Crusty\Models\Fog.cs" />
   </ItemGroup>

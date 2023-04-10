@@ -116,6 +116,7 @@ namespace Crusty.Engine
 		public void OnMouseMove(CursorPosition cursorPosition)
 		{
 			Camera.OnMouseMove(cursorPosition);
+			Camera.RayPosition = Functions.UnProject(cursorPosition, ref Camera);
 			Input.SetMousePosition(Camera.RayPosition, cursorPosition);
 		}
 
