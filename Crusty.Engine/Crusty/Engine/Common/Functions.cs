@@ -43,9 +43,9 @@ namespace Crusty.Engine.Common
 			return matrix;
 		}
 
-		public static Matrix4 Update_ProjectionMatrix(int width, int height, float far = 1000.0f, float fov = 75.0f)
+		public static Matrix4 Update_ProjectionMatrix(int width, int height, float near, float far = 1000.0f, float fov = 75.0f)
 		{
-			return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), width / height, 0.1f, far);
+			return Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(fov), width / height, near, far);
 		}
 
 		public static Matrix4 CreateTransformationMatrix(Vector3 position, Vector3 rotation, Vector3 scale)

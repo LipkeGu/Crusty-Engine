@@ -12,6 +12,10 @@ namespace Crusty.Engine.Common.Camera
 
 		Vector3 RayPosition { get; set; }
 
+		float Far { get; set; }
+
+		float Near { get; set; }
+
 		void Update(ITerrain terrain, double deltatime);
 
 		void OnResize(int width, int height, float far);

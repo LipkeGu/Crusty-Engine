@@ -17,8 +17,8 @@ namespace Crusty.Engine
 		private float _yaw = 90.0f;
 		private float _pitch = 0.0f;
 
-		int width = 0;
-		int height = 0;
+		int Width = 0;
+		int Height = 0;
 
 		public bool FlyMode {get; set;} = false;
 
@@ -43,6 +43,9 @@ namespace Crusty.Engine
 		public Matrix4 ViewMatrix { get; set; } = Matrix4.Identity;
 
 		public Vector3 RayPosition { get; set; }
+
+		public float Far { get; set; } = 1000.0f;
+		public float Near { get; set; } = 0.01f;
 
 		public Camera(Vector3 position)
 		{
@@ -74,15 +77,16 @@ namespace Crusty.Engine
 		{
 			Pitch -= cursorPosition.Y;
 			Yaw += cursorPosition.X;
+
+			RayPosition = calculateMouseRay(cursorPosition.X, cursorPosition.Y);
 		}
 
 		public void OnResize(int width, int height, float far)
 		{
-			this.width = width;
-			this.height = height;
-
-
-			ProjectionMatrix = Functions.Update_ProjectionMatrix(width, height, far + 500);
+			Far = far + 500;
+			Width = width;
+			Height = height;
+			ProjectionMatrix = Functions.Update_ProjectionMatrix(Width, Height, Near, Far);
 		}
 
 		public void Update(ITerrain terrain, double deltatime)
@@ -90,28 +94,22 @@ namespace Crusty.Engine
 			Position.Y = terrain.QueryHeightAt((int)Position.X, (int)Position.Z) + 6;
 
 			front = Functions.CalculateFront(_pitch, _yaw);
-
 			ViewMatrix = Functions.Update_ViewMatrix(Position, Rotation, front, Vector3.UnitY);
-			RayPosition = calculateMouseRay();
 		}
 
-		Vector3 calculateMouseRay()
+		Vector3 calculateMouseRay(int mouseX, int mouseY)
 		{
-			float mouseX = Mouse.GetState().X;
-			float mouseY = Mouse.GetState().Y;
-
 			var NomalizeddeviceCoords = GetNormalizedDeviceCoords(mouseX, mouseY);
 			var ClipCoords = new Vector4(NomalizeddeviceCoords.X, NomalizeddeviceCoords.Y, -1, 1);
 			var eyeCoords = ToEyeCoords(ClipCoords);
 
 			return toWorldCoords(eyeCoords);
-
 		}
 
 		Vector2 GetNormalizedDeviceCoords(float mouseX, float mouseY)
 		{
-			float x = (2 * mouseX) / (width - 1);
-			float y = (2 * mouseY) / (height - 1);
+			float x = (2 * mouseX) / (Width - 1);
+			float y = (2 * mouseY) / (Height - 1);
 
 			return new Vector2(x, -y);
 		}

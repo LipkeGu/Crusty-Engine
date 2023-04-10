@@ -55,11 +55,6 @@ namespace Crusty.Engine
 			{
 				var mRay = Engine.Camera.RayPosition;
 				ImGui.LabelText(string.Format("X: {0} Y: {1} Z: {2}", mRay.X, mRay.Y, mRay.Z), "MouseRay: ");
-			//	ImGui.LabelText(string.Format("{0} (MS: {1})", Math.Round(RenderFrequency,1), Math.Round(RenderPeriod * 1000,2)), "FPS");
-
-			//	ImGui.Checkbox("Render Scene", ref Engine.Enabled);
-
-			//	ImGui.ColorPicker4("ClearColor", ref Engine.Video.RendererState.ClearColor);
 			}));
 		}
 
@@ -106,7 +101,7 @@ namespace Crusty.Engine
 		protected override void OnLoad(EventArgs e)
 		{
 			Mouse.SetPosition(lastPost.X, lastPost.Y);
-			Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
+			//Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
 			GL.ClearColor(color: Color4.Black);
 		
 			Engine.Initialize(Width, Height);
