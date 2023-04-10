@@ -98,7 +98,7 @@ namespace Crusty.Engine
 		Vector3 calculateMouseRay()
 		{
 			float mouseX = Mouse.GetState().X;
-			float mouseY = Mouse.GetState().Y; ;
+			float mouseY = Mouse.GetState().Y;
 
 			var NomalizeddeviceCoords = GetNormalizedDeviceCoords(mouseX, mouseY);
 			var ClipCoords = new Vector4(NomalizeddeviceCoords.X, NomalizeddeviceCoords.Y, -1, 1);
@@ -110,24 +110,21 @@ namespace Crusty.Engine
 
 		Vector2 GetNormalizedDeviceCoords(float mouseX, float mouseY)
 		{
-			float x = (mouseX) / (width - 1);
-			float y = (mouseY) / (height - 1);
+			float x = (2 * mouseX) / (width - 1);
+			float y = (2 * mouseY) / (height - 1);
 
 			return new Vector2(x, -y);
 		}
 
 		Vector4 ToEyeCoords(Vector4 clipCoords)
 		{
-			var eyeCoords = clipCoords * ProjectionMatrix.Inverted();
-			eyeCoords.Z = -1;
-			eyeCoords.W = 0;
-
-			return eyeCoords;
+			var eyeCoords = Vector4.Transform(ProjectionMatrix.Inverted(), clipCoords);
+			return new Vector4(eyeCoords.X, eyeCoords.Y, -1, 0f);
 		}
 
 		Vector3 toWorldCoords(Vector4 eyeCoords)
 		{
-			var worldCoords = eyeCoords * ViewMatrix.Inverted();
+			var worldCoords = Vector4.Transform(ViewMatrix.Inverted(), eyeCoords);
 
 			return new Vector3(worldCoords.X, worldCoords.Y, worldCoords.Z).Normalized();
 		}
