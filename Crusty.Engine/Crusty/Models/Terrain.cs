@@ -58,7 +58,6 @@ namespace Crusty.Engine.Models
 			UploadToVertexArray();
 		}
 
-		
 		public float QueryHeightAt(int x, int z)
 		{
 			var terrainZ = z;

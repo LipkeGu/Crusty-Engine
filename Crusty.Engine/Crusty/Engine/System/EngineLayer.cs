@@ -34,44 +34,15 @@ namespace Crusty.Engine
 		public static int GLVerMajor = 4;
 		public static int GLVerMinor = 3;
 
-		Matrix4 x;
-		private void openGL_GUI_Content()
-		{
-			ImGui.LabelText(GL.GetString(StringName.Renderer), "Renderer: ");
-			ImGui.LabelText(GL.GetString(StringName.Vendor), "Vendor: ");
-			ImGui.LabelText(GL.GetString(StringName.Version), "Version: ");
-
-			
-
-		}
-
 		public EngineLayer(int width, int height, GraphicsMode mode, string title, GameWindowFlags options, DisplayDevice device,
 			int major, int minor, GraphicsContextFlags flags) : base(width, height, mode, title, options, device, major, minor, flags)
 		{
-
-			x = new Matrix4();
-
-			lastPost = new Vector2(width / 2, height / 2);
+			lastPost = new Vector2(Bounds.X + (ClientRectangle.Width / 2),
+				Bounds.Y + (ClientRectangle.Height / 2));
+			
 			Engine = new CrustyEngine();
-
+			CursorVisible = false;
 			CursorGrabbed = true;
-
-			GUIWIndows.Add("main0", new Window("OpenGL Info", openGL_GUI_Content));
-			GUIWIndows.Add("main1", new Window("Crusty Engine", () =>
-			{
-				var mRay = Engine.Camera.RayPosition;
-				ImGui.LabelText(string.Format("X: {0} Y: {1} Z: {2}", mRay.X, mRay.Y, mRay.Z), "MouseRay: ");
-			}));
-
-			GUIWIndows.Add("main2", new Window("Camera Viewmatrix", () =>
-			{
-				var matrix = Engine.Camera.ViewMatrix;
-
-				ImGui.LabelText(matrix.Row0.ToString(), "Row0: ");
-				ImGui.LabelText(matrix.Row1.ToString(), "Row1: ");
-				ImGui.LabelText(matrix.Row2.ToString(), "Row2: ");
-				ImGui.LabelText(matrix.Row3.ToString(), "Row3: ");
-			}));
 		}
 
 		public override void Dispose()
@@ -116,15 +87,18 @@ namespace Crusty.Engine
 
 		protected override void OnLoad(EventArgs e)
 		{
-			Mouse.SetPosition(lastPost.X, lastPost.Y);
-			//Title += ": OpenGL Version: " + GL.GetString(StringName.Version);
 			GL.ClearColor(color: Color4.Black);
-		
 			Engine.Initialize(Width, Height);
+
+			var rect = this.ClientRectangle;
+
+			Mouse.SetPosition(Bounds.X + (rect.Width / 2), Bounds.Y + (rect.Height / 2));
+
 #if !INTELGL
 			FrameBuffer = new FrameBuffer(Width, Height);
 #endif
 			ImGuiController = new ImGuiController(Width, Height);
+
 			base.OnLoad(e);
 		}
 

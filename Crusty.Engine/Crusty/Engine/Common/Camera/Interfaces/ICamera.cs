@@ -13,8 +13,6 @@ namespace Crusty.Engine.Common.Camera
 
 		Vector3 RayPosition { get; set; }
 
-		Vector3 GetPosition();
-
 		int Width { get; set; }
 
 		int Height { get; set; }

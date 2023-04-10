@@ -69,7 +69,7 @@
     <Compile Include="Crusty\Engine\Common\Camera\Interfaces\ICamera.cs" />
     <Compile Include="Crusty\Engine\Common\Functions.cs" />
     <Compile Include="Crusty\Engine\Common\GameTime.cs" />
-    <Compile Include="Crusty\EngineLayer.cs" />
+    <Compile Include="Crusty\Engine\System\EngineLayer.cs" />
     <Compile Include="Crusty\Engine\Common\Traits\MoveAble.cs" />
     <Compile Include="Crusty\Engine\System\Input\Definitions.cs" />
     <Compile Include="Crusty\Engine\System\Input\Input.cs" />
@@ -89,7 +89,7 @@
     <Compile Include="Crusty\Models\Model.cs" />
     <Compile Include="Crusty\Models\OBJLoader.cs" />
     <Compile Include="Crusty\Models\Terrain.cs" />
-    <Compile Include="Crusty\Crusty.Engine.cs" />
+    <Compile Include="Crusty\Engine\Crusty.Engine.cs" />
     <Compile Include="Crusty\Parsers\INIFile.cs" />
     <Compile Include="Crusty\World\EngineWorld.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

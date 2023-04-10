@@ -109,14 +109,15 @@ namespace Crusty.Engine
 			Camera.Update(EngineWorld.Terrain, deltatime);
 			EngineWorld.Update(deltatime);
 			WorldTime.Update();
-
 			Models.Update(EngineWorld.Terrain, deltatime);
 		}
 
 		public void OnMouseMove(CursorPosition cursorPosition)
 		{
 			Camera.OnMouseMove(cursorPosition);
-			Camera.RayPosition = Functions.UnProject(cursorPosition, ref Camera);
+			Camera.RayPosition = Functions.Unproject(cursorPosition, Camera.Width, Camera.Height,
+				Camera.ProjectionMatrix, Camera.ViewMatrix);
+
 			Input.SetMousePosition(Camera.RayPosition, cursorPosition);
 		}
 

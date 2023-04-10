@@ -151,7 +151,6 @@ namespace Crusty.Engine.Models
 			if (Vertices.Count != 0)
 			{
 				VertexArray.Upload(Vertices, Indices);
-				Vertices.Clear();
 			}
 
 			if (TexCoords.Count != 0)

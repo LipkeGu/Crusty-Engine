@@ -1,12 +1,8 @@
 ﻿using OpenTK;
 using Crusty.Engine.Common;
-using Crusty.Engine.Models;
-using System;
-using OpenTK.Input;
+
 using Crusty.Engine.Common.Camera;
 using Crusty.Engine.Common.Traits;
-using System.Drawing;
-using OpenTK.Graphics.OpenGL4;
 using Crusty.Engine.Crusty.Models.Interface;
 
 namespace Crusty.Engine
@@ -14,7 +10,7 @@ namespace Crusty.Engine
 	public class Camera : MoveAble, ICamera 
 	{
 		Vector3 front = -Vector3.UnitZ;
-		private float _yaw = 90.0f;
+		private float _yaw = 0.0f;
 		private float _pitch = 0.0f;
 
 		public int Width { get; set; } = 0;
@@ -22,15 +18,11 @@ namespace Crusty.Engine
 
 		public bool FlyMode {get; set;} = false;
 
-
 		public float Pitch
 		{
 			get { return MathHelper.RadiansToDegrees(_pitch); }
-			set { _pitch = MathHelper.DegreesToRadians(MathHelper.Clamp(value, -45.0f, 45.0f)); }
+			set { _pitch = MathHelper.DegreesToRadians(MathHelper.Clamp(value, -46.0f, 46.0f)); }
 		}
-
-		Vector3 cameraTarget = Vector3.Zero;
-		Vector3 cameraDirection;
 
 		public float Yaw
 		{
@@ -45,12 +37,12 @@ namespace Crusty.Engine
 		public Vector3 RayPosition { get; set; }
 
 		public float Far { get; set; } = 1000.0f;
+
 		public float Near { get; set; } = 0.01f;
 
 		public Camera(Vector3 position)
 		{
 			Position = position;
-			cameraDirection = Vector3.Normalize(Position - cameraTarget);
 		}
 
 		public virtual void Move_Forward(float speed)
@@ -91,13 +83,10 @@ namespace Crusty.Engine
 		{
 			Position.Y = terrain.QueryHeightAt((int)Position.X, (int)Position.Z) + 6;
 
-			front = Functions.CalculateFront(_pitch, _yaw);
+			front = Functions.CalculateFront(MathHelper.DegreesToRadians(Pitch), MathHelper.DegreesToRadians(Yaw));
 			ViewMatrix = Functions.Update_ViewMatrix(Position, Rotation, front, Vector3.UnitY);
 		}
 
-		public Vector3 GetPosition()
-		{
-			return Position;
-		}
+
 	}
 }
