@@ -71,9 +71,9 @@ namespace Crusty.Engine
 			var _size = (data.Count * sizeof(int));
 
 			Bind();
-			if (Size < _size)
+			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
 				Size = _size;
 			}
 			else
@@ -82,14 +82,14 @@ namespace Crusty.Engine
 			UnBind();
 		}
 
-		public void Update(List<Vector4> data, int offset = 0)
+		public void Update(List<Vector4> data)
 		{
 			var _size = (data.Count * Vector4.SizeInBytes);
 
 			Bind();
-			if (Size < _size)
+			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
 				Size = _size;
 			}
 			else
@@ -98,14 +98,14 @@ namespace Crusty.Engine
 			UnBind();
 		}
 
-		public void Update(List<Vector3> data, int offset = 0)
+		public void Update(List<Vector3> data)
 		{
 			var _size = (data.Count * Vector3.SizeInBytes);
 
 			Bind();
-			if (Size < _size)
+			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
 				Size = _size;
 			}
 			else
@@ -114,14 +114,14 @@ namespace Crusty.Engine
 			UnBind();
 		}
 
-		public void Update(List<Vector2> data, int offset = 0)
+		public void Update(List<Vector2> data)
 		{
 			var _size = (data.Count * Vector2.SizeInBytes);
 
 			Bind();
-			if (Size < _size)
+			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
 				Size = _size;
 			}
 			else
