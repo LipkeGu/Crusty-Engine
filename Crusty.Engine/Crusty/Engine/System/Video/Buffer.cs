@@ -1,9 +1,7 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
-using SharpFont;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Crusty.Engine
 {
@@ -17,31 +15,16 @@ namespace Crusty.Engine
 		public VertexBuffer(int capacity) : base(BufferTarget.ArrayBuffer, capacity) { }
 	}
 
-	/// <summary>
-	/// Allgemeines Buffer Objekt
-	/// </summary>
 	public class Buffer : IDisposable
 	{
-		/// <summary>
-		/// Die OpenGL-Id des Buffers.
-		/// </summary>
 		public int Id { get; private set; } = 0;
 
 		public int Size { get; private set; } = 0;
 
-		/// <summary>
-		/// Usage of the Buffer
-		/// </summary>
 		public BufferUsageHint BufferUsage { get; private set; } = BufferUsageHint.DynamicDraw;
 
-		/// <summary>
-		/// Number of Elements in the buffer
-		/// </summary>
 		public int Elements { get; private set; } = 0;
 
-		/// <summary>
-		/// Typ of Buffer (Array, Element, etc...)
-		/// </summary>
 		public BufferTarget BufferType { get; private set; } = BufferTarget.ArrayBuffer;
 
 		public Buffer(BufferTarget target, int capacity = 16384)
@@ -54,26 +37,23 @@ namespace Crusty.Engine
 			Size = capacity;
 
 			Bind();
-			GL.BufferData(BufferType, Size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+			GL.BufferData(BufferType, Size, IntPtr.Zero, BufferUsage);
 			UnBind();
 		}
 
-		/// <summary>
-		/// Bind the Buffer
-		/// </summary>
 		public void Bind()
 		{
 			GL.BindBuffer(BufferType, Id);
 		}
 
-		public void Update(List<int> data, int offset = 0)
+		public void Update(List<int> data)
 		{
 			var _size = (data.Count * sizeof(int));
 
 			Bind();
 			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsage);
 				Size = _size;
 			}
 			else
@@ -89,7 +69,7 @@ namespace Crusty.Engine
 			Bind();
 			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsage);
 				Size = _size;
 			}
 			else
@@ -105,7 +85,7 @@ namespace Crusty.Engine
 			Bind();
 			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsage);
 				Size = _size;
 			}
 			else
@@ -121,7 +101,7 @@ namespace Crusty.Engine
 			Bind();
 			if (Size != _size)
 			{
-				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsageHint.DynamicDraw);
+				GL.BufferData(BufferType, _size, data.ToArray(), BufferUsage);
 				Size = _size;
 			}
 			else
@@ -137,21 +117,12 @@ namespace Crusty.Engine
 			UnBind();
 		}
 
-		/// <summary>
-		/// Maps the current bound buffer for manipulation and returns the memory address.
-		/// </summary>
-		/// <param name="bufferAccess"></param>
-		/// <returns>The Memory Address...</returns>
 		public IntPtr Map(BufferAccess bufferAccess = BufferAccess.WriteOnly)
 		{
 			Bind();
 			return GL.MapBuffer(BufferType, bufferAccess);
 		}
 
-		/// <summary>
-		/// Unmap the current mapped buffer.
-		/// </summary>
-		/// <returns></returns>
 		public bool UnMap()
 		{
 			var retval = GL.UnmapBuffer(BufferType);
@@ -160,42 +131,24 @@ namespace Crusty.Engine
 			return retval;
 		}
 
-		/// <summary>
-		/// Lädt Daten in den Buffer.
-		/// </summary>
-		/// <param name="data">Die Daten...</param>
-		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
 		public void Upload(List<int> data)
 		{
 			Elements = data.Count;
 			Update(data);
 		}
 
-		/// <summary>
-		/// Lädt Daten in den Buffer.
-		/// </summary>
-		/// <param name="data">Die Daten...</param>
-		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
 		public void Upload(List<Vector3> data)
 		{
 			Elements = data.Count;
 			Update(data);
 		}
 
-		/// <summary>
-		/// Lädt Daten in den Buffer.
-		/// </summary>
-		/// <param name="data">Die Daten...</param>
-		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
 		public void Upload(List<Vector2> data)
 		{
 			Elements = data.Count;
 			Update(data);
 		}
 
-		/// <summary>
-		/// Deaktiviert den Buffer für die Verwendung.
-		/// </summary>
 		public void UnBind()
 		{
 			GL.BindBuffer(BufferType, 0);
@@ -206,9 +159,7 @@ namespace Crusty.Engine
 			UnBind();
 			GL.DeleteBuffer(Id);
 		}
-		/// <summary>
-		/// Deaktiviert den Buffer und gibt die Resourcen wieder frei.
-		/// </summary>
+		
 		public void Dispose()
 		{
 			CleanUp();

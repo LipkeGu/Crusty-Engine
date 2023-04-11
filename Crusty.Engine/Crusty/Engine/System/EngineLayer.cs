@@ -1,7 +1,5 @@
-﻿#define INTELGL
+﻿//#define INTELGL
 
-using Crusty.Engine.Common.Camera;
-using Crusty.Engine.Models;
 using Crusty.Engine.UI;
 using ImGuiNET;
 using OpenTK;
@@ -39,10 +37,10 @@ namespace Crusty.Engine
 		{
 			lastPost = new Vector2(Bounds.X + (ClientRectangle.Width / 2),
 				Bounds.Y + (ClientRectangle.Height / 2));
-			
-			Engine = new CrustyEngine();
 			CursorVisible = false;
 			CursorGrabbed = true;
+			
+			Engine = new CrustyEngine();
 		}
 
 		public override void Dispose()
