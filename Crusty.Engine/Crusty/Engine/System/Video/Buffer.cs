@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Graphics.OpenGL4;
+using SharpFont;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -8,12 +9,12 @@ namespace Crusty.Engine
 {
 	public class IndexBuffer : Buffer, IDisposable
 	{
-		public IndexBuffer() : base(BufferTarget.ElementArrayBuffer) { }
+		public IndexBuffer(int capacity) : base(BufferTarget.ElementArrayBuffer, capacity) { }
 	}
 
 	public class VertexBuffer : Buffer, IDisposable
 	{
-		public VertexBuffer() : base(BufferTarget.ArrayBuffer) { }
+		public VertexBuffer(int capacity) : base(BufferTarget.ArrayBuffer, capacity) { }
 	}
 
 	/// <summary>
@@ -25,6 +26,8 @@ namespace Crusty.Engine
 		/// Die OpenGL-Id des Buffers.
 		/// </summary>
 		public int Id { get; private set; } = 0;
+
+		public int Size { get; private set; } = 0;
 
 		/// <summary>
 		/// Usage of the Buffer
@@ -41,25 +44,18 @@ namespace Crusty.Engine
 		/// </summary>
 		public BufferTarget BufferType { get; private set; } = BufferTarget.ArrayBuffer;
 
-		public Buffer(BufferTarget target)
+		public Buffer(BufferTarget target, int capacity = 16384)
 		{
 			BufferType = target;
-		}
-
-		/// <summary>
-		/// Creates the Buffer
-		/// </summary>
-		public void Create(BufferUsageHint bufferUsage = BufferUsageHint.DynamicDraw, bool bind = true)
-		{
 			var _id = 0;
 			GL.GenBuffers(1, out _id);
 
 			Id = _id;
+			Size = capacity;
 
-			BufferUsage = bufferUsage;
-
-			if (bind)
-				Bind();
+			Bind();
+			GL.BufferData(BufferType, Size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+			UnBind();
 		}
 
 		/// <summary>
@@ -70,45 +66,75 @@ namespace Crusty.Engine
 			GL.BindBuffer(BufferType, Id);
 		}
 
-		/// <summary>
-		/// Lädt Daten in den Buffer.
-		/// </summary>
-		/// <param name="data">Die Daten...</param>
-		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
-		public void Upload(List<int> data)
+		public void Update(List<int> data, int offset = 0)
 		{
+			var _size = (data.Count * sizeof(int));
+
 			Bind();
-			GL.BufferData(BufferType, data.Count * sizeof(int), data.ToArray(), BufferUsage);
-			Elements = data.Count;
+			if (Size < _size)
+			{
+				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				Size = _size;
+			}
+			else
+				GL.BufferSubData(BufferType, IntPtr.Zero, (IntPtr)(_size), data.ToArray());
+
 			UnBind();
 		}
 
 		public void Update(List<Vector4> data, int offset = 0)
 		{
+			var _size = (data.Count * Vector4.SizeInBytes);
+
 			Bind();
-			GL.BufferSubData(BufferType, (IntPtr)offset, (IntPtr)(data.Count * Vector4.SizeInBytes), data.ToArray());
-			Bind();
+			if (Size < _size)
+			{
+				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				Size = _size;
+			}
+			else
+				GL.BufferSubData(BufferType, IntPtr.Zero, (IntPtr)(_size), data.ToArray());
+
+			UnBind();
 		}
 
 		public void Update(List<Vector3> data, int offset = 0)
 		{
+			var _size = (data.Count * Vector3.SizeInBytes);
+
 			Bind();
-			GL.BufferSubData(BufferType, (IntPtr)offset, (IntPtr)(data.Count * Vector3.SizeInBytes), data.ToArray());
-			Bind();
+			if (Size < _size)
+			{
+				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				Size = _size;
+			}
+			else
+				GL.BufferSubData(BufferType, IntPtr.Zero, (IntPtr)(_size), data.ToArray());
+
+			UnBind();
 		}
 
 		public void Update(List<Vector2> data, int offset = 0)
 		{
+			var _size = (data.Count * Vector2.SizeInBytes);
+
 			Bind();
-			GL.BufferSubData(BufferType, (IntPtr)offset, (IntPtr)(data.Count * Vector2.SizeInBytes), data.ToArray());
-			Bind();
+			if (Size < _size)
+			{
+				GL.BufferData(BufferType, _size, IntPtr.Zero, BufferUsageHint.DynamicDraw);
+				Size = _size;
+			}
+			else
+				GL.BufferSubData(BufferType, IntPtr.Zero, (IntPtr)(_size), data.ToArray());
+
+			UnBind();
 		}
 
-		public void update(List<float> data, int offset = 0)
+		public void Update(List<float> data, int offset = 0)
 		{
 			Bind();
 			GL.BufferSubData(BufferType, (IntPtr)offset, (IntPtr)(data.Count * sizeof(float)), data.ToArray());
-			Bind();
+			UnBind();
 		}
 
 		/// <summary>
@@ -139,12 +165,21 @@ namespace Crusty.Engine
 		/// </summary>
 		/// <param name="data">Die Daten...</param>
 		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
+		public void Upload(List<int> data)
+		{
+			Elements = data.Count;
+			Update(data);
+		}
+
+		/// <summary>
+		/// Lädt Daten in den Buffer.
+		/// </summary>
+		/// <param name="data">Die Daten...</param>
+		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
 		public void Upload(List<Vector3> data)
 		{
-			Bind();
-			GL.BufferData(BufferType, data.Count * Vector3.SizeInBytes, data.ToArray(), BufferUsage);
 			Elements = data.Count;
-			UnBind();
+			Update(data);
 		}
 
 		/// <summary>
@@ -154,10 +189,8 @@ namespace Crusty.Engine
 		/// <param name="usage">Verwendungsart... (Default: StaticDraw).</param>
 		public void Upload(List<Vector2> data)
 		{
-			Bind();
-			GL.BufferData(BufferType, data.Count * Vector2.SizeInBytes, data.ToArray(), BufferUsage);
 			Elements = data.Count;
-			UnBind();
+			Update(data);
 		}
 
 		/// <summary>

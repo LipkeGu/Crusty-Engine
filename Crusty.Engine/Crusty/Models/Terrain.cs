@@ -10,23 +10,30 @@ namespace Crusty.Engine.Models
 		public int Width { get; set; } = 0;
 		public int Height { get; set; } = 0;
 
-		public Dictionary<int, Dictionary<int, float>> Heights;
+		public string NormalMap { get; set; }
 
-		public Terrain(string filename, string normmap) : base("Terrain",
+		public string HeightMap { get; set; }
+
+		public Dictionary<int, Dictionary<int, float>> Heights
+			= new Dictionary<int, Dictionary<int, float>>();
+
+		public Terrain(string heightMap, string normmap) : base("Terrain",
 			new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f), new OpenTK.Vector3(1f, 1f, 1f))
 		{
-			Heights = new Dictionary<int, Dictionary<int, float>>();
-
-			using (var normalmap = new Bitmap(normmap))
+			NormalMap = normmap;
+			HeightMap = heightMap;
+			
+			using (var normalmap = new Bitmap(NormalMap))
 			{
-				using (var heightmap = new Bitmap(filename))
+				using (var heightmap = new Bitmap(HeightMap))
 				{
 					Width = heightmap.Width;
 					Height = heightmap.Height;
 
 					for (var z = 0; z < Height; z++)
 					{
-						Heights.Add(z, new Dictionary<int, float>());
+						if (!Heights.ContainsKey(z))
+							Heights.Add(z, new Dictionary<int, float>());
 
 						for (var x = 0; x < Width; x++)
 						{

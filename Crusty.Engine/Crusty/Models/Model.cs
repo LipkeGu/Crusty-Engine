@@ -156,13 +156,11 @@ namespace Crusty.Engine.Models
 			if (TexCoords.Count != 0)
 			{
 				VertexArray.Upload(TexCoords);
-				TexCoords.Clear();
 			}
 
 			if (Normals.Count != 0)
 			{
 				VertexArray.Upload(Normals, Indices);
-				Normals.Clear();
 			}
 		}
 

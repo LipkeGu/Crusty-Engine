@@ -50,8 +50,7 @@ namespace Crusty.Engine
 
 		public void Upload(List<Vector2> data)
 		{
-			var vbo = new VertexBuffer();
-			vbo.Create();
+			var vbo = new VertexBuffer(data.Count * Vector2.SizeInBytes);
 			vbo.Upload(data);
 
 			if (VertexBuffers.Count == 0)
@@ -75,8 +74,7 @@ namespace Crusty.Engine
 
 		public void Upload(List<Vector3> data, List<int> indices, bool instanced = false)
 		{
-			var vbo = new VertexBuffer();
-			vbo.Create();
+			var vbo = new VertexBuffer(data.Count * Vector3.SizeInBytes);
 			vbo.Upload(data);
 
 			if (VertexBuffers.Count == 0)
@@ -86,8 +84,7 @@ namespace Crusty.Engine
 
 			if (indices.Count != 0)
 			{
-				IndexBuffer = new IndexBuffer();
-				IndexBuffer.Create();
+				IndexBuffer = new IndexBuffer(indices.Count * sizeof(int));
 
 				IndexBuffer.Upload(indices);
 			}
