@@ -82,7 +82,6 @@
     <Compile Include="Crusty\Engine\System\Input\InputMButtonEventArgs.cs" />
     <Compile Include="Crusty\Engine\System\Video\FrameBuffer.cs" />
     <Compile Include="Crusty\Engine\System\Video\Interfaces\IShader.cs" />
-    <Compile Include="Crusty\Engine\System\Video\Text.cs" />
     <Compile Include="Crusty\Engine\System\Video\UI\GUI_Control.cs" />
     <Compile Include="Crusty\Engine\System\Video\UI\GUI_Window.cs" />
     <Compile Include="Crusty\Engine\System\Video\UI\ImGuiController.cs" />
@@ -118,7 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Crusty\Engine\System\Audio\" />
-    <Folder Include="Crusty\Engine\System\Text\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="freetype6.dll">

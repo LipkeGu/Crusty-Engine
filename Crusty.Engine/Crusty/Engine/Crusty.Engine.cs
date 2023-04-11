@@ -8,9 +8,7 @@ using Crusty.Engine.Models;
 using OpenTK.Input;
 using Crusty.Engine.Common.Camera;
 using Crusty.Engine.Crusty.Models.Interface;
-using OpenTK.Graphics.OpenGL;
-using SharpFont;
-using OpenTK_example_5;
+using OpenTK.Graphics.OpenGL4;
 
 namespace Crusty.Engine
 {
@@ -18,8 +16,6 @@ namespace Crusty.Engine
 	{
 		public Input Input { get; private set; } = new Input();
 		public Video Video { get; private set; } = new Video();
-
-		public Text Text { get; private set; } = new Text();
 
 		public bool Enabled = true;
 
@@ -110,8 +106,10 @@ namespace Crusty.Engine
 		public void Update(double deltatime)
 		{
 			Input.Update(deltatime);
+
 			EngineWorld.Update(deltatime);
 			WorldTime.Update();
+
 			Models.Update(EngineWorld.Terrain, deltatime);
 			Camera.Update(EngineWorld.Terrain, deltatime);
 		}
@@ -119,6 +117,7 @@ namespace Crusty.Engine
 		public void OnMouseMove(CursorPosition cursorPosition)
 		{
 			Camera.OnMouseMove(cursorPosition);
+
 			Camera.RayPosition = Functions.Unproject(cursorPosition, Camera.Width, Camera.Height,
 				Camera.ProjectionMatrix, Camera.ViewMatrix);
 
@@ -138,7 +137,6 @@ namespace Crusty.Engine
 		public void OnResize(int width, int height)
 		{
 			Camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
-			Text.OnReSize(width,height);
 		}
 
 		public void Render(double deltaTime)
@@ -148,15 +146,10 @@ namespace Crusty.Engine
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.StencilTest);
 
-			Text.RenderText("This is Crustyengine!");
-
-			if (Enabled)
-				EngineWorld.Render(deltaTime, ref WorldTime, ref Camera);
+			EngineWorld.Render(deltaTime, ref WorldTime, ref Camera);
 
 			GL.Disable(EnableCap.DepthTest);
 			GL.Disable(EnableCap.StencilTest);
-
-
 		}
 
 		public void Dispose()

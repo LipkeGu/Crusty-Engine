@@ -98,6 +98,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Config.xml" />
+    <Content Include="Data\Models\Models.xml" />
+    <Content Include="Data\Terrains\Default.xml" />
     <Content Include="Data\Texture\heightmap.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

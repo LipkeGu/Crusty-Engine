@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Crusty.Engine.Crusty.Models.Interface;
+using System.Xml;
+using System.Xml.Linq;
+using System;
+using System.IO;
+using Crusty.Engine.Common;
 
 namespace Crusty.Engine.Models
 {
@@ -22,7 +27,9 @@ namespace Crusty.Engine.Models
 		{
 			NormalMap = normmap;
 			HeightMap = heightMap;
-			
+			Width = 1024;
+			Height = 1024;
+
 			using (var normalmap = new Bitmap(NormalMap))
 			{
 				using (var heightmap = new Bitmap(HeightMap))
@@ -46,6 +53,8 @@ namespace Crusty.Engine.Models
 				}
 			}
 
+//			Import();
+
 			for (var i = 0; i < Height - 1; i++)
 				for (var j = 0; j < Width - 1; j++)
 				{
@@ -63,6 +72,40 @@ namespace Crusty.Engine.Models
 				}
 
 			UploadToVertexArray();
+		}
+
+		public void Import()
+		{
+			var xml = new XmlDocument();
+			xml.Load("Data/Terrains/Export.xml");
+			var tiles = xml.GetElementsByTagName("Tile");
+
+			foreach (XmlNode tile in tiles)
+			{
+				var vec = Functions.CreateVec3(tile.Attributes["x"].Value,
+					tile.Attributes["y"].Value, tile.Attributes["z"].Value);
+
+
+				Vertices.Add(vec);
+
+				if (!Heights.ContainsKey((int)vec.Z))
+					Heights.Add((int)vec.Z, new Dictionary<int, float>());
+
+				Heights[(int)vec.Z][(int)vec.X] = vec.Y;
+			}
+		}
+
+		public void Export()
+		{
+			var terrain = new XElement("Terrain");
+			
+			foreach (var ertice in Vertices)
+			{
+				terrain.Add(new XElement("Tile", new XAttribute("x", ertice.X), new XAttribute("y", ertice.Y), new XAttribute("z", ertice.Z)));
+			}
+			Directory.CreateDirectory("Data/Terrains");
+			XElement terraisn = new XElement("Engine", new XElement("Terrains", terrain));
+			terraisn.Save("Data/Terrains/Export.xml", SaveOptions.OmitDuplicateNamespaces);
 		}
 
 		public float QueryHeightAt(int x, int z)
