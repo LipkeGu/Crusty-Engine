@@ -1,7 +1,6 @@
 ﻿//#define INTELGL
 
 using Crusty.Engine.UI;
-using ImGuiNET;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -9,7 +8,6 @@ using OpenTK.Input;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace Crusty.Engine
 {
@@ -18,7 +16,6 @@ namespace Crusty.Engine
 		private ImGuiController ImGuiController;
 		public static Dictionary<string, IControl> GUIWIndows = new Dictionary<string, IControl>();
 
-
 		public static CrustyEngine Engine { get; set; }
 
 		private Vector2 lastPost;
@@ -26,9 +23,8 @@ namespace Crusty.Engine
 		bool hideCursor = true;
 		bool firstMouse = true;
 
-#if !INTELGL
 		FrameBuffer FrameBuffer;
-#endif
+
 		public static int GLVerMajor = 4;
 		public static int GLVerMinor = 3;
 
@@ -46,9 +42,7 @@ namespace Crusty.Engine
 		public override void Dispose()
 		{
 			Engine.Dispose();
-#if !INTELGL
 			FrameBuffer.Dispose();
-#endif
 			base.Dispose();
 		}
 
@@ -92,11 +86,7 @@ namespace Crusty.Engine
 
 			Mouse.SetPosition(Bounds.X + (rect.Width / 2), Bounds.Y + (rect.Height / 2));
 
-#if !INTELGL
 			FrameBuffer = new FrameBuffer(Width, Height);
-#endif
-			ImGuiController = new ImGuiController(Width, Height);
-
 			base.OnLoad(e);
 		}
 
@@ -145,18 +135,12 @@ namespace Crusty.Engine
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			deltaTime = e.Time;
-#if !INTELGL
 			FrameBuffer.Render(Engine.Render, deltaTime);
-#else
-			Engine.Render(deltaTime);
-#endif
 
 			foreach (var item in GUIWIndows.Values)
 			{
 				item.Draw();
 			}
-
-			ImGuiController.Render();
 
 			SwapBuffers();
 
@@ -168,11 +152,8 @@ namespace Crusty.Engine
 			if (Width == 0  || Height == 0) return;
 			GL.Viewport(new Rectangle(0, 0, Width, Height));
 
-#if !INTELGL
 			FrameBuffer.OnResize(Width, Height);
-#endif
 			Engine.OnResize(Width, Height);
-			ImGuiController.WindowResized(Width, Height);
 			base.OnResize(e);
 		}
 
@@ -187,9 +168,6 @@ namespace Crusty.Engine
 		{
 			Engine.Update(e.Time);
 
-
-
-            ImGuiController.Update(this, (float)e.Time);
 			base.OnUpdateFrame(e);
 		}
 	}
