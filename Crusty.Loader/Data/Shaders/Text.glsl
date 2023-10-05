@@ -1,7 +1,8 @@
 #type vertex
 #version ##GL_VERSION##0 core
-in vec2 Position;
-in vec2 TexCoord;
+
+layout(location = 0) in vec2 Position;
+layout(location = 1) in vec2 TexCoord;
 
 uniform mat4 projMatrix;
 

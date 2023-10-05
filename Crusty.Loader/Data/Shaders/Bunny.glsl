@@ -2,9 +2,9 @@
 #version ##GL_VERSION##0 core
 const int MAX_MODELS = 128;
 
-in vec3 Position;
-in vec2 TexCoords;
-in vec3 Normals;
+layout(location = 0) in vec3 Position;
+layout(location = 1) in vec2 TexCoords;
+layout(location = 2) in vec3 Normals;
 
 uniform mat4 projMatrix;
 uniform mat4 viewMatrix;
