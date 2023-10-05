@@ -115,9 +115,12 @@ namespace Crusty.Engine
 					{
 						var parts = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 						var attribute = parts[parts.Length - 1];
+						
+						if (attribute.EndsWith(";"))
+							attribute = attribute.Substring(0, attribute.Length - 1);
 
 						if (!attributeLocations.ContainsKey(attribute))
-							attributeLocations.Add(attribute, -1);
+							attributeLocations.Add(attribute, int.Parse(parts[2].Replace(")", string.Empty)));
 						else
 							attributeLocations[attribute] = GL.GetAttribLocation(shaderProgram, attribute);
 
