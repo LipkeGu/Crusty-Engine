@@ -1,11 +1,9 @@
-﻿using System;
-using OpenTK;
-using System.Collections.Generic;
-using Crusty.Engine.Traits;
-using OpenTK.Graphics.OpenGL4;
-using Crusty.Engine.Common;
+﻿using Crusty.Engine.Common;
 using Crusty.Engine.Common.Traits;
 using Crusty.Engine.Crusty.Models.Interface;
+using OpenTK;
+using System;
+using System.Collections.Generic;
 
 namespace Crusty.Engine.Models
 {
@@ -21,55 +19,55 @@ namespace Crusty.Engine.Models
 		}
 	}
 
-	public class Quad : Model
+	public class Cube : Model
 	{
 		public float Size { get; private set; }
 
-		public Quad(string name, float size, Vector3 position, Vector3 rotation, Vector3 scale) : base(name, position, rotation, scale)
+		public Cube(string name, float size, Vector3 position, Vector3 rotation, Vector3 scale) : base(name, position, rotation, scale)
 		{
 			Size = size;
 
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(-size, size, -size));
-			Vertices.Add(new Vector3(-size, -size, -size));
+			Vertices.Add(new Vector3(-Size, -Size, -Size));
+			Vertices.Add(new Vector3(Size, -Size, -Size));
+			Vertices.Add(new Vector3(Size, Size, -Size));
+			Vertices.Add(new Vector3(Size, Size, -Size));
+			Vertices.Add(new Vector3(-Size, Size, -Size));
+			Vertices.Add(new Vector3(-Size, -Size, -Size));
 
-			Vertices.Add(new Vector3(-size, -size, size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(-size, size, size));
-			Vertices.Add(new Vector3(-size, -size, size));
+			Vertices.Add(new Vector3(-Size, -Size, Size));
+			Vertices.Add(new Vector3(Size, -Size, Size));
+			Vertices.Add(new Vector3(Size, Size, Size));
+			Vertices.Add(new Vector3(Size, Size, Size));
+			Vertices.Add(new Vector3(-Size, Size, Size));
+			Vertices.Add(new Vector3(-Size, -Size, Size));
 
-			Vertices.Add(new Vector3(-size, size, size));
-			Vertices.Add(new Vector3(-size, size, -size));
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(-size, -size, size));
-			Vertices.Add(new Vector3(-size, size, size));
+			Vertices.Add(new Vector3(-Size, Size, Size));
+			Vertices.Add(new Vector3(-Size, Size, -Size));
+			Vertices.Add(new Vector3(-Size, -Size, -Size));
+			Vertices.Add(new Vector3(-Size, -Size, -Size));
+			Vertices.Add(new Vector3(-Size, -Size, Size));
+			Vertices.Add(new Vector3(-Size, Size, Size));
 
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(size, size, size));
+			Vertices.Add(new Vector3(Size, Size, Size));
+			Vertices.Add(new Vector3(Size, Size, -Size));
+			Vertices.Add(new Vector3(Size, -Size, -Size));
+			Vertices.Add(new Vector3(Size, -Size, -Size));
+			Vertices.Add(new Vector3(Size, -Size, Size));
+			Vertices.Add(new Vector3(Size, Size, Size));
 
-			Vertices.Add(new Vector3(-size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, -size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(size, -size, size));
-			Vertices.Add(new Vector3(-size, -size, size));
-			Vertices.Add(new Vector3(-size, -size, -size));
+			Vertices.Add(new Vector3(-Size, -Size, -Size));
+			Vertices.Add(new Vector3(Size, -Size, -Size));
+			Vertices.Add(new Vector3(Size, -Size, Size));
+			Vertices.Add(new Vector3(Size, -Size, Size));
+			Vertices.Add(new Vector3(-Size, -Size, Size));
+			Vertices.Add(new Vector3(-Size, -Size, -Size));
 
-			Vertices.Add(new Vector3(-size, size, -size));
-			Vertices.Add(new Vector3(size, size, -size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(size, size, size));
-			Vertices.Add(new Vector3(-size, size, size));
-			Vertices.Add(new Vector3(-size, size, -size));
+			Vertices.Add(new Vector3(-Size, Size, -Size));
+			Vertices.Add(new Vector3(Size, Size, -Size));
+			Vertices.Add(new Vector3(Size, Size, Size));
+			Vertices.Add(new Vector3(Size, Size, Size));
+			Vertices.Add(new Vector3(-Size, Size, Size));
+			Vertices.Add(new Vector3(-Size, Size, -Size));
 
 			UploadToVertexArray();
 		}
@@ -149,19 +147,13 @@ namespace Crusty.Engine.Models
 		public void UploadToVertexArray()
 		{
 			if (Vertices.Count != 0)
-			{
 				VertexArray.Upload(Vertices, Indices);
-			}
 
 			if (TexCoords.Count != 0)
-			{
 				VertexArray.Upload(TexCoords);
-			}
 
 			if (Normals.Count != 0)
-			{
 				VertexArray.Upload(Normals, Indices);
-			}
 		}
 
 		public void CleanUp()

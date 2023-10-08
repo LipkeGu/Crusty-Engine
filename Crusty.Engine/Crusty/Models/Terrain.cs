@@ -1,12 +1,11 @@
-﻿using OpenTK;
+﻿using Crusty.Engine.Common;
+using Crusty.Engine.Crusty.Models.Interface;
+using OpenTK;
 using System.Collections.Generic;
 using System.Drawing;
-using Crusty.Engine.Crusty.Models.Interface;
+using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-using System;
-using System.IO;
-using Crusty.Engine.Common;
 
 namespace Crusty.Engine.Models
 {
@@ -19,11 +18,13 @@ namespace Crusty.Engine.Models
 
 		public string HeightMap { get; set; }
 
+
+
 		public Dictionary<int, Dictionary<int, float>> Heights
 			= new Dictionary<int, Dictionary<int, float>>();
 
 		public Terrain(string heightMap, string normmap) : base("Terrain",
-			new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f), new OpenTK.Vector3(1f, 1f, 1f))
+			new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f), new Vector3(1f, 1f, 1f))
 		{
 			NormalMap = normmap;
 			HeightMap = heightMap;
@@ -52,8 +53,6 @@ namespace Crusty.Engine.Models
 					}
 				}
 			}
-
-//			Import();
 
 			for (var i = 0; i < Height - 1; i++)
 				for (var j = 0; j < Width - 1; j++)
@@ -85,7 +84,6 @@ namespace Crusty.Engine.Models
 				var vec = Functions.CreateVec3(tile.Attributes["x"].Value,
 					tile.Attributes["y"].Value, tile.Attributes["z"].Value);
 
-
 				Vertices.Add(vec);
 
 				if (!Heights.ContainsKey((int)vec.Z))
@@ -95,14 +93,13 @@ namespace Crusty.Engine.Models
 			}
 		}
 
-		public void Export()
+		public void Export(string name)
 		{
 			var terrain = new XElement("Terrain");
-			
-			foreach (var ertice in Vertices)
-			{
-				terrain.Add(new XElement("Tile", new XAttribute("x", ertice.X), new XAttribute("y", ertice.Y), new XAttribute("z", ertice.Z)));
-			}
+
+			foreach (var vertice in Vertices)
+				terrain.Add(new XElement("Tile", new XAttribute("x", vertice.X), new XAttribute("y", vertice.Y), new XAttribute("z", vertice.Z)));
+
 			Directory.CreateDirectory("Data/Terrains");
 			XElement terraisn = new XElement("Engine", new XElement("Terrains", terrain));
 			terraisn.Save("Data/Terrains/Export.xml", SaveOptions.OmitDuplicateNamespaces);
@@ -120,7 +117,7 @@ namespace Crusty.Engine.Models
 
 			float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
 			float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
-			
+
 			var newHeight = 0.0f;
 
 			if (tileX < 0 || tileX + 1 >= Heights.Count || tileZ < 0 || tileZ + 1 >= Heights.Count)

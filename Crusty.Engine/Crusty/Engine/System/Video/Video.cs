@@ -38,9 +38,12 @@ namespace Crusty.Engine
 
 		public Video()
 		{
+			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 			RendererState.Blending = GL.IsEnabled(EnableCap.Blend);
 			RendererState.Culling = GL.IsEnabled(EnableCap.CullFace);
-			GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+			GL.Enable(EnableCap.CullFace);
+			GL.CullFace(RendererState.CullFaceMode);
 		}
 
 		public void BeginRender()

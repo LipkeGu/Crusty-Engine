@@ -30,11 +30,11 @@ namespace Crusty.Engine
 			GL.BindTexture(textureTarget, 0);
 		}
 
-		public void Render(Action<double> delegatedDrawFunction, double delaTime)
+		public void Render(Action<double, bool> delegatedDrawFunction, double delaTime, bool renderScene = true)
 		{
 			#region "Render Scene to Texture"
 			Bind();
-			delegatedDrawFunction(delaTime);
+				delegatedDrawFunction(delaTime, renderScene);
 			UnBind();
 			#endregion
 

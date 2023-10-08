@@ -1,27 +1,25 @@
-﻿using System;
-using OpenTK;
+﻿using Crusty.Engine.Common;
 using Crusty.Engine.Traits;
-using Crusty.Engine.Common;
+using OpenTK;
 using System.Collections.Generic;
-using OpenTK.Graphics.ES11;
 
 namespace Crusty.Engine.Models
 {
-	public class Light : Lighting
+	public class Light : Lightning
 	{
-		public Quad Mesh { get; private set; }
+		public Cube Mesh { get; private set; }
 
 		public Light(Vector3 position, Vector3 lightColor)
 		{
 			Position = position;
-			Mesh = new Quad("Sun", 1, Position, new Vector3(0), new Vector3(1));
+			Mesh = new Cube("Sun", 1, Position, new Vector3(0), new Vector3(1));
 			LightColor = lightColor;
 		}
 
 		public Light(Vector3 position, Vector3 lightColor, Vector3 attenuation)
 		{
 			Position = position;
-			Mesh = new Quad("Sun", 1, Position, new Vector3(0), new Vector3(1));
+			Mesh = new Cube("Sun", 1, Position, new Vector3(0), new Vector3(1));
 			LightColor = lightColor;
 			Attenuation = attenuation;
 		}

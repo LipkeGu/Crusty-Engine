@@ -88,7 +88,7 @@
     <Compile Include="Crusty\Engine\System\Video\UI\Interfaces\IControl.cs" />
     <Compile Include="Crusty\Engine\System\Video\Video.cs" />
     <Compile Include="Crusty\Engine\System\Video\Generators\PerlinNoise.cs" />
-    <Compile Include="Crusty\Models\Interface\ITerrain.cs" />
+    <Compile Include="Crusty\Models\Interfaces\ITerrain.cs" />
     <Compile Include="Crusty\Models\Models.cs" />
     <Compile Include="Crusty\Models\SkyBox.cs" />
     <Compile Include="Crusty\Models\Model.cs" />

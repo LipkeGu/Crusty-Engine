@@ -6,6 +6,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Crusty.Engine
 {
@@ -41,13 +42,14 @@ namespace Crusty.Engine
 			GL.Disable(EnableCap.DepthTest);
 		}
 
-		public void Update(double deltatime)
+		public void Update(double deltatime, Vector3 rayPosition)
 		{
 			Skybox.Update(null, deltatime);
 			Terrain.Update(deltatime);
 
 			Models.Update(Terrain, deltatime);
 
+			Lights.LastOrDefault().Position = rayPosition;
 			foreach (var light in Lights)
 				light.Update(deltatime);
 		}

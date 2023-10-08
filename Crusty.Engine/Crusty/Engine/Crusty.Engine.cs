@@ -107,7 +107,7 @@ namespace Crusty.Engine
 		{
 			Input.Update(deltatime);
 
-			EngineWorld.Update(deltatime);
+			EngineWorld.Update(deltatime, Input.RayPosition);
 			WorldTime.Update();
 
 			Models.Update(EngineWorld.Terrain, deltatime);
@@ -139,14 +139,15 @@ namespace Crusty.Engine
 			Camera.OnResize(width, height, EngineWorld.Skybox.Size * 1.5f);
 		}
 
-		public void Render(double deltaTime)
+		public void Render(double deltaTime, bool renderScene)
 		{
 			Video.BeginRender();
 
 			GL.Enable(EnableCap.DepthTest);
 			GL.Enable(EnableCap.StencilTest);
 
-			EngineWorld.Render(deltaTime, ref WorldTime, ref Camera);
+			if (renderScene)
+				EngineWorld.Render(deltaTime, ref WorldTime, ref Camera);
 
 			GL.Disable(EnableCap.DepthTest);
 			GL.Disable(EnableCap.StencilTest);

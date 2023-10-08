@@ -37,11 +37,10 @@ namespace Crusty.Engine.Models
 				if (instance.Value.Count > 1)
 				{
 					instance.Key.VertexArray.Bind();
-
 					instance.Key.Texture.Bind();
 
-					instance.Key.Set_Shine_Variables(instance.Key.shineDamper, instance.Key.reflectivity);
 					instance.Key.Shader.Use();
+					instance.Key.Set_Shine_Variables(instance.Key.shineDamper, instance.Key.reflectivity);
 
 					instance.Key.Shader.Set_Mat4("projMatrix", camera.ProjectionMatrix);
 					instance.Key.Shader.Set_Mat4("viewMatrix", camera.ViewMatrix);
